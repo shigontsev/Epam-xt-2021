@@ -8,9 +8,6 @@ namespace Task_2._1._1
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            string s = "Aaaa";
-            string b = " bb bb";
-            Console.WriteLine(string.Concat(s, b));
             ArraySymbol A = new ArraySymbol("Hello");
             ArraySymbol B = new ArraySymbol(" World");
             ArraySymbol C = new ArraySymbol("Hello");

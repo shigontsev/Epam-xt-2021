@@ -43,7 +43,7 @@ namespace MyDLL
             //    }
             //}
             //return true;
-            return this.CompareTo(arr) == 0 ? true : false;
+            return this.CompareTo(arr) == 0;
         }        
 
         public int CompareTo(ArraySymbol c)
@@ -110,7 +110,7 @@ namespace MyDLL
 
         public static ArraySymbol Concat(ArraySymbol c1, ArraySymbol c2)
         {
-            return new ArraySymbol(c1.ToString()+c2.ToString());
+            return new ArraySymbol(c1.ToString() + c2.ToString());
         }
 
         public ArraySymbol Append(string text)
@@ -132,15 +132,6 @@ namespace MyDLL
         }
         public int LastIndexOf(char c)
         {
-            //int index = -1;
-            //for (int i = 0; i < Length; i++)
-            //{
-            //    if (arrChar[i] == c)
-            //    {
-            //        index = i;
-            //    }
-            //}
-            //return index;
             for (int i = Length - 1; i >= 0; i--)
             {
                 if (arrChar[i] == c)
@@ -152,7 +143,7 @@ namespace MyDLL
         }
         public bool Contains(char c)
         {
-            return IndexOf(c) != -1 ? true : false;
+            return IndexOf(c) != -1;
         }
         
 
@@ -237,7 +228,7 @@ namespace MyDLL
         }
         public static bool operator ==(ArraySymbol c1, ArraySymbol c2)
         {
-            return c1.Equals(c2) ? true:false;
+            return c1.Equals(c2);
         }
         public static bool operator !=(ArraySymbol c1, ArraySymbol c2)
         {
