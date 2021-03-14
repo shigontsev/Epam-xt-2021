@@ -132,15 +132,23 @@ namespace MyDLL
         }
         public int LastIndexOf(char c)
         {
-            int index = -1;
-            for (int i = 0; i < Length; i++)
+            //int index = -1;
+            //for (int i = 0; i < Length; i++)
+            //{
+            //    if (arrChar[i] == c)
+            //    {
+            //        index = i;
+            //    }
+            //}
+            //return index;
+            for (int i = Length - 1; i >= 0; i--)
             {
                 if (arrChar[i] == c)
                 {
-                    index = i;
+                    return i;
                 }
             }
-            return index;
+            return -1;
         }
         public bool Contains(char c)
         {
