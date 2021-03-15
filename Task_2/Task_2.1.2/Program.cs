@@ -25,6 +25,7 @@ namespace Task_2._1._2
             Triangle tr = new Triangle(3, 5, 7);
             Console.WriteLine("Периметр треугольника = " + tr.Length);
             Console.WriteLine("Площадь треугольника = " + tr.GetArea);
+            sq.Info();
             Console.ReadLine();
         }
     }

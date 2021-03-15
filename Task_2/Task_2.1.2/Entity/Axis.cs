@@ -17,6 +17,9 @@ namespace Task_2._1._2.Entity
             X = x;
             Y = y;
         }
-
+        public override string ToString()
+        {
+            return new string($"({X};{Y})");
+        }
     }
 }
