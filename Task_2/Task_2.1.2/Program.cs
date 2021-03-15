@@ -1,4 +1,5 @@
 ﻿using System;
+using Task_2._1._2.Entity;
 
 namespace Task_2._1._2
 {
