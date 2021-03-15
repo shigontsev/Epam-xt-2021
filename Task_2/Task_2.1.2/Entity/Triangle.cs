@@ -6,9 +6,9 @@ namespace Task_2._1._2.Entity
 {
     public class Triangle
     {
-        public double A { get; set; }
-        public double B { get; set; }
-        public double C { get; set; }
+        protected internal double A { get; set; }
+        protected internal double B { get; set; }
+        protected internal double C { get; set; }
         public bool isTriangle
         {
             get

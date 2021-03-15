@@ -6,8 +6,8 @@ namespace Task_2._1._2.Entity
 {
     public class Line
     {
-        public Point P1;
-        public Point P2;
+        private Point P1;
+        private Point P2;
         public Line(double x1, double y1, double x2, double y2):this(new Point(x1,y1), new Point(x2, y2))
         {
 

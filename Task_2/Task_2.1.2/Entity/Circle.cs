@@ -7,7 +7,7 @@ namespace Task_2._1._2.Entity
     public class Circle:Axis
     {
         private double radius;
-        public double Radius
+        protected internal double Radius
         {
             get
             {
@@ -21,12 +21,6 @@ namespace Task_2._1._2.Entity
                 radius = value;
             }
         }
-        //public Circle()
-        //{
-        //    X = 0;
-        //    Y = 0;
-        //    //Radius = 0;
-        //}
         public Circle():this(1)
         {
         }

@@ -6,8 +6,8 @@ namespace Task_2._1._2.Entity
 {
     public class Ring : Axis
     {
-        public Round inner;
-        public Round outer;
+        protected internal Round inner;
+        protected internal Round outer;
         public Ring(double inR, double outR): base()
         {
             inner = new Round(inR);
