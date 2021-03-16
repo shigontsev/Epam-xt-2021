@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Triangle:Axis
+    public class Triangle:Axis, IFigure
     {
         protected internal double A { get; set; }
         protected internal double B { get; set; }

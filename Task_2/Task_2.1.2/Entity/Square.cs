@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Square : Rectangle
+    public class Square : Rectangle, IFigure
     {
         public Square(double side):base(side, side)
         {

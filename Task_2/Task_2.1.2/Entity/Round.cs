@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Round : Circle
+    public class Round : Circle, IFigure
     {
         public Round(double r):base(r)
         {

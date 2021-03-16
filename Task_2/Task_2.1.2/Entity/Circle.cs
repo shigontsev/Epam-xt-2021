@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Circle:Axis
+    public class Circle:Axis, IFigure
     {
         private double radius;
         protected internal double Radius

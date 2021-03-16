@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Line
+    public class Line: IFigure
     {
         private Point P1;
         private Point P2;

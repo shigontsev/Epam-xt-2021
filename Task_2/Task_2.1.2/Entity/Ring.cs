@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Ring : Axis
+    public class Ring : Axis, IFigure
     {
         protected internal Round inner;
         protected internal Round outer;
