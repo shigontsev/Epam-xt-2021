@@ -44,9 +44,11 @@ namespace Task_2._1._2
             //Console.WriteLine();
             //circle.Info();
             User user = new User("Yurii");
-            while (true)
+            bool boolen = true;
+            while (boolen)
             {
-                user.AddFigure();
+                //user.AddFigure();
+                user.CommandBar(ref boolen);
             }
             
             Console.ReadLine();
