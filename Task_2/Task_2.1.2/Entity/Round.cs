@@ -16,5 +16,12 @@ namespace Task_2._1._2.Entity
         }
         public double GetArea
             => Math.PI * Radius * Radius;
+        public override void Info()
+        {
+            Console.WriteLine("Фигура: Круг");
+            Console.WriteLine("Центр = " + base.ToString());
+            Console.WriteLine("Длина = " + Length);
+            Console.WriteLine("Площадь = " + GetArea);
+        }
     }
 }

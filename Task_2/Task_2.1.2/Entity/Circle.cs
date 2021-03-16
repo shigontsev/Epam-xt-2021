@@ -34,5 +34,12 @@ namespace Task_2._1._2.Entity
         }
         public double Length
             => 2 * Math.PI * radius;
+
+        public virtual void Info()
+        {
+            Console.WriteLine("Фигура: Окружность");
+            Console.WriteLine("Центр = " + base.ToString());
+            Console.WriteLine("Длина = " + Length);
+        }
     }
 }

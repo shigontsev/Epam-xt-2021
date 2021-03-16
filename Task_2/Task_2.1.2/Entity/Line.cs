@@ -20,5 +20,11 @@ namespace Task_2._1._2.Entity
             => Math.Sqrt(Sqr(P1.X-P2.X)+Sqr(P1.Y-P2.Y));
         private double Sqr(double a)
             => a * a;
+        public virtual void Info()
+        {
+            Console.WriteLine("Фигура: Линия");
+            Console.WriteLine($"В точках A={P1.ToString()}; B={P2.ToString()}");
+            Console.WriteLine("Длина = " + Length);
+        }
     }
 }
