@@ -16,7 +16,15 @@ namespace Task_2._1._2.Entity
         }
         //public Square(Line side):base(side,side)
         //{
-            
+
         //}
+        public override void Info()
+        {
+            Console.WriteLine("Фигура: Квадрат");
+            Console.WriteLine($"Со стороной A={Width}");
+            Console.WriteLine("Центр: " + base.ToString());
+            Console.WriteLine("Периметр = " + Length);
+            Console.WriteLine("Площадь = " + GetArea);
+        }
     }
 }

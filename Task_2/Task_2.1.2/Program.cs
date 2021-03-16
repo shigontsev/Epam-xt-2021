@@ -18,14 +18,20 @@ namespace Task_2._1._2
             Console.WriteLine("Длина круга внутреннего = " + ring.inner.Length);
             Console.WriteLine("Площадь круга внутреннего = " + ring.inner.GetArea);
             Console.WriteLine();
+            Rectangle rct = new Rectangle(5,2, 3, 1);
             Square sq = new Square(5);
-            Console.WriteLine("Периметр квадрата = " + sq.Length);
-            Console.WriteLine("Площадь квадрата = " + sq.GetArea);
-            Console.WriteLine();
+            //Console.WriteLine("Периметр квадрата = " + sq.Length);
+            //Console.WriteLine("Площадь квадрата = " + sq.GetArea);
+            //Console.WriteLine();
             Triangle tr = new Triangle(3, 5, 7);
-            Console.WriteLine("Периметр треугольника = " + tr.Length);
-            Console.WriteLine("Площадь треугольника = " + tr.GetArea);
+            //Console.WriteLine("Периметр треугольника = " + tr.Length);
+            //Console.WriteLine("Площадь треугольника = " + tr.GetArea);
+            //Console.WriteLine();
+            rct.Info();
+            Console.WriteLine();
             sq.Info();
+            Console.WriteLine();
+            tr.Info();
             Console.ReadLine();
         }
     }

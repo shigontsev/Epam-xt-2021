@@ -9,14 +9,14 @@ namespace Task_2._1._2.Entity
         protected internal double Width { get; set; }
         protected internal double Height { get; set; }
 
-        public Rectangle(double width, double height):base()
+        public Rectangle(double width, double height):this(width, height, 0, 0)
         {
-            Width = width;
-            Height = height;
+            //Width = width;
+            //Height = height;
         }
         public Rectangle(double width, double height, double x, double y) : base(x, y)
         {
-            if (!isCorrect(width, height))
+            if (isCorrect(width, height))
             {
                 Console.WriteLine("Такую фигуру не создать");
                 return;
@@ -34,11 +34,13 @@ namespace Task_2._1._2.Entity
             return (a < 0 || b < 0);
         }
 
-        public void Info()
+        public virtual void Info()
         {
             Console.WriteLine("Фигура: Прямоугольник");
             Console.WriteLine($"Со сторонами A={Width}; B={Height}");
             Console.WriteLine("Центр: " + base.ToString());
+            Console.WriteLine("Периметр = " + Length);
+            Console.WriteLine("Площадь = " + GetArea);
         }
 
         //protected internal Point[] Points

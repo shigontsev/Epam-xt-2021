@@ -10,16 +10,16 @@ namespace Task_2._1._2.Entity
         protected internal double B { get; set; }
         protected internal double C { get; set; }
         
-        public Triangle(double a, double b, double c) : base()
+        public Triangle(double a, double b, double c) : this(a, b, c, 0, 0)
         {
-            if (!isTriangle(a, b, c) || isCorrect(a, b, c))
-            {
-                Console.WriteLine("Такую фигуру не создать");
-                return;
-            }
-            A = a;
-            B = b;
-            C = c;
+            //if (!isTriangle(a, b, c) || isCorrect(a, b, c))
+            //{
+            //    Console.WriteLine("Такую фигуру не создать");
+            //    return;
+            //}
+            //A = a;
+            //B = b;
+            //C = c;
         }
         public Triangle(double a, double b, double c, double x, double y):base(x, y)
         {
@@ -73,6 +73,8 @@ namespace Task_2._1._2.Entity
             Console.WriteLine("Фигура: Треугольник");
             Console.WriteLine($"Со сторонами A={A}; B={B}; C={C}");
             Console.WriteLine("Центр: " + base.ToString());
+            Console.WriteLine("Периметр = " + Length);
+            Console.WriteLine("Площадь = " + GetArea);
         }
     }
 }
