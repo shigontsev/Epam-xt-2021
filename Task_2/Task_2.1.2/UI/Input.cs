@@ -2,38 +2,38 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Task_2._1._2
+namespace Task_2._1._2.UI
 {
     public static class Input
     {
         public static string Name()
         {
-            Console.Write("Ввести имя: ");
+            Console.Write("ВВОД имя: ");
             return EnterString();
         }
         public static double X()
         {
-            Console.Write("Ввести координату X: ");
+            Console.Write("ВВОД координату X: ");
             return EnterDouble();
         }
         public static double Y()
         {
-            Console.Write("Ввести координату Y: ");
+            Console.Write("ВВОД координату Y: ");
             return EnterDouble();
         }
         public static double InnerR()
         {
-            Console.Write("Ввести внутренний радиус: ");
+            Console.Write("ВВОД внутренний радиус: ");
             return EnterDouble();
         }
         public static double OuterR()
         {
-            Console.Write("Ввести внешний радиус: ");
+            Console.Write("ВВОД внешний радиус: ");
             return EnterDouble();
         }
         public static double R()
         {
-            Console.Write("Ввести радиус: ");
+            Console.Write("ВВОД радиус: ");
             return EnterDouble();
         }
         //public static double Height()
@@ -48,17 +48,17 @@ namespace Task_2._1._2
         //}
         public static double A()
         {
-            Console.Write("Ввести длину стороны A: ");
+            Console.Write("ВВОД длину стороны A: ");
             return EnterDouble();
         }
         public static double B()
         {
-            Console.Write("Ввести длину стороны B: ");
+            Console.Write("ВВОД длину стороны B: ");
             return EnterDouble();
         }
         public static double C()
         {
-            Console.Write("Ввести длину стороны C: ");
+            Console.Write("ВВОД длину стороны C: ");
             return EnterDouble();
         }
 
@@ -75,6 +75,20 @@ namespace Task_2._1._2
                 try
                 {
                     return double.Parse(EnterString());
+                }
+                catch (Exception)
+                {
+                    Console.Write("Повторите ввод значения: ");
+                }
+            } while (true);
+        }
+        public static int EnterInt()
+        {
+            do
+            {
+                try
+                {
+                    return int.Parse(EnterString());
                 }
                 catch (Exception)
                 {

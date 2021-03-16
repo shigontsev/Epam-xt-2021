@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Task_2._1._2.Entity;
 
-namespace Task_2._1._2
+namespace Task_2._1._2.UI
 {
     public class User
     {
@@ -26,14 +26,14 @@ namespace Task_2._1._2
             switch (Input.EnterString())
             {
                 case "1":
-                    AddFigure();break;
+                    AddFigure(); break;
                 case "2":
                     ShowAllFigure(); break;
                 case "3":
                     Clear(); break;
                 case "4":
                     boolen = false;
-                     break;
+                    break;
                 default:
                     break;
             }
@@ -43,7 +43,7 @@ namespace Task_2._1._2
         {
             Console.WriteLine("ВЫВОД: Выберите тип фигуры");
             InfoFigures();
-            Console.Write("Ввод: ");
+            Console.Write("ВВОД: ");
             FigureType type = ReadType();
             switch (type)
             {
@@ -77,6 +77,21 @@ namespace Task_2._1._2
                     Figures.Add(new Triangle(Input.A(), Input.B(), Input.C(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 default: Console.WriteLine("Не выбрана"); break;
             }
+            Console.WriteLine();
+        }
+        public void ShowAllFigure()
+        {
+            foreach (var item in Figures)
+            {
+                item.Info();
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+        public void Clear()
+        {
+            Figures.Clear();
+            Console.WriteLine();
         }
         //public void ToChooseFigure()
         //{
@@ -92,37 +107,31 @@ namespace Task_2._1._2
             {
                 Console.WriteLine($"{(int)item}: {item}");
             }
+            Console.WriteLine();
         }
         private static FigureType ReadType()
         {
             do
             {
                 string value = Console.ReadLine();
-                if (Enum.TryParse<FigureType>(value, out FigureType result))
+                if (Enum.TryParse(value, out FigureType result))
                     return result;
 
             } while (true);
         }
 
-        public void ShowAllFigure()
-        {
-            foreach (var item in Figures)
-            {
-                item.Info();
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-        }
+        
         private void ShowLastFigure()
         {
             Figures.Last().Info();
         }
 
-        public void Clear()
+        
+        public override string ToString()
         {
-            Figures.Clear();
-            Console.WriteLine();
-        }        
+            return String.Format(Name);
+            //return String.Format("Пользователь: " + Name);
+        }
     }
     enum FigureType
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Task_2._1._2.Entity;
+using Task_2._1._2.UI;
 
 namespace Task_2._1._2
 {
@@ -7,7 +8,7 @@ namespace Task_2._1._2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Hello World!"+Environment.NewLine);
             ////Ring ring = new Ring(5, 10, 2, 2);
             //Ring ring = new Ring(5, 10);
             //Round round = new Round(6, 1, 1);
@@ -43,14 +44,22 @@ namespace Task_2._1._2
             //round.Info();
             //Console.WriteLine();
             //circle.Info();
-            User user = new User("Yurii");
+
+            //User user = new User("Yurii");
+            //bool boolen = true;
+            //while (boolen)
+            //{
+            //    //user.AddFigure();
+            //    user.CommandBar(ref boolen);
+            //}
+
+            MultiUser multiUser = new MultiUser();
             bool boolen = true;
             while (boolen)
             {
-                //user.AddFigure();
-                user.CommandBar(ref boolen);
+                multiUser.CommandBar(ref boolen);
             }
-            
+
             Console.ReadLine();
         }
     }
