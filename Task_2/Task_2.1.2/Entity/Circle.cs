@@ -7,13 +7,13 @@ namespace Task_2._1._2.Entity
     public class Circle:Axis, IFigure
     {
         private double radius;
-        protected internal double Radius
+        public double Radius
         {
             get
             {
                 return radius;
             }
-            set
+            private set
             {
                 if (value < 1)
                     value = 1;

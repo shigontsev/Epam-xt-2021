@@ -6,8 +6,8 @@ namespace Task_2._1._2.Entity
 {
     public class Axis
     {
-        protected internal double X { get; set; }
-        protected internal double Y { get; set; }
+        public double X { get; private set; }
+        public double Y { get; private set; }
         public Axis():this(0,0)
         {
             

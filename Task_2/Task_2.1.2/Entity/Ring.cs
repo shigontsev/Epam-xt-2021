@@ -7,8 +7,8 @@ namespace Task_2._1._2.Entity
 {
     public class Ring : Axis, IFigure
     {
-        protected internal Round inner;
-        protected internal Round outer;
+        public Round inner;
+        public Round outer;
         public Ring(double inR, double outR): this(inR, outR, 0, 0)
         {
             //inner = new Round(inR);
