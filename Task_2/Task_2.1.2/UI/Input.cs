@@ -23,13 +23,23 @@ namespace Task_2._1._2.UI
         }
         public static double InnerR()
         {
-            Console.Write("ВВОД внутренний радиус: ");
-            return EnterDouble();
+            double d = 0;
+            do
+            {
+                Console.Write("ВВОД внутренний радиус: ");
+                d = EnterDouble();
+            } while (d<=0);
+            return d;
         }
         public static double OuterR()
         {
-            Console.Write("ВВОД внешний радиус: ");
-            return EnterDouble();
+            double d = 0;
+            do
+            {
+                Console.Write("ВВОД внешний радиус: ");
+                d = EnterDouble();
+            } while (d <= 0);
+            return d;
         }
         public static double R()
         {

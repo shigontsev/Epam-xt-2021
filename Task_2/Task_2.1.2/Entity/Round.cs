@@ -20,6 +20,7 @@ namespace Task_2._1._2.Entity
         {
             Console.WriteLine("Фигура: Круг");
             Console.WriteLine("Центр = " + base.ToString());
+            Console.WriteLine("Радиус = " + Radius);
             Console.WriteLine("Длина = " + Length);
             Console.WriteLine("Площадь = " + GetArea);
         }
