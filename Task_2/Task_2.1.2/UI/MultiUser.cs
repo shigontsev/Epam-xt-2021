@@ -36,12 +36,12 @@ namespace Task_2._1._2.UI
             }
             Console.WriteLine();
         }
-        public void Add()
+        private void Add()
         {
             Users.Add(new User(Input.Name()));
             Console.WriteLine($"ВЫВОД: Добавлен пользователь \"{Users.Last().Name}\"");
         }
-        public void SelectUser()
+        private void SelectUser()
         {
             ShowListUsers();
             //bool boolen = true;
@@ -82,7 +82,7 @@ namespace Task_2._1._2.UI
             //}
         }
         
-        public void Clear()
+        private void Clear()
         {
             Users.Clear();
         }

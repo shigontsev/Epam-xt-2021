@@ -26,7 +26,7 @@ namespace Task_2._1._2.UI
             switch (Input.EnterString())
             {
                 case "1":
-                    AddFigure(); break;
+                    Add(); break;
                 case "2":
                     ShowAllFigure(); break;
                 case "3":
@@ -39,7 +39,7 @@ namespace Task_2._1._2.UI
             }
             Console.WriteLine();
         }
-        public void AddFigure()
+        private void Add()
         {
             Console.WriteLine("ВЫВОД: Выберите тип фигуры");
             InfoFigures();
@@ -49,34 +49,47 @@ namespace Task_2._1._2.UI
             {
                 case FigureType.Line:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(Line.Enter(Input.X(), Input.Y(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Line.Enter(Input.X(), Input.Y(), Input.X(), Input.Y())); break;
+                    //Figures.Add(Line.Enter(Input.X(), Input.Y(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Circle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(Circle.Enter(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Circle.Enter(Input.R(), Input.X(), Input.Y())); break;
+                    //Figures.Add(Circle.Enter(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;                    
                 case FigureType.Round:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(Round.Enter(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Round.Enter(Input.R(), Input.X(), Input.Y())); break;
+                    //Figures.Add(Round.Enter(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Ring:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(Ring.Enter(Input.InnerR(), Input.OuterR(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Ring.Enter(Input.InnerR(), Input.OuterR(), Input.X(), Input.Y())); break;
+                    //Figures.Add(Ring.Enter(Input.InnerR(), Input.OuterR(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Rectangle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(Rectangle.Enter(Input.A(), Input.B(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Rectangle.Enter(Input.A(), Input.B(), Input.X(), Input.Y())); break;
+                //Figures.Add(Rectangle.Enter(Input.A(), Input.B(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Square:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(Square.Enter(Input.A(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Square.Enter(Input.A(), Input.X(), Input.Y())); break;
+                    //Figures.Add(Square.Enter(Input.A(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Triangle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(Triangle.Enter(Input.A(), Input.B(), Input.C(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Triangle.Enter(Input.A(), Input.B(), Input.C(), Input.X(), Input.Y())); break;
+                    //Figures.Add(Triangle.Enter(Input.A(), Input.B(), Input.C(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 default: Console.WriteLine("Не выбрана"); break;
             }
             Console.WriteLine();
         }
-        public void Add(object a)
+        private void AddFigure(object figure)
         {
-
+            var item = figure as IFigure;
+            if (item == null)
+            {
+                Console.WriteLine("Фигура не создана");
+                return;
+            }
+            Figures.Add(item); ShowLastFigure();
         }
-        public void ShowAllFigure()
+        private void ShowAllFigure()
         {
             foreach (var item in Figures)
             {
@@ -85,7 +98,7 @@ namespace Task_2._1._2.UI
             }
             Console.WriteLine();
         }
-        public void Clear()
+        private void Clear()
         {
             Figures.Clear();
             Console.WriteLine();
@@ -99,6 +112,7 @@ namespace Task_2._1._2.UI
         //}
         private void InfoFigures()
         {
+            Console.WriteLine(Environment.NewLine + "Список фигур");
             var valuesAsArray = Enum.GetValues(typeof(FigureType));
             foreach (var item in valuesAsArray)
             {
