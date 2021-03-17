@@ -59,17 +59,27 @@ namespace Task_2._1._2.UI
         public static double A()
         {
             Console.Write("ВВОД длину стороны A: ");
-            return EnterDouble();
+            return EnterDouble_Positive();
         }
         public static double B()
         {
             Console.Write("ВВОД длину стороны B: ");
-            return EnterDouble();
+            return EnterDouble_Positive();
         }
         public static double C()
         {
             Console.Write("ВВОД длину стороны C: ");
-            return EnterDouble();
+            return EnterDouble_Positive();
+        }
+        private static double EnterDouble_Positive()
+        {
+            double d = EnterDouble();
+            while (d<=0)
+            {
+                Console.Write("Повторите ввод: ");
+                d = EnterDouble();
+            }
+            return d;
         }
 
         //public static string SecondName

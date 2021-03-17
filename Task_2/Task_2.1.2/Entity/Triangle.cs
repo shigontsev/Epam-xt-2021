@@ -34,6 +34,15 @@ namespace Task_2._1._2.Entity
             //if (!isTriangle)
             //    throw new Exception("Sides of triangle can` t be connect");
         }
+        public static Triangle Enter(double a, double b, double c, double x, double y)
+        {
+            if(!isTriangle(a, b, c) || isCorrect(a, b, c))
+            {
+                Console.WriteLine("Такую фигуру не создать");
+                return null;
+            }
+            return new Triangle(a, b, c, x, y);
+        }
         //public Triangle(Line a, Line b, Line c)
         //{
         //    isCorrect(a.Length, b.Length, c.Length);
@@ -44,11 +53,11 @@ namespace Task_2._1._2.Entity
         //        throw new Exception("Sides of triangle can` t be connect");
 
         //}
-        private bool isCorrect(double a, double b, double c)
+        private static bool isCorrect(double a, double b, double c)
         {
             return (a < 0 || b < 0 || c < 0);
         }
-        private bool isTriangle(double a, double b, double c)
+        private static bool isTriangle(double a, double b, double c)
         {
             return (a + b > c && a + c > b && b + c > a);
         }

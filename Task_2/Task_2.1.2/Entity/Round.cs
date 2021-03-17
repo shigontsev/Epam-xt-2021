@@ -14,6 +14,10 @@ namespace Task_2._1._2.Entity
         {
 
         }
+        public new static Round Enter(double r, double x, double y)
+        {
+            return new Round(r, x, y);
+        }
         public double GetArea
             => Math.PI * Radius * Radius;
         public override void Info()

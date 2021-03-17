@@ -16,20 +16,34 @@ namespace Task_2._1._2.Entity
         }
         public Rectangle(double width, double height, double x, double y) : base(x, y)
         {
+            //if (isCorrect(width, height))
+            //{
+            //    Console.WriteLine("Такую фигуру не создать");
+            //    return;
+            //}
+            Width = width;
+            Height = height;
+        }
+        public static Rectangle Enter(double width, double height, double x, double y)
+        {
+            //while (outR <= inR)
+            //{
+            //    Console.WriteLine("Не верный внешний Радиус, Повторите Ввод:");
+            //    outR = Input.OuterR();
+            //}
             if (isCorrect(width, height))
             {
                 Console.WriteLine("Такую фигуру не создать");
-                return;
+                return null;
             }
-            Width = width;
-            Height = height;
+            return new Rectangle(width, height, x, y);
         }
         public double Length
             => 2 * (Width + Height);
         public double GetArea
             => Width * Height;
 
-        private bool isCorrect(double a, double b)
+        private static bool isCorrect(double a, double b)
         {
             return (a < 0 || b < 0);
         }

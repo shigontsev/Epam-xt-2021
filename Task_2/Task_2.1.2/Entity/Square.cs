@@ -14,6 +14,10 @@ namespace Task_2._1._2.Entity
         {
 
         }
+        public static Square Enter(double side, double x, double y)
+        {
+            return new Square(side, x, y);
+        }
         //public Square(Line side):base(side,side)
         //{
 

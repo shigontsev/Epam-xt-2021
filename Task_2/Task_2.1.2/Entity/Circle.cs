@@ -32,6 +32,10 @@ namespace Task_2._1._2.Entity
         {
             Radius = r;
         }
+        public static Circle Enter(double r, double x, double y)
+        {
+            return new Circle(r, x, y);
+        }
         public double Length
             => 2 * Math.PI * radius;
 

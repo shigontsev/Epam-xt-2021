@@ -15,14 +15,18 @@ namespace Task_2._1._2.Entity
             //outer = new Round(outR);
         }
         public Ring(double inR, double outR, double x, double y) : base(x, y)
-        {
-            while(outR<=inR)
-            {
-                Console.WriteLine("Не верный внешний Радиус, Повторите ввод:");
-                outR = Input.OuterR();
-            }
+        {            
             inner = new Round(inR, X, Y);
             outer = new Round(outR, X, Y);
+        }
+        public static Ring Enter(double inR, double outR, double x, double y)
+        {
+            while (outR <= inR)
+            {
+                Console.WriteLine("Не верный внешний Радиус, Повторите Ввод:");
+                outR = Input.OuterR();
+            }
+            return new Ring(inR, outR, x, y);
         }
         public double GetArea
             => outer.GetArea - inner.GetArea;

@@ -47,37 +47,34 @@ namespace Task_2._1._2.UI
             FigureType type = ReadType();
             switch (type)
             {
-                //case FigureType.Line: Figures.Add(new Line(0, 2, 5, 5)); ShowLastFigure(); break;
-                //case FigureType.Circle: Figures.Add(new Circle(10, 0, -1)); ShowLastFigure(); break;
-                //case FigureType.Round: Figures.Add(new Round(6, 1, 1)); ShowLastFigure(); break;
-                //case FigureType.Ring: Figures.Add(new Ring(5, 10, 0, 0)); ShowLastFigure(); break;
-                //case FigureType.Rectangle: Figures.Add(new Rectangle(5, 2, 3, 1)); ShowLastFigure(); break;
-                //case FigureType.Square: Figures.Add(new Square(5, 0, 0)); ShowLastFigure(); break;
-                //case FigureType.Triangle: Figures.Add(new Triangle(3, 5, 7, 0, 0)); ShowLastFigure(); break;
                 case FigureType.Line:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(new Line(Input.X(), Input.Y(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    Figures.Add(Line.Enter(Input.X(), Input.Y(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Circle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(new Circle(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    Figures.Add(Circle.Enter(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Round:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(new Round(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    Figures.Add(Round.Enter(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Ring:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(new Ring(Input.InnerR(), Input.OuterR(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    Figures.Add(Ring.Enter(Input.InnerR(), Input.OuterR(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Rectangle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(new Rectangle(Input.A(), Input.B(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    Figures.Add(Rectangle.Enter(Input.A(), Input.B(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Square:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(new Square(Input.A(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    Figures.Add(Square.Enter(Input.A(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 case FigureType.Triangle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    Figures.Add(new Triangle(Input.A(), Input.B(), Input.C(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    Figures.Add(Triangle.Enter(Input.A(), Input.B(), Input.C(), Input.X(), Input.Y())); ShowLastFigure(); break;
                 default: Console.WriteLine("Не выбрана"); break;
             }
             Console.WriteLine();
+        }
+        public void Add(object a)
+        {
+
         }
         public void ShowAllFigure()
         {
