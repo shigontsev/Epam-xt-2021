@@ -52,28 +52,7 @@ namespace Task_2._1._1
             Console.WriteLine(C.Reverse());
             //int t = 0, t1 = 2;
             //Console.WriteLine(t + 2);
-            //Console.WriteLine(t);
-            char[] test = new char[] { 'h', 'e', 'l', 'l', 'o' };
-            ArraySymbol testClass = new ArraySymbol(test);
-            Console.WriteLine(String.Join("",test) + " " + testClass);
-            //testClass[2] = 'd';
-            Console.WriteLine(String.Join("", test) + " " + testClass);
-
-            char[] test1 = testClass.ToCharArray();
-            Console.WriteLine(String.Join("", test1) + " " + testClass);
-            test1[2] = 'd';
-            Console.WriteLine(String.Join("", test1) + " " + testClass);
-            Console.WriteLine("-------------------------");
-            ArraySymbol test2 = ArraySymbol.FromCharArray(test1);
-            Console.WriteLine(String.Join("", test1) + " " + test2);
-            test2[2] = 'F';
-            Console.WriteLine(String.Join("", test1) + " " + test2);
-            test1[4] = 'F';
-            Console.WriteLine(String.Join("", test1) + " " + test2);
-            var z = new char[test1.Length + test2.Length];
-            test1.CopyTo(z, 0);
-            test2.ToCharArray().CopyTo(z, test1.Length);
-            Console.WriteLine(z);
+            //Console.WriteLine(t);            
             Console.ReadLine();
         }
     }
