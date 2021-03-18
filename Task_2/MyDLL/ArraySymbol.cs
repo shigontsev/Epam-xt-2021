@@ -71,35 +71,32 @@ namespace MyDLL
             return (char[]) arrChar.Clone();
         }
 
-        public ArraySymbol FromCharArray(char[] arr)
+        public static ArraySymbol FromCharArray(char[] arr)
         {
-            arrChar = arr;
-            return this;
+            return new ArraySymbol(arr);
         }
-        public ArraySymbol FromString(string text)
+
+        public static ArraySymbol FromString(string text)
         {
-            arrChar = text.ToCharArray();
-            return this;
+            return new ArraySymbol(text);
         }
+
         public ArraySymbol Concat(char[] arr)
         {
-            char[] arrNew = new char[Length + arr.Length];
-            for (int i = 0; i < Length; i++)
-            {
-                arrNew[i] = arrChar[i];
-            }
-            for (int i = Length; i < arrNew.Length; i++)
-            {
-                arrNew[i] = arr[i - Length];
-            }
+            var arrNew = new char[Length + arr.Length];
+            arrChar.CopyTo(arrNew, 0);
+            arr.CopyTo(arrNew, Length);
             arrChar = arrNew;
             return this;
+
         }
+
         public ArraySymbol Concat(string text)
         {
             Concat(text.ToCharArray());
             return this;
         }
+
         public ArraySymbol Concat(params string[] text)
         {
             for (int i = 0; i < text.Length; i++)
@@ -108,6 +105,7 @@ namespace MyDLL
             }
             return this;
         }
+
         public ArraySymbol Concat(ArraySymbol arr)
         {
             Concat(arr.ToCharArray());
@@ -125,13 +123,7 @@ namespace MyDLL
 
         public static ArraySymbol Concat(ArraySymbol c1, ArraySymbol c2)
         {
-            return new ArraySymbol(c1.ToString() + c2.ToString());
-        }
-
-        public ArraySymbol Append(string text)
-        {
-            Concat(new ArraySymbol(text));
-            return this;
+            return (new ArraySymbol()).Concat(c1, c2);
         }
 
         public int IndexOf(char c)
@@ -145,6 +137,7 @@ namespace MyDLL
             }
             return -1;
         }
+
         public int LastIndexOf(char c)
         {
             for (int i = Length - 1; i >= 0; i--)
@@ -156,12 +149,12 @@ namespace MyDLL
             }
             return -1;
         }
+
         public bool Contains(char c)
         {
             return IndexOf(c) != -1;
         }
         
-
         public ArraySymbol ToUpper()
         {
             for (int i = 0; i < Length; i++)
@@ -170,6 +163,7 @@ namespace MyDLL
             }
             return this;
         }
+
         public ArraySymbol ToLower()
         {
             for (int i = 0; i < Length; i++)
@@ -178,52 +172,28 @@ namespace MyDLL
             }
             return this;
         }
+
         public ArraySymbol Insert(char c, int index)
         {
-            char[] item = ToCharArray();
+            char[] item = arrChar;
             arrChar = new char[Length + 1];
-            for (int i = 0; i < Length; i++)
-            {
-                if (i < index)
-                {
-                    arrChar[i] = item[i];
-                }
-                else if (i == index)
-                {
-                    arrChar[i] = c;
-                }
-                else
-                {
-                    arrChar[i] = item[i - 1];
-                }
-            }
+            Array.Copy(item, 0, arrChar, 0, index);
+            arrChar[index] = c;
+            Array.Copy(item, index, arrChar, index + 1, item.Length-index);
             return this;
         }
+
         public ArraySymbol Remove(int index)
         {
-            char[] item = ToCharArray();
+            char[] item = arrChar;
             arrChar = new char[Length - 1];
-            for (int i = 0; i < Length; i++)
-            {
-                if (i < index)
-                {
-                    arrChar[i] = item[i];
-                }
-                else
-                {
-                    arrChar[i] = item[i + 1];
-                }
-            }
+            Array.Copy(item, 0, arrChar, 0, index);
+            Array.Copy(item, index + 1, arrChar, index, item.Length - index -1);
             return this;
         }
 
         public ArraySymbol Reverse()
         {
-            //char[] item = this.ToCharArray();
-            //for (int i = 0; i < item.Length; i++)
-            //{
-            //    arrChar[i] = item[item.Length - i - 1];
-            //}
             for (int i = 0; i < this.Length / 2; i++)
             {
                 char tmp = this[i];
@@ -237,18 +207,22 @@ namespace MyDLL
         {
             return ArraySymbol.Concat(c1, c2);
         }
+
         public static ArraySymbol operator ++(ArraySymbol c1)
         {
             return c1.Concat(c1);
         }
+
         public static bool operator ==(ArraySymbol c1, ArraySymbol c2)
         {
             return c1.Equals(c2);
         }
+
         public static bool operator !=(ArraySymbol c1, ArraySymbol c2)
         {
             return !c1.Equals(c2);
         }
+
         public override string ToString()
         {
             return new string(arrChar);
