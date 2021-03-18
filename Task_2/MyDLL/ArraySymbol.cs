@@ -16,6 +16,10 @@ namespace MyDLL
         {
             arrChar = text.ToCharArray();
         }
+        public ArraySymbol(char[] text)
+        {
+            arrChar = (char[]) text.Clone();
+        }
 
         public char this[int index]
         {
@@ -64,7 +68,7 @@ namespace MyDLL
 
         public char[] ToCharArray()
         {
-            return arrChar;
+            return (char[]) arrChar.Clone();
         }
 
         public ArraySymbol FromCharArray(char[] arr)
