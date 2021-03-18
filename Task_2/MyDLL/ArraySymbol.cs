@@ -8,9 +8,9 @@ namespace MyDLL
 
         public int Length => arrChar.Length;
 
-        public ArraySymbol() : this("")
+        public ArraySymbol() : this(string.Empty)
         {
-            
+
         }
         public ArraySymbol(string text)
         {
@@ -29,26 +29,37 @@ namespace MyDLL
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            return this.arrChar.Equals(obj as ArraySymbol);
+        }
+
         public bool Equals(ArraySymbol arr)
         {
-            if (arr.GetType() != this.GetType())
+            if (arr is null || arr.Length != Length)
                 return false;
-            if (arr.Length != Length)
-                return false;
-            //for (int i = 0; i < Length; i++)
-            //{
-            //    if (arr[i] != this[i])
-            //    {
-            //        return false;
-            //    }
-            //}
-            //return true;
             return this.CompareTo(arr) == 0;
-        }        
+        }
+
+        public int CompareTo(object obj)
+        {
+            return this.CompareTo(obj as ArraySymbol);
+        }
 
         public int CompareTo(ArraySymbol c)
         {
-            return this.ToString().CompareTo(c.ToString());
+            if (c is null || c.Length != Length)
+                return 1;
+            int result = 0;
+            for (int i = 0; i < c.Length; i++)
+            {
+                result = this[i].CompareTo(c[i]);
+                if (result!=0)
+                {
+                    return result;
+                }
+            }
+            return result;
         }
 
         public char[] ToCharArray()
@@ -232,7 +243,7 @@ namespace MyDLL
         }
         public static bool operator !=(ArraySymbol c1, ArraySymbol c2)
         {
-            return c1.Equals(c2) ? false : true;
+            return !c1.Equals(c2);
         }
         public override string ToString()
         {
