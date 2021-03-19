@@ -4,29 +4,37 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Round : Circle, IFigure
+    public class Round : Circle
     {
         public Round(double r):base(r)
         {
 
         }
+
         public Round(double r, double x, double y):base(r, x, y)
         {
 
         }
-        public new static Round Enter(double r, double x, double y)
+
+        public new static Round CreateFigure(double r, double x, double y)
         {
             return new Round(r, x, y);
         }
-        public double GetArea
-            => Math.PI * Radius * Radius;
-        public override void Info()
+
+        public double Area => Math.PI * Math.Pow(Radius, 2);
+
+        public override void PrintInfo()
         {
-            Console.WriteLine("Фигура: Круг");
-            Console.WriteLine("Центр = " + base.ToString());
-            Console.WriteLine("Радиус = " + Radius);
-            Console.WriteLine("Длина = " + Length);
-            Console.WriteLine("Площадь = " + GetArea);
+            Console.WriteLine(this.ToString());
+        }
+
+        public override string ToString()
+        {
+            return new string("Фигура: Круг" + Environment.NewLine+
+                "Центр = " + Position +Environment.NewLine+
+                "Радиус = " + Radius + Environment.NewLine +
+                "Длина = " + Length + Environment.NewLine +
+                "Площадь = " + Area);
         }
     }
 }
