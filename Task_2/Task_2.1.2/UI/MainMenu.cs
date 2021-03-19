@@ -8,11 +8,13 @@ namespace Task_2._1._2.UI
     public class MainMenu
     {
         private List<User> Users;
+
         public MainMenu()
         {
             Users = new List<User>();
         }
-        public void CommandBar(ref bool boolen)
+
+        public void CommandBar(ref bool exit)
         {
             Console.WriteLine("ВЫВОД: Выберите действие");
             Console.WriteLine("1. Добавить пользователя");
@@ -29,22 +31,23 @@ namespace Task_2._1._2.UI
                 case "3":
                     Clear(); break;
                 case "4":
-                    boolen = false;
+                    exit = false;
                     break;
                 default:
                     break;
             }
             Console.WriteLine();
         }
+
         private void Add()
         {
             Users.Add(new User(Input.Name()));
             Console.WriteLine($"ВЫВОД: Добавлен пользователь \"{Users.Last().Name}\"");
         }
+
         private void SelectUser()
         {
             ShowListUsers();
-            //bool boolen = true;
             User user = null;
             bool loginSuccesToUSer = true;
             Console.Write("ВВОД: ");
@@ -60,45 +63,25 @@ namespace Task_2._1._2.UI
             if (loginSuccesToUSer)
             {
                 Console.WriteLine("ВЫВОД: Пользователь " + user.ToString());
-                bool boolen = true;
-                while (boolen)
+                bool exit = true;
+                MenuFigures menuCurrentUser = new MenuFigures(user);
+                while (exit)
                 {
-                    user.CommandBar(ref boolen);
+                    menuCurrentUser.CommandBar(ref exit);
                 }
             }
-            //while (boolen)
-            //{
-            //    Console.Write("ВВОД: ");
-            //    try
-            //    {
-            //        user = SelectByIndex(Input.EnterInt());
-            //        boolen = false;
-            //    }
-            //    catch (Exception)
-            //    {
-            //        Console.WriteLine("Не верно указан индекс. Повторите!");
-            //    }
-            //}
-            //Console.WriteLine("ВЫВОД: Пользователь " + user.ToString());
-            //boolen = true;
-            //while (boolen)
-            //{
-            //    user.CommandBar(ref boolen);
-            //}
         }
         
         private void Clear()
         {
             Users.Clear();
         }
+
         private User SelectByIndex(int index)
         {
             return Users.ElementAt(index);
         }
-        //private User SelectByName(string name)
-        //{
-        //    return Users.FirstOrDefault(x => x.Name == name);
-        //}
+
         private void ShowListUsers()
         {
             Console.WriteLine("ВЫВОД: Список пользователей");
