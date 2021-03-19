@@ -10,7 +10,7 @@ namespace Task_2._1._2
         {
             Console.WriteLine("Hello World!"+Environment.NewLine);
 
-            MultiUser multiUser = new MultiUser();
+            MainMenu multiUser = new MainMenu();
             bool boolen = true;
             while (boolen)
             {

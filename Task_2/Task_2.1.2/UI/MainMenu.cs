@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace Task_2._1._2.UI
 {
-    public class MultiUser
+    public class MainMenu
     {
         private List<User> Users;
-        public MultiUser()
+        public MainMenu()
         {
             Users = new List<User>();
         }
@@ -46,20 +46,25 @@ namespace Task_2._1._2.UI
             ShowListUsers();
             //bool boolen = true;
             User user = null;
+            bool loginSuccesToUSer = true;
             Console.Write("ВВОД: ");
             try
             {
-                user = SelectByIndex(Input.EnterInt());
+                user = SelectByIndex(Input.EnterInt());                
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Не верно указан индекс. Повторите!");
+                loginSuccesToUSer = false;
+            }
+            if (loginSuccesToUSer)
+            {
                 Console.WriteLine("ВЫВОД: Пользователь " + user.ToString());
                 bool boolen = true;
                 while (boolen)
                 {
                     user.CommandBar(ref boolen);
                 }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Не верно указан индекс. Повторите!");
             }
             //while (boolen)
             //{
