@@ -11,8 +11,18 @@ namespace Task_2._2.Entity
         {
         }
 
-        public Enemy(int life, int damage, int step, Point p) : base(life, damage, step, p)
+        public Enemy(Point p, int life, int damage, int step) : base(p, life, damage, step)
         {
+        }
+
+        public override void Attack(Person person)
+        {
+            var player = person as Player;
+            if(player != null)
+            {
+                player.Life -= Damage;
+                throw new NotImplementedException("Attack");
+            }
         }
 
         public override void MoveDown()
@@ -42,18 +52,18 @@ namespace Task_2._2.Entity
         {
         }
 
-        public Bear(int life, int damage, int step, Point p) : base(life, damage, step, p)
+        public Bear(Point p, int life, int damage, int step) : base(p, life, damage, step)
         {
         }
 
-        public override void Action()
+        public override void GetInfo()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Info Characters person");
         }
 
         public override void Print()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Bear");
         }
     }
 
@@ -63,18 +73,18 @@ namespace Task_2._2.Entity
         {
         }
 
-        public Fox(int life, int damage, int step, Point p) : base(life, damage, step, p)
+        public Fox(Point p, int life, int damage, int step) : base(p, life, damage, step)
         {
         }
 
-        public override void Action()
+        public override void GetInfo()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Info Characters person");
         }
 
         public override void Print()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Fox");
         }
     }
 }

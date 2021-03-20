@@ -8,15 +8,17 @@ namespace Task_2._2.Entity
     {
         public double X { get; set; }
         public double Y { get; set; }
-        public Point() : this(0, 0)
-        {
 
-        }
+        //public Point() : this(0, 0)
+        //{
+
+        //}
         public Point(double x, double y)
         {
             X = x;
             Y = y;
         }
+
         public override string ToString()
         {
             return new string($"({X};{Y})");

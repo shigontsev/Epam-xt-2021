@@ -5,14 +5,8 @@ using Task_2._2.Entity;
 
 namespace Task_2._2.Interfaces
 {
-    interface IMovable
+    interface IDamageable
     {
-        void MoveUp();
-
-        void MoveDown();
-
-        void MoveLeft();
-
-        void MoveRight();
+        void Attack(Person person);
     }
 }

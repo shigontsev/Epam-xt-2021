@@ -11,18 +11,28 @@ namespace Task_2._2.Entity
         {
         }
 
-        public Player(int life, int damage, int step, Point p) : base(life, damage, step, p)
+        public Player(Point p, int life, int damage, int step) : base(p, life, damage, step)
         {
         }
 
-        public override void Action()
+        public override void Attack(Person person)
         {
-            throw new NotImplementedException();
+            var enemy = person as Enemy;
+            if (enemy != null)
+            {
+                enemy.Life -= Damage;
+                throw new NotImplementedException("Attack");
+            }
         }
-        
+
+        public override void GetInfo()
+        {
+            throw new NotImplementedException("Info Characters person");
+        }
+
         public override void Print()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Player");
         }
     }
 }

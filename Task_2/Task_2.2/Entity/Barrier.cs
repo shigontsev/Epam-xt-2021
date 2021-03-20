@@ -19,7 +19,7 @@ namespace Task_2._2.Entity
 
         public override void Print()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Tree");
         }
     }
 
@@ -31,7 +31,7 @@ namespace Task_2._2.Entity
 
         public override void Print()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Stone");
         }
     }
 }

@@ -5,27 +5,49 @@ using Task_2._2.Interfaces;
 
 namespace Task_2._2.Entity
 {
-    public abstract class Person : GameObject, IMovable
+    public abstract class Person : GameObject, IMovable, IDamageable, IInfo
     {
-        public int Life { get; set; } = 4;
+        private int life = 4;
 
-        public int Damage { get; set; } = 1;
+        public int Life
+        {
+            get { return life; }
+            set { life = value < 0? 0: value; }
+        }
 
-        public int Step { get; set; } = 1;
+        private int damage = 1;
+
+        public int Damage
+        {
+            get { return damage; }
+            set { damage = value < 0 ? 0 : value; }
+        }
+
+        private int step = 1;
+
+        public int Step
+        {
+            get { return step; }
+            set { step = value < 0 ? 0 : value; }
+        }
+
+        //public int Life { get; set; } = 4;
+
+        //public int Damage { get; set; } = 1;
+
+        //public int Step { get; set; } = 1;
 
         public Person(Point point):base(point)
         {
 
         }
 
-        public Person(int life, int damage, int step, Point p) : base(p)
+        public Person(Point p, int life, int damage, int step) : base(p)
         {
             Life = life;
             Damage = damage;
             Step = step;
         }
-
-        public abstract void Action();
 
         public virtual void MoveUp()
         {
@@ -46,5 +68,8 @@ namespace Task_2._2.Entity
         {
             Position.X += Step;
         }
+
+        public abstract void Attack(Person person);
+        public abstract void GetInfo();
     }
 }
