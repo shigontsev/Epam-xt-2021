@@ -7,6 +7,8 @@ namespace Task_2._2.UI
 {
     public class Map
     {
+        //Question: If i will be paint map in 2D,
+        //Then I need the class and property Point? 
         public GameObject[,] mapObjects;
         public Map(int width, int height)
         {
