@@ -28,6 +28,11 @@ namespace Task_2._2.Entity
         {
         }
 
+        public Apple(Point point, int countBonus) : base(point, countBonus)
+        {
+            
+        }
+
         public override void GetInfo()
         {
             throw new NotImplementedException("Info Characters bonus");
@@ -48,6 +53,11 @@ namespace Task_2._2.Entity
     {
         public Banana(Point point) : base(point)
         {
+        }
+
+        public Banana(Point point, int countBonus) : base(point, countBonus)
+        {
+
         }
 
         public override void GetInfo()
