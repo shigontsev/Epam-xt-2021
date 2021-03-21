@@ -19,7 +19,7 @@ namespace Task_2._2.Entity
 
     enum TypeGameObject
     {
-        Space,
+        EmptySpace,
         Player,
         Bear,
         Fox,
