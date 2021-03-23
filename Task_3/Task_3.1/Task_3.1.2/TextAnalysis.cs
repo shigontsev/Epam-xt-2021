@@ -49,16 +49,26 @@ namespace Task_3._1._2
             Console.WriteLine("List of frequency words:");
             foreach (var item in distinctWords)
             {
-                Console.WriteLine($"\"{item.Value}\" = {item.Count}");
+                //Console.WriteLine($"\"{item.Value}\" = {item.Count}");
+                Console.WriteLine(item);
             }
         }
-        //public void SortByCount()
-        //{
-        //    distinctWords.Sort(Count);
-        //}
-        //public void SortByCount()
-        //{
-        //    distinctWords.Sort();
-        //}
+
+        public void SortByCount()
+        {
+            distinctWords.Sort();
+        }
+
+        public void SortByValue()
+        {
+            distinctWords.Sort(delegate (Frequency x, Frequency y)
+            {
+                if (x.Value == null && y.Value == null) return 0;
+                else if (x.Value == null) return -1;
+                else if (y.Value == null) return 1;
+                else return x.Value.CompareTo(y.Value);
+            });
+        }
+
     }
 }

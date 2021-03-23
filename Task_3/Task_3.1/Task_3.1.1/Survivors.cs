@@ -48,7 +48,7 @@ namespace Task_3._1._1
         {
             if (Length < N)
             {
-                throw new ArgumentNegativeException(nameof(Length));
+                throw new ArgumentNegativeException();
             }
                 
             for (int i = 0; i < Length; i++)
@@ -64,7 +64,17 @@ namespace Task_3._1._1
     public class ArgumentNegativeException : ArgumentOutOfRangeException
     {
         public ArgumentNegativeException() : base() { }
-        public ArgumentNegativeException(string paramName) : base(paramName) { }
-        public ArgumentNegativeException(string paramName, string message) : base(paramName, message) { }
+
+        //public ArgumentNegativeException(string paramName) : base(paramName) { }
+
+        //public ArgumentNegativeException(string paramName, string message) : base(paramName, message) { }
+    }
+    public class ArgumentZeroException : ArgumentOutOfRangeException
+    {
+        public ArgumentZeroException() : base() { }
+
+        //public ArgumentNegativeException(string paramName) : base(paramName) { }
+
+        //public ArgumentNegativeException(string paramName, string message) : base(paramName, message) { }
     }
 }

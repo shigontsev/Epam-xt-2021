@@ -27,7 +27,7 @@ namespace Task_3._1._1
                     }
                     if (result == 0)
                     {
-                        throw new ArgumentNullException();
+                        throw new ArgumentZeroException();
                     }
                     return result;
                 }
@@ -35,7 +35,7 @@ namespace Task_3._1._1
                 {
                     Console.WriteLine("Не верный формат ввода, повторите попытку.");
                 }
-                catch (ArgumentNullException)
+                catch (ArgumentZeroException)
                 {
                     Console.WriteLine("Нулевое значение ввода, повторите попытку.");
                 }
