@@ -21,7 +21,7 @@ namespace Task_3._1._1
             listHuman = new ArrayList();
             for (int i = 1; i <= n; i++)
             {
-                listHuman.Add($"Human {i}");
+                listHuman.Add($"{i}");
             }
             Console.WriteLine($"ВЫВОД: Сгенерирован круг людей из {Length} человек");
         }
@@ -31,9 +31,11 @@ namespace Task_3._1._1
             try
             {
                 int round = 0;
+                int schet = 0;
                 while (true)
                 {
-                    OutOfListByMod(N);
+                    Console.WriteLine(string.Join(' ', listHuman.ToArray()));
+                    OutOfListByMod(N, ref schet);
                     round++;
                     Console.WriteLine($"Раунд {round}. Вычеркнут человек. Людей осталось: {Length}");
                 }
@@ -44,21 +46,21 @@ namespace Task_3._1._1
             }
         }
 
-        public void OutOfListByMod(int N)
+        public void OutOfListByMod(int N, ref int schet)
         {
             if (Length < N)
             {
                 throw new ArgumentNegativeException();
             }
-                
-            for (int i = 0; i < Length; i++)
+            for (int i = 0; i < listHuman.Count; i++)
             {
-                if ((i + 1) % N == 0)
+                schet++;
+                if (schet % 2 == 0)
                 {
-                    listHuman[i] = null;
+                    listHuman.RemoveAt(i);
+                    i--;
                 }
             }
-            listHuman.Remove(null);
         }
     }
     public class ArgumentNegativeException : ArgumentOutOfRangeException
