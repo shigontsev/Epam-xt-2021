@@ -7,7 +7,7 @@ namespace Task_3._1._1
 {
     public class Survivors
     {
-        private ArrayList listHuman;
+        private Queue<string> listHuman;
 
         public int Length => listHuman.Count;
 
@@ -18,10 +18,10 @@ namespace Task_3._1._1
 
         private void CreatListHuman(int n)
         {
-            listHuman = new ArrayList();
+            listHuman = new Queue<string>();
             for (int i = 1; i <= n; i++)
             {
-                listHuman.Add($"{i}");
+                listHuman.Enqueue($"{i}");
             }
             Console.WriteLine($"ВЫВОД: Сгенерирован круг людей из {Length} человек");
         }
@@ -34,49 +34,56 @@ namespace Task_3._1._1
                 int schet = 0;
                 while (true)
                 {
-                    Console.WriteLine(string.Join(' ', listHuman.ToArray()));
+                    Console.WriteLine(this.ToString());
                     OutOfListByMod(N, ref schet);
                     round++;
                     Console.WriteLine($"Раунд {round}. Вычеркнут человек. Людей осталось: {Length}");
                 }
             }
-            catch (ArgumentNegativeException)
+            catch (EndGameException)
             {
                 Console.WriteLine("ВЫВОД: Игра окончена. Невозможно вычеркнуть больше людей.");
             }
         }
 
-        public void OutOfListByMod(int N, ref int schet)
+        private void OutOfListByMod(int N, ref int schet)
         {
-            if (Length < N)
-            {
-                throw new ArgumentNegativeException();
-            }
-            for (int i = 0; i < listHuman.Count; i++)
+            while (true)
             {
                 schet++;
-                if (schet % 2 == 0)
+                if (Length < N)
                 {
-                    listHuman.RemoveAt(i);
-                    i--;
+                    throw new EndGameException();
+                }
+                else if (schet % N == 0)
+                {
+                    listHuman.Dequeue();
+                    break;
+                }
+                else
+                {
+                    listHuman.Enqueue(listHuman.Dequeue());
                 }
             }
         }
+        public override string ToString()
+        {
+            return string.Join(' ', listHuman.ToArray());
+        }
     }
-    public class ArgumentNegativeException : ArgumentOutOfRangeException
+
+    public class EndGameException : ArgumentOutOfRangeException
     {
-        public ArgumentNegativeException() : base() { }
-
-        //public ArgumentNegativeException(string paramName) : base(paramName) { }
-
-        //public ArgumentNegativeException(string paramName, string message) : base(paramName, message) { }
+        public EndGameException() : base() { }
     }
+
+    public class NegativeException : ArgumentOutOfRangeException
+    {
+        public NegativeException() : base() { }
+    }
+
     public class ArgumentZeroException : ArgumentOutOfRangeException
     {
         public ArgumentZeroException() : base() { }
-
-        //public ArgumentNegativeException(string paramName) : base(paramName) { }
-
-        //public ArgumentNegativeException(string paramName, string message) : base(paramName, message) { }
     }
 }
