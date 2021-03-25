@@ -16,7 +16,7 @@ namespace Task_3._1._1
                     int result = int.Parse(Console.ReadLine());
                     if (result < 0)
                     {
-                        throw new ArgumentNegativeException();
+                        throw new EndGameException();
                     }
                     if (result == 0)
                     {
@@ -32,7 +32,7 @@ namespace Task_3._1._1
                 {
                     Console.WriteLine("Нулевое значение ввода, повторите попытку.");
                 }
-                catch (ArgumentNegativeException)
+                catch (EndGameException)
                 {
                     Console.WriteLine("Отрицательное значение, повторите попытку.");
                 }
