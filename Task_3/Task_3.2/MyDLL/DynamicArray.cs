@@ -107,12 +107,14 @@ namespace MyDLL
 
         public IEnumerator<T> GetEnumerator()
         {
-            return ((IEnumerable<T>)mainArray).GetEnumerator();
+            //return ((IEnumerable<T>)mainArray).GetEnumerator();
+            return ((IEnumerable<T>)mainArray.Take(Length)).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<T>)mainArray).GetEnumerator();
+            //return((IEnumerable<T>)mainArray).GetEnumerator();
+            return ((IEnumerable<T>)mainArray.Take(Length)).GetEnumerator();
         }
     }
 }
