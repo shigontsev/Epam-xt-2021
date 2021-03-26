@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using MyDLL;
 namespace Task_3._2._1
 {
@@ -35,6 +36,16 @@ namespace Task_3._2._1
             //    Console.WriteLine(item);
             //}
             #endregion CycledDynamicArray test
+
+
+            Console.WriteLine(arr1.Remove(10));
+            Console.WriteLine(string.Join("-", arr1) + $"; {nameof(arr1.Length)} = {arr1.Length}; {nameof(arr1.Capacity)} = {arr1.Capacity}");
+
+
+
+            //ArrayList array = new ArrayList() { 1, 2, 3, 3, 4, 5 };
+            //array.Remove(3);
+            //Console.WriteLine(string.Join("-", array.ToArray()));
 
             Console.ReadLine();
         }

@@ -172,6 +172,25 @@ namespace MyDLL
             return newArr;
         }
 
+        public bool Remove(T item) //Разве capacity не должен меняться?
+
+        {
+            for (int i = 0; i < Length; i++)
+            {
+                if (mainArray[i].Equals(item))
+                {
+                    if (i + 1 < Length)
+                    {
+                        Array.Copy(mainArray, i + 1, mainArray, i, mainArray.Length - i - 1);
+                    }                    
+                    this.Length--;
+                    mainArray[this.Length] = default(T);
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         /* Осталось
          6. Метод Remove, удаляющий из коллекции указанный элемент. Метод должен возвращать
