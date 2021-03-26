@@ -137,16 +137,25 @@ namespace MyDLL
             }
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public virtual IEnumerator<T> GetEnumerator()
         {
-            //return ((IEnumerable<T>)mainArray).GetEnumerator();
-            return ((IEnumerable<T>)mainArray.Take(Length)).GetEnumerator();
+            //for (int i = 0; i < Length; i++)
+            //{
+            //    yield return mainArray[i];
+            //}
+
+            IEnumerator ie = mainArray.GetEnumerator();
+            int i = 0;
+            while (ie.MoveNext() && i < Length)
+            {
+                yield return (T)ie.Current;
+                i++;
+            }
+            ie.Reset();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            //return((IEnumerable<T>)mainArray).GetEnumerator();
-            //return ((IEnumerable<T>)mainArray.Take(Length)).GetEnumerator();
             return (IEnumerator)GetEnumerator();
         }
 
@@ -173,10 +182,8 @@ namespace MyDLL
             внимание, может потребоваться расширить массив). Метод должен возвращать true, если
             добавление прошло успешно и false в противном случае. При выходе за границу массива
             должно генерироваться исключение ArgumentOutOfRangeException.
-            
-         5. Создать новый класс: циклический динамический массив (CycledDynamicArray) на основе
-            DynamicArray, отличающийся тем, что при использовании foreach после последнего
-            элемента должен снова идти первый и так по кругу.
+         2. Возможность ручного изменения значения Capacity с сохранением уцелевших данных
+            (данные за пределами новой Capacity сохранять не нужно).
          */
 
     }

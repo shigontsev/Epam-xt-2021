@@ -8,7 +8,7 @@ namespace Task_3._2._1
         {
             Console.WriteLine("Hello World!");
 
-            DynamicArray<int> arr = new DynamicArray<int>(new int[]{ 1,2,3, 4});
+            DynamicArray<int> arr = new DynamicArray<int>(new int[]{ 1, 2, 3, 4});
             //foreach (var item in arr)
             //{
             //    Console.WriteLine(item);
@@ -27,6 +27,14 @@ namespace Task_3._2._1
 
             int[] arr2 = arr1.ToArray();
             Console.WriteLine(string.Join("-", arr2) + $"; {nameof(arr2.Length)} = {arr2.Length}");
+
+            #region CycledDynamicArray test
+            //CycledDynamicArray<int> cycle = new CycledDynamicArray<int>(arr2);
+            //foreach (var item in cycle)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            #endregion CycledDynamicArray test
 
             Console.ReadLine();
         }
