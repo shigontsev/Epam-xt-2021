@@ -64,25 +64,32 @@ namespace MyDLL
 
         private void ReSize(int length)
         {
-            int tempSize = size;
-            while (tempSize < length)
+            if (Capacity < length)
             {
-                tempSize *= 2;
+                int tempSize = size;
+                while (tempSize < length)
+                {
+                    tempSize *= 2;
+                }
+
+                //which ToArray is better?
+                var tempArr = mainArray.ToArray();//Когда добвлю свой ToArray надо поменять
+                //T[] tempArr = this.ToArray();
+
+                this.Length = length;
+                mainArray = new T[tempSize];
+                //for (int i = 0; i < tempArr.Length; i++)
+                //{
+                //    mainArray[i] = tempArr[i];
+                //}
+
+                //Array.Copy(tempArr, 0, mainArray, 0, tempArr.Length);
+                Array.Copy(tempArr, mainArray, tempArr.Length);
             }
-
-            //which ToArray is better?
-            var tempArr = mainArray.ToArray();//Когда добвлю свой ToArray надо поменять
-            //T[] tempArr = this.ToArray();
-
-            this.Length = length;
-            mainArray = new T[tempSize];
-            //for (int i = 0; i < tempArr.Length; i++)
-            //{
-            //    mainArray[i] = tempArr[i];
-            //}
-
-            //Array.Copy(tempArr, 0, mainArray, 0, tempArr.Length);
-            Array.Copy(tempArr, mainArray, tempArr.Length);
+            else
+            {
+                this.Length = length;
+            }
         }
 
         public void AddRange(IEnumerable<T> sourse)
@@ -172,7 +179,7 @@ namespace MyDLL
             return newArr;
         }
 
-        public bool Remove(T item) //Разве capacity не должен меняться?
+        public bool Remove(T item)
 
         {
             for (int i = 0; i < Length; i++)
@@ -191,7 +198,48 @@ namespace MyDLL
             return false;
         }
 
+        public bool Insert(int index, T item)
+        {
+            if (index > Length || index < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            //try
+            //{
+                ReSize(Length + 1);
+                Array.Copy(mainArray, index, mainArray, index + 1, Length - index);
+                mainArray[index] = item;
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
+            return true;
+        }
 
+        public void EditCapacity(int capacity)
+        {
+            if (capacity == this.Capacity)
+            {
+                return;
+            }
+            else
+            {
+                if (capacity < this.Length)
+                {
+                    Length = capacity;
+                }
+                T[] tempArr = new T[Length];
+                Array.Copy(mainArray, tempArr, Length);
+                mainArray = new T[capacity];
+                Array.Copy(tempArr, mainArray, tempArr.Length);
+            }
+        }
+
+        public override string ToString()
+        {
+            return new string(string.Join('-', this) + $"; {nameof(Length)} = {Length}; {nameof(Capacity)} = {Capacity}");
+        }
         /* Осталось
          6. Метод Remove, удаляющий из коллекции указанный элемент. Метод должен возвращать
             true, если удаление прошло успешно и false в противном случае. При удалении элементов

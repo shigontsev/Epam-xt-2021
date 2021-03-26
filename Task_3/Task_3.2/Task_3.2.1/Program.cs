@@ -15,16 +15,16 @@ namespace Task_3._2._1
             //    Console.WriteLine(item);
             //}
 
-            Console.WriteLine(string.Join("-", arr) +$"; {nameof(arr.Length)} = {arr.Length}; {nameof(arr.Capacity)} = {arr.Capacity}");
+            Console.WriteLine(arr);
 
             arr.Add(5);
-            Console.WriteLine(string.Join("-", arr) + $"; {nameof(arr.Length)} = {arr.Length}; {nameof(arr.Capacity)} = {arr.Capacity}");
+            Console.WriteLine(arr);
 
             arr.AddRange(new[] { 6, 7, 8, 9, 10 });
-            Console.WriteLine(string.Join("-", arr) + $"; {nameof(arr.Length)} = {arr.Length}; {nameof(arr.Capacity)} = {arr.Capacity}");
+            Console.WriteLine(arr);
 
             DynamicArray<int> arr1 = (DynamicArray<int>)arr.Clone();
-            Console.WriteLine(string.Join("-", arr1) + $"; {nameof(arr1.Length)} = {arr1.Length}; {nameof(arr1.Capacity)} = {arr1.Capacity}");
+            Console.WriteLine(arr1);
 
             int[] arr2 = arr1.ToArray();
             Console.WriteLine(string.Join("-", arr2) + $"; {nameof(arr2.Length)} = {arr2.Length}");
@@ -39,9 +39,32 @@ namespace Task_3._2._1
 
 
             Console.WriteLine(arr1.Remove(10));
-            Console.WriteLine(string.Join("-", arr1) + $"; {nameof(arr1.Length)} = {arr1.Length}; {nameof(arr1.Capacity)} = {arr1.Capacity}");
+            Console.WriteLine(arr1);
 
+            Console.WriteLine(arr1.Remove(9));
+            Console.WriteLine(arr1);
 
+            Console.WriteLine(arr1.Remove(8));
+            Console.WriteLine(arr1);
+
+            //Console.WriteLine(arr1.Insert(4, 10));
+            //arr1.Add(5);
+            arr1.AddRange(new[] { 6, 7, 8, 9, 10 });
+            Console.WriteLine(arr1);
+
+            arr1.AddRange(new[] { 6, 7, 8, 9, 10 });
+            Console.WriteLine(arr1);
+
+            arr1.EditCapacity(19);
+            Console.WriteLine(arr1);
+
+            arr1.EditCapacity(13);
+            Console.WriteLine(arr1);
+
+            arr1.EditCapacity(20);
+            Console.WriteLine(arr1);
+
+            //Console.WriteLine(arr1);
 
             //ArrayList array = new ArrayList() { 1, 2, 3, 3, 4, 5 };
             //array.Remove(3);
