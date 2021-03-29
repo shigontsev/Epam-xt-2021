@@ -62,36 +62,6 @@ namespace MyDLL
             }
         }
 
-        private void ReSize(int length)
-        {
-            if (Capacity < length)
-            {
-                int tempSize = size;
-                while (tempSize < length)
-                {
-                    tempSize *= 2;
-                }
-
-                //which ToArray is better?
-                var tempArr = mainArray.ToArray();//Когда добвлю свой ToArray надо поменять
-                //T[] tempArr = this.ToArray();
-
-                this.Length = length;
-                mainArray = new T[tempSize];
-                //for (int i = 0; i < tempArr.Length; i++)
-                //{
-                //    mainArray[i] = tempArr[i];
-                //}
-
-                //Array.Copy(tempArr, 0, mainArray, 0, tempArr.Length);
-                Array.Copy(tempArr, mainArray, tempArr.Length);
-            }
-            else
-            {
-                this.Length = length;
-            }
-        }
-
         public void AddRange(IEnumerable<T> sourse)
         {
             T[] tempArr = sourse.ToArray();
@@ -111,7 +81,75 @@ namespace MyDLL
                 //    mainArray[i] = tempArr[i - tempLength];
                 //}
                 Array.Copy(tempArr, 0, mainArray, tempLength, tempArr.Length);
-            }            
+            }
+        }
+
+        public bool Remove(T item)
+        {
+            for (int i = 0; i < Length; i++)
+            {
+                if (mainArray[i].Equals(item))
+                {
+                    if (i + 1 < Length)
+                    {
+                        Array.Copy(mainArray, i + 1, mainArray, i, mainArray.Length - i - 1);
+                    }
+                    this.Length--;
+                    mainArray[this.Length] = default(T);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Insert(int index, T item)
+        {
+            if (index > Length || index < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            //try
+            //{
+            ReSize(Length + 1);
+            Array.Copy(mainArray, index, mainArray, index + 1, Length - index);
+            mainArray[index] = item;
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
+            return true;
+        }
+
+
+        private void ReSize(int length)
+        {
+            if (Capacity < length)
+            {
+                int tempSize = size;
+                while (tempSize < length)
+                {
+                    tempSize *= 2;
+                }
+
+                //which ToArray is better?
+                var tempArr = mainArray.ToArray();
+                //T[] tempArr = this.ToArray();
+
+                this.Length = length;
+                mainArray = new T[tempSize];
+                //for (int i = 0; i < tempArr.Length; i++)
+                //{
+                //    mainArray[i] = tempArr[i];
+                //}
+
+                //Array.Copy(tempArr, 0, mainArray, 0, tempArr.Length);
+                Array.Copy(tempArr, mainArray, tempArr.Length);
+            }
+            else
+            {
+                this.Length = length;
+            }
         }
 
         public T this[int index]
@@ -179,44 +217,6 @@ namespace MyDLL
             return newArr;
         }
 
-        public bool Remove(T item)
-
-        {
-            for (int i = 0; i < Length; i++)
-            {
-                if (mainArray[i].Equals(item))
-                {
-                    if (i + 1 < Length)
-                    {
-                        Array.Copy(mainArray, i + 1, mainArray, i, mainArray.Length - i - 1);
-                    }                    
-                    this.Length--;
-                    mainArray[this.Length] = default(T);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool Insert(int index, T item)
-        {
-            if (index > Length || index < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-            //try
-            //{
-                ReSize(Length + 1);
-                Array.Copy(mainArray, index, mainArray, index + 1, Length - index);
-                mainArray[index] = item;
-            //}
-            //catch (Exception)
-            //{
-            //    return false;
-            //}
-            return true;
-        }
-
         public void EditCapacity(int capacity)
         {
             if (capacity == this.Capacity)
@@ -240,18 +240,5 @@ namespace MyDLL
         {
             return new string(string.Join('-', this) + $"; {nameof(Length)} = {Length}; {nameof(Capacity)} = {Capacity}");
         }
-        /* Осталось
-         6. Метод Remove, удаляющий из коллекции указанный элемент. Метод должен возвращать
-            true, если удаление прошло успешно и false в противном случае. При удалении элементов
-            реальная ёмкость массива не должна уменьшаться.
-
-         7. Метод Insert, позволяющий добавить элемент в произвольную позицию массива (обратите
-            внимание, может потребоваться расширить массив). Метод должен возвращать true, если
-            добавление прошло успешно и false в противном случае. При выходе за границу массива
-            должно генерироваться исключение ArgumentOutOfRangeException.
-         2. Возможность ручного изменения значения Capacity с сохранением уцелевших данных
-            (данные за пределами новой Capacity сохранять не нужно).
-         */
-
     }
 }
