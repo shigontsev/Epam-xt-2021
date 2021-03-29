@@ -104,10 +104,15 @@ namespace MyDLL
 
         public bool Insert(int index, T item)
         {
+            if (index < 0)
+            {
+                index += Length;
+            }
             if (index > Length || index < 0)
             {
                 throw new ArgumentOutOfRangeException();
             }
+
             //try
             //{
             ReSize(Length + 1);
@@ -206,8 +211,7 @@ namespace MyDLL
 
         public object Clone()
         {
-            DynamicArray<T> arrClone = new DynamicArray<T>(this);
-            return arrClone;
+            return new DynamicArray<T>(this);
         }
 
         public T[] ToArray()
@@ -222,6 +226,10 @@ namespace MyDLL
             if (capacity == this.Capacity)
             {
                 return;
+            }
+            else if (capacity < 0)
+            {
+                throw new ArgumentOutOfRangeException();
             }
             else
             {
