@@ -23,28 +23,13 @@ namespace MyDLL
         public DynamicArray(int capacity)
         {
             mainArray = new T[capacity];
-            //mainArray = arr.
         }
 
         public DynamicArray(IEnumerable<T> sourse) : this()
         {
             T[] tempArr = sourse.ToArray();
-            //int tempSize = size;
-            //while (tempSize < tempArr.Length)
-            //{
-            //    tempSize *= 2;
-            //}
-            //this.Length = tempArr.Length;
-            //mainArray = new T[tempSize];
             ReSize(tempArr.Length);
 
-
-            //for (int i = 0; i < tempArr.Length; i++)
-            //{
-            //    mainArray[i] = tempArr[i];
-            //}
-
-            //Array.Copy(tempArr, 0, mainArray, 0, tempArr.Length);
             Array.Copy(tempArr, mainArray, tempArr.Length);
         }
 
@@ -76,10 +61,7 @@ namespace MyDLL
                 {
                     Length += tempArr.Length;
                 }
-                //for (int i = tempLength; i < this.Length; i++)
-                //{
-                //    mainArray[i] = tempArr[i - tempLength];
-                //}
+                
                 Array.Copy(tempArr, 0, mainArray, tempLength, tempArr.Length);
             }
         }
@@ -112,17 +94,10 @@ namespace MyDLL
             {
                 throw new ArgumentOutOfRangeException();
             }
-
-            //try
-            //{
             ReSize(Length + 1);
+
             Array.Copy(mainArray, index, mainArray, index + 1, Length - index);
             mainArray[index] = item;
-            //}
-            //catch (Exception)
-            //{
-            //    return false;
-            //}
             return true;
         }
 
@@ -143,12 +118,7 @@ namespace MyDLL
 
                 this.Length = length;
                 mainArray = new T[tempSize];
-                //for (int i = 0; i < tempArr.Length; i++)
-                //{
-                //    mainArray[i] = tempArr[i];
-                //}
-
-                //Array.Copy(tempArr, 0, mainArray, 0, tempArr.Length);
+                
                 Array.Copy(tempArr, mainArray, tempArr.Length);
             }
             else
