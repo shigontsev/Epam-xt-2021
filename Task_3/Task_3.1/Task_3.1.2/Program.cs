@@ -24,14 +24,7 @@ namespace Task_3._1._2
             frq.ShowStatisticsByCount();
 
             //frq.ShowStatisticsByValue();
-
-            #region Don't watch, for me. Task mad without Linq
-            ////frq.GetInfo();
-
-            //frq.SortByCount();
-            ////frq.SortByValue();
-            //frq.GetInfo();
-            #endregion Don't watch, for me. Task mad without Linq
+                       
 
             Console.ReadLine();
         }

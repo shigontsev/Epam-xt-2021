@@ -37,7 +37,7 @@ namespace Task_3._1._2
         {
             Text = text;
             allWords.AddRange(ToSplitWords(Text));
-            //DistinctWords(); \\whithout Linq
+
             GroupingWords();
         }
 
@@ -78,45 +78,5 @@ namespace Task_3._1._2
             Console.WriteLine(string.Join(Environment.NewLine, list));
         }
 
-        #region Don't watch, for me. Task mad without Linq
-        //private void DistinctWords()
-        //{
-        //    List<string> bufferDistWords = new List<string>();
-        //    foreach (var item in allWords)
-        //    {
-        //        if (!bufferDistWords.Contains(item))
-        //        {
-        //            bufferDistWords.Add(item);
-        //            int count = allWords.FindAll(x => x == item).Count;
-        //            distinctWords.Add(new Frequency(item, count));
-        //        }
-        //    }
-        //}
-
-        //public void GetInfo()
-        //{
-        //    Console.WriteLine("List of frequency words:");
-        //    foreach (var item in distinctWords)
-        //    {
-        //        Console.WriteLine(item);
-        //    }
-        //}
-
-        //public void SortByCount()
-        //{
-        //    distinctWords.Sort();
-        //}
-
-        //public void SortByValue()
-        //{
-        //    distinctWords.Sort(delegate (Frequency x, Frequency y)
-        //    {
-        //        if (x.Value == null && y.Value == null) return 0;
-        //        else if (x.Value == null) return -1;
-        //        else if (y.Value == null) return 1;
-        //        else return x.Value.CompareTo(y.Value);
-        //    });
-        //}
-        #endregion Don't watch, for me. Task mad without Linq
     }
 }
