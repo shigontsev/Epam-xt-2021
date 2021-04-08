@@ -13,9 +13,9 @@ namespace Task_3._3._3
 
         public List<Pizza> Assortment  { get; private set; }
 
-        public event Action<object, Order> OrderCreated;
+        public event Action<Order> OrderCreated;
 
-        public event Action<object, Pizza> PizzaCooked ;
+        public event Action<Order> PizzaCooked ;
 
         public Pizzeria()
         {
@@ -33,22 +33,23 @@ namespace Task_3._3._3
 
         public void MakeOrder(TypePizza pizza)
         {
-            var pizzaOrder = Assortment.FirstOrDefault(x => x.Name == nameof(pizza));
+            string namePizza = pizza.ToString();
+            var pizzaOrder = Assortment.FirstOrDefault(x => x.Name == namePizza);
 
             if (pizzaOrder is null)
                 throw new Exception($"Pizza {pizzaOrder} not found");
 
-            var order = new Order(_idOrder++, pizzaOrder);
-
-            Thread.Sleep(order.Pizza.TimeCook * 1000);
-            OrderCreated?.Invoke(this, order);
+            var order = new Order(++_idOrder, pizzaOrder);
+            
+            OrderCreated?.Invoke(order);
 
             Cook(order);
         }
 
         private void Cook(Order order)
         {
-            PizzaCooked?.Invoke(this, order.Pizza);
+            Thread.Sleep(order.Pizza.TimeCook * 1000);
+            PizzaCooked?.Invoke(order);
         }
     }
 }
