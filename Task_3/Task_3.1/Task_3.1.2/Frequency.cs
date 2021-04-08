@@ -4,11 +4,16 @@ using System.Text;
 
 namespace Task_3._1._2
 {
-    public class Frequency: IEquatable<Frequency>, IComparable<Frequency>
-    {
-        public string Value { get; set; }
+#region Don't watch, for me. Task mad without Linq
+    //public class Frequency : IEquatable<Frequency>, IComparable<Frequency>
+#endregion Don't watch, for me. Task mad without Linq
 
-        public int Count { get; set; }
+
+    public class Frequency
+    {
+        public string Value { get; private set; }
+
+        public int Count { get; private set; }
 
         public Frequency(string value, int count)
         {
@@ -21,46 +26,44 @@ namespace Task_3._1._2
             return $"\"{Value}\" = {Count}";
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null) return false;
-            Frequency objAsPart = obj as Frequency;
-            if (objAsPart == null) return false;
-            else return Equals(objAsPart);
-        }
 
-        public int CompareTo(Frequency comparePart)
-        {
-            if (comparePart == null)
-            {
-                return 1;
-            }
-            else
-            {
-                //return this.Count.CompareTo(comparePart.Count);        //Default comparer    
-                switch (this.Count.CompareTo(comparePart.Count))        //Revers comparer
-                {
-                    case 1: return -1;
-                    case -1: return 1;
-                    default: return 0;
-                }
-            }
-        }
+        #region Don't watch, for me. Task mad without Linq
+        //public override bool Equals(object obj) => this.Equals(obj as Frequency);
 
-        public bool Equals(Frequency other)
-        {
-            if (other == null)
-                return false;
-            return (this.Count.Equals(other.Count));
-        }
+        //public int CompareTo(Frequency comparePart)
+        //{
+        //    if (comparePart == null)
+        //    {
+        //        return 1;
+        //    }
+        //    else
+        //    {
+        //        //return this.Count.CompareTo(comparePart.Count);        //Default comparer    
+        //        switch (this.Count.CompareTo(comparePart.Count))        //Revers comparer
+        //        {
+        //            case 1: return -1;
+        //            case -1: return 1;
+        //            default: return 0;
+        //        }
+        //    }
+        //}
 
+        //public bool Equals(Frequency item)
+        //{
+        //    if (item == null)
+        //        return false;
+        //    if (Object.ReferenceEquals(this, item))
+        //        return true;
+        //    if (this.GetType() != item.GetType())
+        //        return false;
 
-
-
+        //    return (this.Value.Equals(item.Value));
+        //}
 
         //public override int GetHashCode()
         //{
-        //    return Count;
+        //    return Value.GetHashCode();
         //}
+        #endregion Don't watch, for me. Task mad without Linq
     }
 }
