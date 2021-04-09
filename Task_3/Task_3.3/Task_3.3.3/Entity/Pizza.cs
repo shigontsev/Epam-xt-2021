@@ -27,16 +27,16 @@ namespace Task_3._3._3.Entity
             }
         }
 
-        private int _timeCook;
+        private TimeSpan _timeCook;
 
-        public int TimeCook
+        public TimeSpan TimeCook
         {
             get { return _timeCook; }
             private set 
             {
-                if (value < 1)
+                if (value <= TimeSpan.Zero)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(TimeCook) + " < 1");
+                    throw new ArgumentOutOfRangeException(nameof(TimeCook) + " <= 0");
                 }
 
                 _timeCook = value; 
@@ -44,7 +44,7 @@ namespace Task_3._3._3.Entity
         }
 
 
-        public Pizza(string name, int timeCook)
+        public Pizza(string name, TimeSpan timeCook)
         {
             Name = name;
             TimeCook = timeCook;
@@ -52,7 +52,7 @@ namespace Task_3._3._3.Entity
 
         public override string ToString()
         {
-            return string.Format($"{Name} :  time cooking {TimeCook} minutes");
+            return string.Format($"{Name} :  time cooking {TimeCook.Seconds} minutes");
         }
     }
 }

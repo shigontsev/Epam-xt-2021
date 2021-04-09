@@ -21,13 +21,13 @@ namespace Task_3._3._3
         {
             Assortment = new List<Pizza>
             {
-                new Pizza(nameof(TypePizza.Donna), 5),
-                new Pizza(nameof(TypePizza.Firm), 3),
-                new Pizza(nameof(TypePizza.Caesar), 6),
-                new Pizza(nameof(TypePizza.Pepperoni), 2),
-                new Pizza(nameof(TypePizza.Home), 7),
-                new Pizza(nameof(TypePizza.Florentine), 4),
-                new Pizza(nameof(TypePizza.Venice), 5),
+                new Pizza(nameof(TypePizza.Donna), TimeSpan.FromSeconds(5)),
+                new Pizza(nameof(TypePizza.Firm), TimeSpan.FromSeconds(3)),
+                new Pizza(nameof(TypePizza.Caesar), TimeSpan.FromSeconds(6)),
+                new Pizza(nameof(TypePizza.Pepperoni), TimeSpan.FromSeconds(2)),
+                new Pizza(nameof(TypePizza.Home), TimeSpan.FromSeconds(7)),
+                new Pizza(nameof(TypePizza.Florentine), TimeSpan.FromSeconds(4)),
+                new Pizza(nameof(TypePizza.Venice), TimeSpan.FromSeconds(5)),
             };
         }
 
@@ -48,7 +48,7 @@ namespace Task_3._3._3
 
         private void Cook(Order order)
         {
-            Thread.Sleep(order.Pizza.TimeCook * 1000);
+            Thread.Sleep(order.Pizza.TimeCook);
             PizzaCooked?.Invoke(order);
         }
     }

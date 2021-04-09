@@ -61,12 +61,12 @@ namespace Task_3._3._3
 
         private void OrderCreated(Order order)
         {
-            Console.WriteLine($"Order {order.Id}: {order.Pizza.Name} accepted. Wait for it {order.Pizza.TimeCook} minutes");
+            Console.WriteLine($"Order № {order.Id}: {order.Pizza.Name} accepted. Wait for it {order.Pizza.TimeCook.Seconds} minutes");
         }
 
         private void PizzaCooked(Order order)
         {
-            Console.WriteLine($"Order {order.Id}: {order.Pizza.Name} cooked . Take your order");
+            Console.WriteLine($"Order № {order.Id}: {order.Pizza.Name} cooked . Take your order");
         }
     }
 }
