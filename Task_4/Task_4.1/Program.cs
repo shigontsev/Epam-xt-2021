@@ -30,9 +30,10 @@ namespace Task_4._1
             //    fs.Write(array, 0, array.Length);
             //}
 
-            DelateTXT(Environment.CurrentDirectory);
-
+            //DelateTXT(Environment.CurrentDirectory);
+            //Log log = new Log() { Id = Guid.NewGuid(), Type = LogType.Create, Path = Environment.CurrentDirectory, Content = "Hello World!!!" };
             //Run();
+            LogService.Run();
 
             Console.ReadLine();
         }

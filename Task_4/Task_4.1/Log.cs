@@ -8,6 +8,8 @@ namespace Task_4._1
     {
         public Guid Id { get; set; }
 
+        public DateTime Date { get; set; }
+
         public LogType Type { get; set; }
 
         public string Path { get; set; }
