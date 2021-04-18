@@ -53,9 +53,9 @@ namespace Task_4._1
             watcher.Filter = "*.txt";
 
             // Add event handlers.
-            watcher.Changed += new FileSystemEventHandler(OnChanged);
-            watcher.Created += new FileSystemEventHandler(OnChanged);
-            watcher.Deleted += new FileSystemEventHandler(OnChanged);
+            watcher.Changed += new FileSystemEventHandler(OnChangedOrCreated);
+            watcher.Created += new FileSystemEventHandler(OnChangedOrCreated);
+            watcher.Deleted += new FileSystemEventHandler(OnDeleted);
             //watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
             watcher.IncludeSubdirectories = true;
@@ -69,12 +69,12 @@ namespace Task_4._1
 
         private static DateTime lastRead = DateTime.MinValue;
 
-        private static async void OnChanged(object source, FileSystemEventArgs e)
+        private static async void OnChangedOrCreated(object source, FileSystemEventArgs e)
         {
-            if (e.ChangeType != WatcherChangeTypes.Changed)
-            {
-                return;
-            }
+            //if (e.ChangeType != WatcherChangeTypes.Changed)
+            //{
+            //    return;
+            //}
             DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
             if (lastWriteTime != lastRead)
             {
@@ -91,9 +91,9 @@ namespace Task_4._1
                             case WatcherChangeTypes.Created:
                                 logType = LogType.Create;
                                 break;
-                            case WatcherChangeTypes.Deleted:
-                                logType = LogType.Delete;
-                                break;
+                            //case WatcherChangeTypes.Deleted:
+                            //    logType = LogType.Delete;
+                            //    break;
                         }
                         await JsonService.AddLog(new Log
                         {
@@ -112,11 +112,23 @@ namespace Task_4._1
         }
 
         // Define the event handlers.
-        private static async void OnCreatedOrDeleted(object source, FileSystemEventArgs e)
+        private static async void OnDeleted(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            var task1 = Task.Run(() => Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType));
-            Thread.Sleep(TimeSpan.FromMilliseconds(100));
+            DateTime lastWriteTime = DateTime.Now;
+            var task1 = Task.Run(async () 
+                => { 
+                    Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
+
+                    LogType logType = LogType.Delete;
+                    await JsonService.AddLog(new Log
+                    {
+                        Id = Guid.NewGuid(),
+                        Date = lastWriteTime,
+                        Type = logType,
+                        Path = e.FullPath
+                    });
+                });
             await task1;
         }
 

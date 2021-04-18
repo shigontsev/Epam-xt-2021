@@ -12,8 +12,12 @@ namespace Task_4._1
     {
         public static async Task<List<Log>> GetListLog()
         {
+            if (!File.Exists("log.json"))
+            {
+                return new List<Log>();
+            }
             // чтение данных
-            using (FileStream fs = new FileStream("log.json", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream("log.json", FileMode.Open))
             //using (FileStream fs = new FileStream("log.json", FileMode.Open))
             {
                 List<Log> restoredLog = await JsonSerializer.DeserializeAsync<List<Log>>(fs);
@@ -84,13 +88,22 @@ namespace Task_4._1
                 //Log log1 = new Log() { Id = Guid.NewGuid(), Type = LogType.Create, Path = Environment.CurrentDirectory, Content = "Hello Human!!!" };
                 //await JsonSerializer.SerializeAsync<Log>(fs, log1);
 
-                string pathLogContent = $"\\LogContent\\{source.Id}.json";
-                using (FileStream fsContent = new FileStream(pathLogContent, FileMode.OpenOrCreate))
+                if (!Directory.Exists("LogContent"))
                 {
-                    // преобразуем строку в байты
-                    byte[] array = Encoding.Default.GetBytes(source.Content);
-                    await fsContent.WriteAsync(array);
+                    Directory.CreateDirectory("LogContent");
                 }
+
+                if (!string.IsNullOrWhiteSpace(source.Content))
+                {
+                    string pathLogContent = $"LogContent\\{source.Id}.json";
+                    using (FileStream fsContent = new FileStream(pathLogContent, FileMode.OpenOrCreate))
+                    {
+                        // преобразуем строку в байты
+                        byte[] array = Encoding.Default.GetBytes(source.Content);
+                        await fsContent.WriteAsync(array);
+                    }
+                }
+                
 
                 //Console.WriteLine("Data has been saved to file");
             }
