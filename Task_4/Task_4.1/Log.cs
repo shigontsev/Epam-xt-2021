@@ -14,6 +14,6 @@ namespace Task_4._1
 
         public string Path { get; set; }
 
-        public string Content { get; set; }
+        public string Content;
     }
 }

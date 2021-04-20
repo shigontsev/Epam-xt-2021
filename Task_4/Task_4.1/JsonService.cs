@@ -26,9 +26,27 @@ namespace Task_4._1
                 //    Console.WriteLine($"Id: {item.Id}  Type: {item.Type} Path: {item.Path} Content: {item.Content}");
                 //}
                 return restoredLog.ToList();
+                //var temp = restoredLog.ToList();
+                //foreach (var item in collection)
+                //{
+
+                //}
+                //return restoredLog.All(x=>x).ToList();
                 //Log restoredLog = await JsonSerializer.DeserializeAsync<Log>(fs);
                 //Console.WriteLine($"Id: {restoredLog.Id}  Type: {restoredLog.Type} Path: {restoredLog.Path} Content: {restoredLog.Content}");
             }
+        }
+
+        public static string GetContentLog(Log source)
+        {            
+            return GetContentLogById(source.Id);
+        }
+
+        public static string GetContentLogById(Guid id)
+        {
+            string pathContent = $"LogContent\\{id}.json";
+
+            return !File.Exists(pathContent) ? File.ReadAllText(pathContent) : null;
         }
 
         public static async Task SetListLog(List<Log> list)
@@ -93,17 +111,19 @@ namespace Task_4._1
                     Directory.CreateDirectory("LogContent");
                 }
 
-                if (!string.IsNullOrWhiteSpace(source.Content))
+                //if (!string.IsNullOrWhiteSpace(source.Content))
+                if(source.Type != LogType.Delete)
                 {
                     string pathLogContent = $"LogContent\\{source.Id}.json";
-                    using (FileStream fsContent = new FileStream(pathLogContent, FileMode.OpenOrCreate))
-                    {
-                        // преобразуем строку в байты
-                        byte[] array = Encoding.Default.GetBytes(source.Content);
-                        await fsContent.WriteAsync(array);
-                    }
+                    //using (FileStream fsContent = new FileStream(pathLogContent, FileMode.OpenOrCreate))
+                    //{
+                    //    // преобразуем строку в байты
+                    //    byte[] array = Encoding.Default.GetBytes(source.Content);
+                    //    await fsContent.WriteAsync(array);
+                    //}
+                    await File.WriteAllTextAsync(pathLogContent, source.Content);
                 }
-                
+
 
                 //Console.WriteLine("Data has been saved to file");
             }

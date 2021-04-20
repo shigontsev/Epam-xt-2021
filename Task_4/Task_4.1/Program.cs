@@ -11,8 +11,8 @@ namespace Task_4._1
 {
     class Program
     {
-        
-        static async Task Main(string[] args)
+
+        static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             //var prog = new Program();
@@ -33,10 +33,22 @@ namespace Task_4._1
             //DelateTXT(Environment.CurrentDirectory);
             //Log log = new Log() { Id = Guid.NewGuid(), Type = LogType.Create, Path = Environment.CurrentDirectory, Content = "Hello World!!!" };
             //Run();
-            LogService.Run();
 
+
+            //LogService.Run();
+
+            //var a = int.TryParse(Console.ReadLine(), out int input);
+            //lock (_locker)
+            //{
+                MenuService.CallMenu();
+            //}
+            Console.WriteLine("KOKO");
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            Console.WriteLine("KOKO");
             Console.ReadLine();
         }
+
+        private static object _locker = new object();
 
         static void DelateTXT(string path)
         {
