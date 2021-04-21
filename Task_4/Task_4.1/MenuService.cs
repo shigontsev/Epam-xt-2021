@@ -17,7 +17,7 @@ namespace Task_4._1
                     LogService.Run();
                     break;
                 case 2:
-                    LogService.CommiteList(ShowCommiteList);
+                    ResetService.CommiteList(ShowCommiteList);
                     break;
                 default:
                     break;

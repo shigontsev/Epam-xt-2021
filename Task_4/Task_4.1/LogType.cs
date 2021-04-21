@@ -9,6 +9,7 @@ namespace Task_4._1
         None,
         Create,
         Delete,
-        Edit
+        Edit,
+        Rename
     }
 }

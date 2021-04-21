@@ -10,62 +10,9 @@ namespace Task_4._1
 {
     public class LogService
     {
-        public static void DeleteTxt(string path)
-        {
-            if (!File.Exists(path))
-            {
-                var files = Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories);
-                foreach (var file in files)
-                {
-                    //Console.WriteLine("Delate: " + file);
-                    File.Delete(file);
-                }
-            }
-        }
+        
 
-        public static async void CommiteList(Action<List<Log>> action)
-        {
-            var listLog = await JsonService.GetListLog();
-
-            action?.Invoke(listLog);
-
-            if (listLog.Count == 0)
-            {
-                Console.ReadLine();
-            }
-            else
-            {
-                //try
-                //{
-                //var a = int.TryParse(Console.ReadLine(), out input);
-                string input = Console.ReadLine();
-                //var a = input.All(x => char.IsDigit(x));
-                //if (a)
-                //{
-                //    var item = listLog.ElementAt(1);
-                //    Console.WriteLine($" : Date = {item.Date}; Type = {item.Type}; Path = {item.Path}");
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Введен не числовое значение");
-                //}
-                Console.WriteLine("Введен не числовое значение");
-                //}
-                //catch (Exception)
-                //{
-                //    Console.WriteLine("Введен не числовое значение");
-                //}
-
-            }
-
-            //if (Console.Read() != 'q')
-            //{
-
-            //}
-            
-        }
-
-        public static async void Run()
+        public static void Run()
         {
             //string[] args = System.Environment.GetCommandLineArgs();
 
@@ -99,7 +46,7 @@ namespace Task_4._1
             watcher.Changed += new FileSystemEventHandler(OnChangedOrCreated);
             watcher.Created += new FileSystemEventHandler(OnChangedOrCreated);
             watcher.Deleted += new FileSystemEventHandler(OnDeleted);
-            //watcher.Renamed += new RenamedEventHandler(OnRenamed);
+            watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
             watcher.IncludeSubdirectories = true;
             // Begin watching.
@@ -112,18 +59,19 @@ namespace Task_4._1
 
         private static DateTime lastRead = DateTime.MinValue;
 
-        private static async void OnChangedOrCreated(object source, FileSystemEventArgs e)
+        private static void OnChangedOrCreated(object source, FileSystemEventArgs e)
         {
             //if (e.ChangeType != WatcherChangeTypes.Changed)
             //{
             //    return;
             //}
             DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
+            //async спас от другого процесса
+            string content = Task<string>.Run(async () => await File.ReadAllTextAsync(e.FullPath)).Result;
             if (lastWriteTime != lastRead)
             {
                 //var task1 = Task.Run(() => Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType));
-                var task1 = Task.Run(()
-                    => {
+                
                         Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
                         LogType logType = LogType.None;
                         switch (e.ChangeType)
@@ -138,49 +86,59 @@ namespace Task_4._1
                             //    logType = LogType.Delete;
                             //    break;
                         }
-                        var task2 = Task.Run(() => JsonService.AddLog(new Log
+                        JsonService.AddLog(new Log
                         {
                             Id = Guid.NewGuid(),
-                            Date = File.GetLastWriteTime(e.FullPath),
+                            Date = lastWriteTime,
                             Type = logType,
                             Path = e.FullPath,
-                            Content = File.ReadAllText(e.FullPath)
+                            Content = content
                         //await new StreamReader(e.FullPath).ReadToEndAsync()
-                        }));
-                    });
+                        });
+                   
                 lastRead = lastWriteTime;
-
-                await task1;
 
             }
 
         }
 
         // Define the event handlers.
-        private static async void OnDeleted(object source, FileSystemEventArgs e)
+        private static void OnDeleted(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
             DateTime lastWriteTime = DateTime.Now;
-            var task1 = Task.Run(async () 
-                => { 
+            
                     Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
 
                     LogType logType = LogType.Delete;
-                    await JsonService.AddLog(new Log
+                    JsonService.AddLog(new Log
                     {
                         Id = Guid.NewGuid(),
                         Date = lastWriteTime,
                         Type = logType,
                         Path = e.FullPath
                     });
-                });
-            await task1;
         }
 
         private static void OnRenamed(object source, RenamedEventArgs e)
         {
             // Specify what is done when a file is renamed.
-            Console.WriteLine("File: {0} renamed to {1}", e.OldFullPath, e.FullPath);
+            Console.WriteLine("File: {0} renamed to {1}, Type: {2}", e.OldFullPath, e.FullPath, e.ChangeType);
+
+            DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
+            
+
+            LogType logType = LogType.Rename;
+
+            Guid id = JsonService.GetListLog().LastOrDefault(x => x.Path == e.OldFullPath).Id;
+            JsonService.AddLog(new Log
+            {
+                Id = id == default(Guid)? Guid.NewGuid(): id,
+                Date = lastWriteTime,
+                Type = logType,
+                OldPath = e.OldFullPath,
+                Path = e.FullPath
+            });
         }
     }
 }

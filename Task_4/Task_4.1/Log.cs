@@ -12,6 +12,8 @@ namespace Task_4._1
 
         public LogType Type { get; set; }
 
+        public string OldPath { get; set; }
+
         public string Path { get; set; }
 
         public string Content;
