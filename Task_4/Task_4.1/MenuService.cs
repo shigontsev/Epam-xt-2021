@@ -42,8 +42,8 @@ namespace Task_4._1
             }
             else
             {
-                Console.WriteLine("Список пуст");
-                Console.WriteLine("Press Any Button to quit the sample.");
+                Console.WriteLine("Список пуст, введите любую клавишу для выхода.");
+                //Console.WriteLine("Press Any Button to quit the sample.");
             }
             Console.Write("ВВОД : ");
 

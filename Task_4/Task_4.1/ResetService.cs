@@ -8,7 +8,7 @@ namespace Task_4._1
 {
     public class ResetService
     {
-        public static void DeleteAllTxt(string path)
+        private static void DeleteAllTxt(string path)
         {
             if (!File.Exists(path))
             {
@@ -35,24 +35,23 @@ namespace Task_4._1
             {
                 //try
                 //{
-                var a = int.TryParse(Console.ReadLine(), out int input);
+                //var a = int.TryParse(Console.ReadLine(), out int index);
                 //string input = Console.ReadLine();
                 //var a = input.All(x => char.IsDigit(x));
-                if (a)
+                try
                 {
-                    var item = listLog.ElementAt(input);
-                    Console.WriteLine($" : Date = {item.Date}; Type = {item.Type}; Path = {item.Path}");
+                    int index = Input.Int();
+                    if (index == -1)
+                    {
+                        throw new ArgumentException(nameof(index), "Выход из списка");
+                    }
+
+                    CommitResetByIndex(index);
                 }
-                else
+                catch (ArgumentException ex)
                 {
-                    Console.WriteLine("Введен не числовое значение");
+                    Console.WriteLine(ex.ParamName);
                 }
-                //Console.WriteLine("Введен не числовое значение");
-                //}
-                //catch (Exception)
-                //{
-                //    Console.WriteLine("Введен не числовое значение");
-                //}
 
             }
 
@@ -62,9 +61,15 @@ namespace Task_4._1
             //}
         }
 
-        public void CommitResetByIndex(int index)
+        private static void CommitResetByIndex(int index)
         {
-            var listLogNew = JsonService.GetListLog().GetRange(0, index + 1).ToList();
+            var listLog = JsonService.GetListLog();
+            if (index > listLog.Count - 1 || index < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Выбран не верный индекс");
+            }
+
+            var listLogNew = listLog.GetRange(0, index + 1).ToList();
 
             DeleteAllTxt(Environment.CurrentDirectory);
 
@@ -81,18 +86,18 @@ namespace Task_4._1
                     case LogType.Rename:
                         CommitRename(item);
                         break;
-                    default:
-                        break;
                 }
             }
+
+            JsonService.SetListLog(listLogNew);
         }
 
-        private void CommitCreateOrEdit(Log item)
+        private static void CommitCreateOrEdit(Log item)
         {
             File.WriteAllText(item.Path, JsonService.GetContentLogById(item.Id));
         }
 
-        private void CommitDelete(Log item)
+        private static void CommitDelete(Log item)
         {
             File.Delete(item.Path);
         }
@@ -102,7 +107,7 @@ namespace Task_4._1
         //    File.WriteAllText(item.Path, JsonService.GetContentLogById(item.Id));
         //}
 
-        private void CommitRename(Log item)
+        private static void CommitRename(Log item)
         {
             File.Move(item.OldPath, item.Path);
         }
