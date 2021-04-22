@@ -8,6 +8,35 @@ namespace Task_4._1
 {
     public class ResetService
     {
+        public static void Run()
+        {
+            var listLog = JsonService.GetListLog();
+
+            ShowCommiteLog(listLog);
+
+            if (listLog.Count == 0)
+            {
+                Console.ReadLine();
+            }
+            else
+            {
+                string input = Input.String();
+                if (input == "q")
+                {
+                    Message.ShowLine("Выход из списка");
+                    return;
+                }
+                if (!Input.TryInt(input, out int index))
+                {
+                    Message.ShowLine("Выход из списка");
+                    return;
+                }
+
+                CommitResetByIndex(index);
+            }
+            Message.ShowLine("Выход из списка");
+        }
+
         private static void DeleteAllTxt(string path)
         {
             if (!File.Exists(path))
@@ -21,44 +50,13 @@ namespace Task_4._1
             }
         }
 
-        public static void CommiteList(Action<List<Log>> action)
-        {
-            var listLog = JsonService.GetListLog();
-
-            action?.Invoke(listLog);
-
-            if (listLog.Count == 0)
-            {
-                Console.ReadLine();
-            }
-            else
-            {
-                try
-                {
-                    string input = Input.String();
-                    if (input == "q")
-                    {
-                        Message.ShowLine("Выход из списка");
-                        return;
-                    }
-                    int index = Input.Int(input);
-
-                    CommitResetByIndex(index);
-                }
-                catch (ArgumentException ex)
-                {
-                    Message.ShowLine(ex.ParamName);
-                    Message.ShowLine("Выход из списка");
-                }
-            }
-        }
-
         private static void CommitResetByIndex(int index)
         {
             var listLog = JsonService.GetListLog();
             if (index > listLog.Count - 1 || index < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(index), "Выбран не верный индекс");
+                Message.ShowLine("Выбран не верный индекс");
+                return;
             }
 
             var listLogNew = listLog.GetRange(0, index + 1).ToList();
@@ -97,6 +95,27 @@ namespace Task_4._1
         private static void CommitRename(Log item)
         {
             File.Move(item.OldPath, item.Path);
+        }
+
+
+        private static void ShowCommiteLog(List<Log> source)
+        {
+            int i = 0;
+            if (source.Count != 0)
+            {
+                foreach (var item in source)
+                {
+                    Message.ShowLine($"{i} : Date = {item.Date}; Type = {item.Type}; Path = {item.Path}");
+                    i++;
+                }
+                Message.ShowLine("Выберите индекс отката:");
+                Message.ShowLine("Или нажмите \'q\' для выхода.");
+            }
+            else
+            {
+                Message.ShowLine("Список пуст, введите любую клавишу для выхода.");
+            }
+            Message.Show("ВВОД : ");
         }
 
     }

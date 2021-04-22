@@ -30,12 +30,25 @@ namespace Task_4._1
             }
         }
 
+        public static bool TryInt(string input, out int result)
+        {
+            if (int.TryParse(input, out result))
+            {
+                return true;
+            }
+            else
+            {
+                Message.ShowLine("Введено не числовое значение");
+                return false;
+            }            
+        }
+
         public static string String()
         {
             do
             {
                 string result = Console.ReadLine();
-                if (string.IsNullOrEmpty(result))
+                if (string.IsNullOrWhiteSpace(result))
                 {
                     Console.Write("Введено пустое значение, повторите попытку: ");
                 }
