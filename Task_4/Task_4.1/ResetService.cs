@@ -33,32 +33,24 @@ namespace Task_4._1
             }
             else
             {
-                //try
-                //{
-                //var a = int.TryParse(Console.ReadLine(), out int index);
-                //string input = Console.ReadLine();
-                //var a = input.All(x => char.IsDigit(x));
                 try
                 {
-                    int index = Input.Int();
-                    if (index == -1)
+                    string input = Input.String();
+                    if (input == "q")
                     {
-                        throw new ArgumentException(nameof(index), "Выход из списка");
+                        Message.ShowLine("Выход из списка");
+                        return;
                     }
+                    int index = Input.Int(input);
 
                     CommitResetByIndex(index);
                 }
                 catch (ArgumentException ex)
                 {
-                    Console.WriteLine(ex.ParamName);
+                    Message.ShowLine(ex.ParamName);
+                    Message.ShowLine("Выход из списка");
                 }
-
             }
-
-            //if (Console.Read() != 'q')
-            //{
-
-            //}
         }
 
         private static void CommitResetByIndex(int index)
@@ -101,11 +93,6 @@ namespace Task_4._1
         {
             File.Delete(item.Path);
         }
-
-        //private void CommitEdit(Log item)
-        //{
-        //    File.WriteAllText(item.Path, JsonService.GetContentLogById(item.Id));
-        //}
 
         private static void CommitRename(Log item)
         {

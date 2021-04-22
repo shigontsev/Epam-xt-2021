@@ -14,29 +14,12 @@ namespace Task_4._1
 
         public static void Run()
         {
-            //string[] args = System.Environment.GetCommandLineArgs();
-
-            //// If a directory is not specified, exit program.
-            //if (args.Length != 2)
-            //{
-            //    // Display the proper way to call the program.
-            //    Console.WriteLine("Usage: Watcher.exe (directory)");
-            //    return;
-            //}
-
-            // Create a new FileSystemWatcher and set its properties.
             FileSystemWatcher watcher = new FileSystemWatcher();
-            //watcher.Path = args[1];
             watcher.Path = Environment.CurrentDirectory;
-            /* Watch for changes in LastAccess and LastWrite times, and
-               the renaming of files or directories. */
-            //watcher.NotifyFilter = NotifyFilters.LastAccess 
-            //    | NotifyFilters.LastWrite
-            //    | NotifyFilters.FileName 
-            //    | NotifyFilters.DirectoryName;
 
             watcher.NotifyFilter = NotifyFilters.LastAccess
-                | NotifyFilters.LastWrite | NotifyFilters.Size
+                | NotifyFilters.LastWrite
+                | NotifyFilters.CreationTime
                 | NotifyFilters.FileName
                 | NotifyFilters.DirectoryName;
             // Only watch text files.
@@ -49,11 +32,10 @@ namespace Task_4._1
             watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
             watcher.IncludeSubdirectories = true;
-            // Begin watching.
             watcher.EnableRaisingEvents = true;
 
             // Wait for the user to quit the program.
-            Console.WriteLine("Press \'q\' to quit the sample.");
+            Message.ShowLine("Введите \'q\' для завершения наблюдения.");
             while (Console.Read() != 'q') ;
         }
 
@@ -61,43 +43,32 @@ namespace Task_4._1
 
         private static void OnChangedOrCreated(object source, FileSystemEventArgs e)
         {
-            //if (e.ChangeType != WatcherChangeTypes.Changed)
-            //{
-            //    return;
-            //}
             DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
             //async спас от другого процесса
             string content = Task<string>.Run(async () => await File.ReadAllTextAsync(e.FullPath)).Result;
             if (lastWriteTime != lastRead)
             {
-                //var task1 = Task.Run(() => Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType));
-                
-                        Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
-                        LogType logType = LogType.None;
-                        switch (e.ChangeType)
-                        {
-                            case WatcherChangeTypes.Changed:
-                                logType = LogType.Edit;
-                                break;
-                            case WatcherChangeTypes.Created:
-                                logType = LogType.Create;
-                                break;
-                            //case WatcherChangeTypes.Deleted:
-                            //    logType = LogType.Delete;
-                            //    break;
-                        }
-                        JsonService.AddLog(new Log
-                        {
-                            Id = Guid.NewGuid(),
-                            Date = lastWriteTime,
-                            Type = logType,
-                            Path = e.FullPath,
-                            Content = content
-                        //await new StreamReader(e.FullPath).ReadToEndAsync()
-                        });
-                   
-                lastRead = lastWriteTime;
+                Message.ShowLine("File: " + e.FullPath + " " + e.ChangeType);
+                LogType logType = LogType.None;
+                switch (e.ChangeType)
+                {
+                    case WatcherChangeTypes.Changed:
+                        logType = LogType.Edit;
+                        break;
+                    case WatcherChangeTypes.Created:
+                        logType = LogType.Create;
+                        break;
+                }
+                JsonService.AddLog(new Log
+                {
+                    Id = Guid.NewGuid(),
+                    Date = lastWriteTime,
+                    Type = logType,
+                    Path = e.FullPath,
+                    Content = content
+                });
 
+                lastRead = lastWriteTime;
             }
 
         }
@@ -107,8 +78,8 @@ namespace Task_4._1
         {
             // Specify what is done when a file is changed, created, or deleted.
             DateTime lastWriteTime = DateTime.Now;
-            
-                    Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
+
+            Message.ShowLine("File: " + e.FullPath + " " + e.ChangeType);
 
                     LogType logType = LogType.Delete;
                     JsonService.AddLog(new Log
@@ -123,10 +94,9 @@ namespace Task_4._1
         private static void OnRenamed(object source, RenamedEventArgs e)
         {
             // Specify what is done when a file is renamed.
-            Console.WriteLine("File: {0} renamed to {1}, Type: {2}", e.OldFullPath, e.FullPath, e.ChangeType);
+            Message.ShowLine($"File: {e.OldFullPath} renamed to {e.FullPath}, Type: {e.ChangeType}");
 
-            DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
-            
+            DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);            
 
             LogType logType = LogType.Rename;
 

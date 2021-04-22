@@ -38,13 +38,15 @@ namespace Task_4._1
             //LogService.Run();
 
             //var a = int.TryParse(Console.ReadLine(), out int input);
-            //lock (_locker)
-            //{
-                MenuService.CallMenu();
-            //}
-            Console.WriteLine("KOKO");
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-            Console.WriteLine("KOKO");
+
+            
+            MenuService.CallMenu();
+
+
+
+            //Console.WriteLine("KOKO");
+            //Thread.Sleep(TimeSpan.FromSeconds(1));
+            //Console.WriteLine("KOKO");
             Console.ReadLine();
         }
 

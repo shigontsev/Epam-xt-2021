@@ -17,5 +17,33 @@ namespace Task_4._1
                 throw new ArgumentException(nameof(result), "Введено не числовое значение");
             }
         }
+
+        public static int Int(string input)
+        {
+            if (int.TryParse(input, out int result))
+            {
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException(nameof(result), "Введено не числовое значение");
+            }
+        }
+
+        public static string String()
+        {
+            do
+            {
+                string result = Console.ReadLine();
+                if (string.IsNullOrEmpty(result))
+                {
+                    Console.Write("Введено пустое значение, повторите попытку: ");
+                }
+                else
+                {
+                    return result;
+                }
+            } while (true);
+        }
     }
 }
