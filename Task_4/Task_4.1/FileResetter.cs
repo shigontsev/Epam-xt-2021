@@ -6,15 +6,33 @@ using System.Linq;
 
 namespace Task_4._1
 {
-    public class ResetService
+    public class FileResetter
     {
-        public static void Run()
+        public string PathCurrentFolder { get; private set; }
+
+        public string PathLog => PathCurrentFolder + LogService._nameFileLog;
+
+        public string PathFolderLogContent => PathCurrentFolder + LogService._nameFolderLogContent;
+
+        public List<Log> ListLog { get; private set; }
+
+        public FileResetter(string pathFolder)
         {
-            var listLog = JsonService.GetListLog();
+            if (!Directory.Exists(pathFolder))
+            {
+                throw new FileNotFoundException(nameof(pathFolder), "По данной директории папки не существует");
+            }
 
-            ShowCommiteLog(listLog);
+            PathCurrentFolder = pathFolder;
+        }
 
-            if (listLog.Count == 0)
+        public void Run()
+        {
+            ListLog = LogService.GetListLog(PathLog);
+
+            ShowCommiteLog();
+
+            if (ListLog.Count == 0)
             {
                 Console.ReadLine();
             }
@@ -37,37 +55,27 @@ namespace Task_4._1
             Message.ShowLine("Выход из списка");
         }
 
-        private static void DeleteAllTxt(string path)
-        {
-            if (!File.Exists(path))
-            {
-                var files = Directory.GetFiles(path, "*.txt", SearchOption.AllDirectories);
-                foreach (var file in files)
-                {
-                    //Console.WriteLine("Delate: " + file);
-                    File.Delete(file);
-                }
-            }
-        }
 
-        private static void CommitResetByIndex(int index)
-        {
-            var listLog = JsonService.GetListLog();
-            if (index > listLog.Count - 1 || index < 0)
+        private void CommitResetByIndex(int index)
+        {            
+            if (index > ListLog.Count - 1 || index < 0)
             {
                 Message.ShowLine("Выбран не верный индекс");
                 return;
             }
 
-            var listLogNew = listLog.GetRange(0, index + 1).ToList();
+            var listLogNew = ListLog.GetRange(0, index + 1).ToList();
 
-            DeleteAllTxt(Environment.CurrentDirectory);
+            DeleteAllTxt();
 
             foreach (var item in listLogNew)
             {
                 switch (item.Type)
                 {
-                    case LogType.Create | LogType.Edit:
+                    case LogType.Create:
+                        CommitCreateOrEdit(item);
+                        break;
+                    case LogType.Edit:
                         CommitCreateOrEdit(item);
                         break;
                     case LogType.Delete:
@@ -79,31 +87,42 @@ namespace Task_4._1
                 }
             }
 
-            JsonService.SetListLog(listLogNew);
+            LogService.SetListLog(listLogNew, PathLog);
         }
 
-        private static void CommitCreateOrEdit(Log item)
+        private void CommitCreateOrEdit(Log item)
         {
-            File.WriteAllText(item.Path, JsonService.GetContentLogById(item.Id));
+            File.WriteAllText(item.Path, LogService.GetContentLogById(item.Id, PathFolderLogContent));
         }
 
-        private static void CommitDelete(Log item)
+        private void CommitDelete(Log item)
         {
             File.Delete(item.Path);
         }
 
-        private static void CommitRename(Log item)
+        private void CommitRename(Log item)
         {
             File.Move(item.OldPath, item.Path);
         }
 
+        private void DeleteAllTxt()
+        {
+            if (Directory.Exists(PathCurrentFolder))
+            {
+                var files = Directory.GetFiles(PathCurrentFolder, "*.txt", SearchOption.AllDirectories);
+                foreach (var file in files)
+                {
+                    File.Delete(file);
+                }
+            }
+        }
 
-        private static void ShowCommiteLog(List<Log> source)
+        private void ShowCommiteLog()
         {
             int i = 0;
-            if (source.Count != 0)
+            if (ListLog.Count != 0)
             {
-                foreach (var item in source)
+                foreach (var item in ListLog)
                 {
                     Message.ShowLine($"{i} : Date = {item.Date}; Type = {item.Type}; Path = {item.Path}");
                     i++;
