@@ -22,6 +22,12 @@ namespace Task_4._1
 
         public string PathFolderLogContent => PathWatchtFolder + LogService._nameFolderLogContent;
 
+        private string _pathFixation;
+
+        public List<Log> ListCommites { get; private set; }
+
+        private List<Log> CommitesCurrentFixation;
+
         /// <summary>
         /// FileWatcher with selected path
         /// </summary>
@@ -36,29 +42,36 @@ namespace Task_4._1
             PathWatchtFolder = watchFolderPath;
             _watcher = new FileSystemWatcher(PathWatchtFolder, "*.txt");
             Notify += Message.ShowLine;
+
+            ListCommites = LogService.GetAllFixation(PathWatchtFolder + "\\FixationLog");
         }
 
         public void Run()
         {
-            using (FileSystemWatcher watcher = _watcher)
-            {
-                watcher.NotifyFilter = NotifyFilters.LastAccess
+            //using (FileSystemWatcher watcher = _watcher)
+            //{
+                _pathFixation = PathWatchtFolder + $"\\FixationLog\\{Guid.NewGuid()}.json";
+                CommitesCurrentFixation = new List<Log>();
+            _watcher.NotifyFilter = NotifyFilters.LastAccess
                     | NotifyFilters.LastWrite
                     | NotifyFilters.CreationTime
                     | NotifyFilters.FileName;
 
-                watcher.Changed += new FileSystemEventHandler(OnChanged);
-                watcher.Created += new FileSystemEventHandler(OnCreated);
-                watcher.Deleted += new FileSystemEventHandler(OnDeleted);
-                watcher.Renamed += new RenamedEventHandler(OnRenamed);
+            _watcher.Changed += new FileSystemEventHandler(OnChanged);
+            _watcher.Created += new FileSystemEventHandler(OnCreated);
+            _watcher.Deleted += new FileSystemEventHandler(OnDeleted);
+            _watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
 
-                watcher.IncludeSubdirectories = true;
-                watcher.EnableRaisingEvents = true;
+            _watcher.IncludeSubdirectories = true;
+            _watcher.EnableRaisingEvents = true;
 
                 Message.ShowLine("Введите \'q\' для завершения наблюдения.");
                 while (Console.Read() != 'q') ;
-            }
+                //Save Fixation in file *.json
+                LogService.SetListLog(CommitesCurrentFixation, _pathFixation);
+
+            //}
         }
 
         private DateTime lastRead = DateTime.MinValue;
@@ -78,7 +91,15 @@ namespace Task_4._1
                 string content = File.ReadAllText(e.FullPath);
                 LogType logType = LogType.Edit;
 
-                RequestOnAddLog(new Log
+                //RequestOnAddLog(new Log
+                //{
+                //    Id = Guid.NewGuid(),
+                //    Date = lastWriteTime,
+                //    Type = logType,
+                //    Path = e.FullPath,
+                //    Content = content
+                //});
+                AddCommit(new Log
                 {
                     Id = Guid.NewGuid(),
                     Date = lastWriteTime,
@@ -107,7 +128,15 @@ namespace Task_4._1
                 string content = File.ReadAllText(e.FullPath);
                 LogType logType = LogType.Create;
 
-                RequestOnAddLog(new Log
+                //RequestOnAddLog(new Log
+                //{
+                //    Id = Guid.NewGuid(),
+                //    Date = lastWriteTime,
+                //    Type = logType,
+                //    Path = e.FullPath,
+                //    Content = content
+                //});
+                AddCommit(new Log
                 {
                     Id = Guid.NewGuid(),
                     Date = lastWriteTime,
@@ -134,7 +163,15 @@ namespace Task_4._1
             }
 
             LogType logType = LogType.Delete;
-            RequestOnAddLog(new Log
+            //RequestOnAddLog(new Log
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Date = lastWriteTime,
+            //    Type = logType,
+            //    Path = e.FullPath
+            //});
+
+            AddCommit(new Log
             {
                 Id = Guid.NewGuid(),
                 Date = lastWriteTime,
@@ -155,10 +192,19 @@ namespace Task_4._1
             DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
             LogType logType = LogType.Rename;
 
-            Guid id = LogService.GetListLog(PathLog).LastOrDefault(x => x.Path == e.OldFullPath).Id;
-            RequestOnAddLog(new Log
+            Guid id = ListCommites.LastOrDefault(x => x.Path == e.OldFullPath).Id;
+            //RequestOnAddLog(new Log
+            //{
+            //    Id = id == default(Guid)? Guid.NewGuid(): id,
+            //    Date = lastWriteTime,
+            //    Type = logType,
+            //    OldPath = e.OldFullPath,
+            //    Path = e.FullPath
+            //});
+
+            AddCommit(new Log
             {
-                Id = id == default(Guid)? Guid.NewGuid(): id,
+                Id = id == null ? Guid.NewGuid() : id,
                 Date = lastWriteTime,
                 Type = logType,
                 OldPath = e.OldFullPath,
@@ -171,6 +217,12 @@ namespace Task_4._1
         private void RequestOnAddLog(Log source)
         {
             LogService.AddLog(source, PathLog, PathFolderLogContent);
+        }
+
+        private void AddCommit(Log source)
+        {
+            ListCommites.Add(source);
+            CommitesCurrentFixation.Add(source);
         }
     }
 }
