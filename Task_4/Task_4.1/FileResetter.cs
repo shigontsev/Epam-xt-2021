@@ -18,7 +18,9 @@ namespace Task_4._1
 
         public Dictionary<string, InfoState> ListFixation { get; private set; }
 
-        public FileResetter(string pathFolder)
+        private LogService _Logger;
+
+        public FileResetter(string pathFolder, LogService logger)
         {
             if (!Directory.Exists(pathFolder))
             {
@@ -26,6 +28,8 @@ namespace Task_4._1
             }
 
             PathCurrentFolder = pathFolder;
+
+            _Logger = logger;
         }
 
         public void Run()
@@ -61,7 +65,7 @@ namespace Task_4._1
         {
             //ListLog = LogService.GetAllFixation(PathCurrentFolder + "\\FixationLog");
 
-            ListFixation = LogService.GetStates();
+            ListFixation = _Logger.GetStates();
 
 
             ShowFixationLog();
@@ -142,12 +146,12 @@ namespace Task_4._1
                 }
             }
 
-            LogService.SetListLog(listLogNew, PathLog);
+            _Logger.SetListLog(listLogNew, PathLog);
         }
 
         private void CommitCreateOrEdit(Log item)
         {
-            File.WriteAllText(item.Path, LogService.GetContentLogById(item.Id, PathFolderLogContent));
+            File.WriteAllText(item.Path, _Logger.GetContentLogById(item.Id, PathFolderLogContent));
         }
 
         private void CommitDelete(Log item)

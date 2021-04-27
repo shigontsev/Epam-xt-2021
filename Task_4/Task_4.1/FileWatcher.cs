@@ -16,7 +16,7 @@ namespace Task_4._1
 
         public string PathWatchtFolder { get; private set; }
 
-        public string PathLog => PathWatchtFolder + LogService._nameFileLog;
+        //public string PathLog => PathWatchtFolder + LogService._nameFileLog;
 
         public string PathFolderLogContent => PathWatchtFolder + LogService._nameFolderLogContent;
 
@@ -26,11 +26,13 @@ namespace Task_4._1
 
         private List<Log> CommitesCurrentFixation;
 
+        private LogService _Logger;
+
         /// <summary>
         /// FileWatcher with selected path
         /// </summary>
         /// <param name="watchFolderPath">Path current folder</param>
-        public FileWatcher(string watchFolderPath)
+        public FileWatcher(string watchFolderPath, LogService logger)
         {
             if (!Directory.Exists(watchFolderPath))
             {
@@ -39,6 +41,8 @@ namespace Task_4._1
 
             PathWatchtFolder = watchFolderPath;
 
+            _Logger = logger;
+
             Notify += Message.ShowLine;
 
             
@@ -46,7 +50,7 @@ namespace Task_4._1
 
         public void Run()
         {
-            ListCommites = LogService.GetAllFixation(PathWatchtFolder + "\\FixationLog");
+            ListCommites = _Logger.GetAllFixation(PathWatchtFolder + "\\FixationLog");
             CommitesCurrentFixation = new List<Log>();
 
             Guid guid = Guid.NewGuid();
@@ -75,8 +79,8 @@ namespace Task_4._1
             //Save Fixation in file *.json, and save State
             if (CommitesCurrentFixation.Count > 0)
             {
-                LogService.SetListLog(CommitesCurrentFixation, _pathFixation);
-                LogService.SaveState(PathWatchtFolder, guid);
+                _Logger.SetListLog(CommitesCurrentFixation, _pathFixation);
+                _Logger.SaveState(PathWatchtFolder, guid);
             }
             ListCommites.Clear();
             CommitesCurrentFixation.Clear();

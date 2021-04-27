@@ -15,21 +15,35 @@ namespace Task_4._1
 
         public const string _nameFolderLogContent = "\\LogContent";
 
+
+
+
         public const string _pathDirectoryStates = "C:\\LogState";
+
+        public string CurrentPath { get; private set; }
+
+        public string LogContentPath => CurrentPath + "\\LogContent";
+
+        public string FixationLogPath => CurrentPath + "\\FixationLog";
+
+        public LogService(string currentFolderPath)
+        {
+            CurrentPath = currentFolderPath;
+        }
 
         public static List<Log> GetListLog(string pathLog)
         {
             return Deserialize(pathLog);
         }
 
-        public static string GetContentLogById(Guid id, string pathFolderLogContent)
+        public string GetContentLogById(Guid id, string pathFolderLogContent)
         {
             string pathContent = $"{pathFolderLogContent}\\{id}.json";
 
             return !File.Exists(pathContent) ? File.ReadAllText(pathContent) : null;
         }
 
-        public static void SetListLog(List<Log> list, string pathLog)
+        public void SetListLog(List<Log> list, string pathLog)
         {
             if (list.Count > 0)
             {
@@ -79,7 +93,7 @@ namespace Task_4._1
         //    }
         //}
 
-        public static List<Log> GetAllFixation(string pathFixationLog)
+        public List<Log> GetAllFixation(string pathFixationLog)
         {
             if (Directory.Exists(pathFixationLog))
             {
@@ -104,7 +118,7 @@ namespace Task_4._1
             return new List<Log>();
         }
 
-        public static void SaveState(string pathCurrent, Guid guid)
+        public void SaveState(string pathCurrent, Guid guid)
         {
             if (!Directory.Exists(_pathDirectoryStates))
             {
@@ -201,7 +215,7 @@ namespace Task_4._1
         /// Возвращает список состояний
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, InfoState> GetStates()
+        public Dictionary<string, InfoState> GetStates()
         {
             var folders = Directory.EnumerateDirectories(_pathDirectoryStates);
             if (folders.Count() == 0)

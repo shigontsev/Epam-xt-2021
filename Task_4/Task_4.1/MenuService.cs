@@ -13,6 +13,8 @@ namespace Task_4._1
 
         public FileResetter LogCommits { get; private set; }
 
+        public LogService Logger { get; private set; }
+
         public MenuService(string pathFolderWatching)
         {
             if (!Directory.Exists(pathFolderWatching))
@@ -22,8 +24,10 @@ namespace Task_4._1
 
             PathFolderWatching = pathFolderWatching;
 
-            Watcher = new FileWatcher(PathFolderWatching);
-            LogCommits = new FileResetter(PathFolderWatching);
+            Logger = new LogService(PathFolderWatching);
+
+            Watcher = new FileWatcher(PathFolderWatching, Logger);
+            LogCommits = new FileResetter(PathFolderWatching, Logger);
         }
 
         public void CallMenu()
