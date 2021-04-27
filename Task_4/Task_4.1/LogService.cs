@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Task_4._1
@@ -13,6 +14,8 @@ namespace Task_4._1
         public const string _nameFileLog = "\\log.json";
 
         public const string _nameFolderLogContent = "\\LogContent";
+
+        public const string _pathDirectoryStates = "C:\\LogState";
 
         public static List<Log> GetListLog(string pathLog)
         {
@@ -84,6 +87,95 @@ namespace Task_4._1
             return new List<Log>();
         }
 
+        public static void SaveState(string pathCurrent)
+        {
+            if (!Directory.Exists(_pathDirectoryStates))
+            {
+                Directory.CreateDirectory(_pathDirectoryStates);
+            }
+            string pathDirectoryCurrentState = _pathDirectoryStates + "\\" + Guid.NewGuid();
+            Directory.CreateDirectory(pathDirectoryCurrentState);
+            //var currentInfo = new DirectoryInfo(pathCurrent);
+            //var directorys = Directory.EnumerateDirectories(pathCurrent)
+            //    .Select(x => x.Replace(pathCurrent, "")).ToList();
+            //var files = Directory.GetFiles(pathCurrent, "*.txt", SearchOption.AllDirectories)
+            //    .Select(x => x.Replace(pathCurrent, "")).ToList();
+            //foreach (var item in directorys)
+            //{
+            //    //Directory.CreateDirectory(_pathDirectoryStates + item);
+            //    Console.WriteLine(item);
+            //}
+            //foreach (var item in files)
+            //{
+            //    //Directory.CreateDirectory(_pathDirectoryStates + item);
+            //    Console.WriteLine(item);
+            //}
+
+            //var direcoryAndFiles = GetRecursFiles(pathCurrent).Select(x => x.Replace(pathCurrent, "")).ToList();
+            var direcoryAndFiles = GetRecursFiles(pathCurrent);
+
+            Regex reg = new Regex(@".+\.txt$");
+            foreach (var item in direcoryAndFiles)
+            {
+                //Directory.CreateDirectory(_pathDirectoryStates + item);
+
+                //Console.WriteLine(item+"  "+reg.Match(item).Success);
+                if (reg.Match(item).Success)
+                {
+                    File.Copy(item, item.Replace(pathCurrent, pathDirectoryCurrentState));
+                }
+                else
+                {
+                    Directory.CreateDirectory(item.Replace(pathCurrent, pathDirectoryCurrentState));
+                }
+            }
+
+        }
+
+        private static List<string> GetRecursFiles(string start_path)
+        {
+            List<string> ls = new List<string>();
+                string[] folders = Directory.GetDirectories(start_path);
+                foreach (string folder in folders)
+                {
+                    ls.Add(folder);
+                    ls.AddRange(GetRecursFiles(folder));
+                }
+                string[] files = Directory.GetFiles(start_path,"*.txt");
+                foreach (string filename in files)
+                {
+                    ls.Add(filename);
+                }
+            return ls;
+        }
+
+        /// <summary>
+        /// Возвращает список состояний
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, InfoState> GetStates()
+        {
+            var folders = Directory.EnumerateDirectories(_pathDirectoryStates);
+            if (folders.Count() == 0)
+            {
+                return new Dictionary<string, InfoState>();
+            }
+
+            var states = new List<InfoState>();
+            foreach (var item in folders)
+            {
+                states.Add(new InfoState(Directory.GetLastWriteTime(item), item));
+            }
+            var states_Sorted = states.OrderBy(x => x.Date).ToList();
+            var result = new Dictionary<string, InfoState>();
+            foreach (var item in states_Sorted)
+            {
+                result.Add(item.Path.Replace(_pathDirectoryStates + "\\", ""), item);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Reader
         /// </summary>
@@ -111,5 +203,7 @@ namespace Task_4._1
             string jsonString = JsonSerializer.Serialize(list, options);
             File.WriteAllText(path, jsonString);
         }
+
+
     }
 }

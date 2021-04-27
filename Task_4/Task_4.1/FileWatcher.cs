@@ -10,8 +10,6 @@ namespace Task_4._1
 {
     public class FileWatcher
     {
-        private FileSystemWatcher _watcher;
-
         public delegate void EventHandler(string message);
 
         private event EventHandler Notify;
@@ -24,7 +22,7 @@ namespace Task_4._1
 
         private string _pathFixation;
 
-        public List<Log> ListCommites { get; private set; }
+        private List<Log> ListCommites;
 
         private List<Log> CommitesCurrentFixation;
 
@@ -40,178 +38,200 @@ namespace Task_4._1
             }
 
             PathWatchtFolder = watchFolderPath;
-            _watcher = new FileSystemWatcher(PathWatchtFolder, "*.txt");
+
             Notify += Message.ShowLine;
 
-            ListCommites = LogService.GetAllFixation(PathWatchtFolder + "\\FixationLog");
+            
         }
 
         public void Run()
         {
-            //using (FileSystemWatcher watcher = _watcher)
-            //{
-                _pathFixation = PathWatchtFolder + $"\\FixationLog\\{Guid.NewGuid()}.json";
-                CommitesCurrentFixation = new List<Log>();
-            _watcher.NotifyFilter = NotifyFilters.LastAccess
+            ListCommites = LogService.GetAllFixation(PathWatchtFolder + "\\FixationLog");
+            CommitesCurrentFixation = new List<Log>();
+
+            _pathFixation = PathWatchtFolder + $"\\FixationLog\\{Guid.NewGuid()}.json";
+
+            FileSystemWatcher watcher = new FileSystemWatcher(PathWatchtFolder, "*.txt");
+            watcher.NotifyFilter = NotifyFilters.LastAccess
                     | NotifyFilters.LastWrite
                     | NotifyFilters.CreationTime
                     | NotifyFilters.FileName;
 
-            _watcher.Changed += new FileSystemEventHandler(OnChanged);
-            _watcher.Created += new FileSystemEventHandler(OnCreated);
-            _watcher.Deleted += new FileSystemEventHandler(OnDeleted);
-            _watcher.Renamed += new RenamedEventHandler(OnRenamed);
+            watcher.Changed += new FileSystemEventHandler(OnChanged);
+            watcher.Created += new FileSystemEventHandler(OnCreated);
+            watcher.Deleted += new FileSystemEventHandler(OnDeleted);
+            watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
 
-            _watcher.IncludeSubdirectories = true;
-            _watcher.EnableRaisingEvents = true;
+            watcher.IncludeSubdirectories = true;
+            watcher.EnableRaisingEvents = true;
 
-                Message.ShowLine("Введите \'q\' для завершения наблюдения.");
-                while (Console.Read() != 'q') ;
-                //Save Fixation in file *.json
+            Message.ShowLine("Введите \'q\' для завершения наблюдения.");
+            while (Console.Read() != 'q') ;
+
+            //Save Fixation in file *.json, and save State
+            if (CommitesCurrentFixation.Count > 0)
+            {
                 LogService.SetListLog(CommitesCurrentFixation, _pathFixation);
+                LogService.SaveState(PathWatchtFolder);
+            }
+            ListCommites.Clear();
+            CommitesCurrentFixation.Clear();
 
-            //}
         }
+
+        private static object _locker = new object();
 
         private DateTime lastRead = DateTime.MinValue;
 
         private void OnChanged(object source, FileSystemEventArgs e)
         {
-            if (e.ChangeType != WatcherChangeTypes.Changed)
+            lock (_locker)
             {
-                return;
-            }
-            while (!File.Exists(e.FullPath)) ;
-            while (IOService.IsFileLocked(new FileInfo(e.FullPath))) ;
-
-            DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
-            if (lastWriteTime != lastRead)
-            {
-                string content = File.ReadAllText(e.FullPath);
-                LogType logType = LogType.Edit;
-
-                //RequestOnAddLog(new Log
-                //{
-                //    Id = Guid.NewGuid(),
-                //    Date = lastWriteTime,
-                //    Type = logType,
-                //    Path = e.FullPath,
-                //    Content = content
-                //});
-                AddCommit(new Log
+                if (e.ChangeType != WatcherChangeTypes.Changed)
                 {
-                    Id = Guid.NewGuid(),
-                    Date = lastWriteTime,
-                    Type = logType,
-                    Path = e.FullPath,
-                    Content = content
-                });
+                    return;
+                }
+                while (!File.Exists(e.FullPath)) ;
+                while (IOService.IsFileLocked(new FileInfo(e.FullPath))) ;
 
-                Notify?.Invoke(e.ChangeType + " -> File: " + e.FullPath);
-                lastRead = lastWriteTime;
+                DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
+                if (lastWriteTime != lastRead)
+                {
+                    string content = File.ReadAllText(e.FullPath);
+                    LogType logType = LogType.Edit;
+
+                    //RequestOnAddLog(new Log
+                    //{
+                    //    Id = Guid.NewGuid(),
+                    //    Date = lastWriteTime,
+                    //    Type = logType,
+                    //    Path = e.FullPath,
+                    //    Content = content
+                    //});
+                    AddCommit(new Log
+                    {
+                        Id = Guid.NewGuid(),
+                        Date = lastWriteTime,
+                        Type = logType,
+                        Path = e.FullPath,
+                        Content = content
+                    });
+
+                    Notify?.Invoke(e.ChangeType + " -> File: " + e.FullPath);
+                    lastRead = lastWriteTime;
+                }
             }
         }
 
         private void OnCreated(object source, FileSystemEventArgs e)
         {
-            if (e.ChangeType != WatcherChangeTypes.Created)
+            lock (_locker)
             {
-                return;
-            }
-            while (!File.Exists(e.FullPath)) ;
-            while (IOService.IsFileLocked(new FileInfo(e.FullPath))) ;
-
-            DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
-            if (lastWriteTime != lastRead)
-            {
-                string content = File.ReadAllText(e.FullPath);
-                LogType logType = LogType.Create;
-
-                //RequestOnAddLog(new Log
-                //{
-                //    Id = Guid.NewGuid(),
-                //    Date = lastWriteTime,
-                //    Type = logType,
-                //    Path = e.FullPath,
-                //    Content = content
-                //});
-                AddCommit(new Log
+                if (e.ChangeType != WatcherChangeTypes.Created)
                 {
-                    Id = Guid.NewGuid(),
-                    Date = lastWriteTime,
-                    Type = logType,
-                    Path = e.FullPath,
-                    Content = content
-                });
+                    return;
+                }
+                while (!File.Exists(e.FullPath)) ;
+                while (IOService.IsFileLocked(new FileInfo(e.FullPath))) ;
 
-                Notify?.Invoke(e.ChangeType + " -> File: " + e.FullPath);
-                lastRead = lastWriteTime;
+                DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
+                if (lastWriteTime != lastRead)
+                {
+                    string content = File.ReadAllText(e.FullPath);
+                    LogType logType = LogType.Create;
+
+                    //RequestOnAddLog(new Log
+                    //{
+                    //    Id = Guid.NewGuid(),
+                    //    Date = lastWriteTime,
+                    //    Type = logType,
+                    //    Path = e.FullPath,
+                    //    Content = content
+                    //});
+                    AddCommit(new Log
+                    {
+                        Id = Guid.NewGuid(),
+                        Date = lastWriteTime,
+                        Type = logType,
+                        Path = e.FullPath,
+                        Content = content
+                    });
+
+                    Notify?.Invoke(e.ChangeType + " -> File: " + e.FullPath);
+                    lastRead = lastWriteTime;
+                }
             }
         }
 
         private void OnDeleted(object source, FileSystemEventArgs e)
         {
-            DateTime lastWriteTime = DateTime.Now;
-            if (lastRead >= lastWriteTime - TimeSpan.FromSeconds(1))
+            lock (_locker)
             {
-                return;
+                DateTime lastWriteTime = DateTime.Now;
+                if (lastRead >= lastWriteTime - TimeSpan.FromSeconds(1))
+                {
+                    return;
+                }
+                if (e.ChangeType != WatcherChangeTypes.Deleted)
+                {
+                    return;
+                }
+
+                LogType logType = LogType.Delete;
+                //RequestOnAddLog(new Log
+                //{
+                //    Id = Guid.NewGuid(),
+                //    Date = lastWriteTime,
+                //    Type = logType,
+                //    Path = e.FullPath
+                //});
+
+                AddCommit(new Log
+                {
+                    Id = Guid.NewGuid(),
+                    Date = lastWriteTime,
+                    Type = logType,
+                    Path = e.FullPath
+                });
+
+                Notify?.Invoke(e.ChangeType + " -> File: " + e.FullPath);
             }
-            if (e.ChangeType != WatcherChangeTypes.Deleted)
-            {
-                return;
-            }
-
-            LogType logType = LogType.Delete;
-            //RequestOnAddLog(new Log
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Date = lastWriteTime,
-            //    Type = logType,
-            //    Path = e.FullPath
-            //});
-
-            AddCommit(new Log
-            {
-                Id = Guid.NewGuid(),
-                Date = lastWriteTime,
-                Type = logType,
-                Path = e.FullPath
-            });
-
-            Notify?.Invoke(e.ChangeType + " -> File: " + e.FullPath);
         }
 
         private void OnRenamed(object source, RenamedEventArgs e)
         {
-            if (e.ChangeType != WatcherChangeTypes.Renamed)
+            lock (_locker)
             {
-                return;
+                if (e.ChangeType != WatcherChangeTypes.Renamed)
+                {
+                    return;
+                }
+
+                DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
+                LogType logType = LogType.Rename;
+
+                Guid id = ListCommites.LastOrDefault(x => x.Path == e.OldFullPath).Id;
+                //RequestOnAddLog(new Log
+                //{
+                //    Id = id == default(Guid)? Guid.NewGuid(): id,
+                //    Date = lastWriteTime,
+                //    Type = logType,
+                //    OldPath = e.OldFullPath,
+                //    Path = e.FullPath
+                //});
+
+                AddCommit(new Log
+                {
+                    Id = id == null ? Guid.NewGuid() : id,
+                    Date = lastWriteTime,
+                    Type = logType,
+                    OldPath = e.OldFullPath,
+                    Path = e.FullPath
+                });
+
+                Notify?.Invoke($"{e.ChangeType} -> File: {e.OldFullPath} renamed to {e.FullPath}");
             }
-
-            DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
-            LogType logType = LogType.Rename;
-
-            Guid id = ListCommites.LastOrDefault(x => x.Path == e.OldFullPath).Id;
-            //RequestOnAddLog(new Log
-            //{
-            //    Id = id == default(Guid)? Guid.NewGuid(): id,
-            //    Date = lastWriteTime,
-            //    Type = logType,
-            //    OldPath = e.OldFullPath,
-            //    Path = e.FullPath
-            //});
-
-            AddCommit(new Log
-            {
-                Id = id == null ? Guid.NewGuid() : id,
-                Date = lastWriteTime,
-                Type = logType,
-                OldPath = e.OldFullPath,
-                Path = e.FullPath
-            });
-
-            Notify?.Invoke($"{e.ChangeType} -> File: {e.OldFullPath} renamed to {e.FullPath}");
         }
 
         private void RequestOnAddLog(Log source)

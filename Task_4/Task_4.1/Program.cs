@@ -16,6 +16,9 @@ namespace Task_4._1
         {
             Console.WriteLine("Hello World!");
 
+            //LogService.SaveState(Environment.CurrentDirectory);
+            //Console.ReadLine();
+
             var menu = new MenuService(Environment.CurrentDirectory);
 
             menu.CallMenu();
