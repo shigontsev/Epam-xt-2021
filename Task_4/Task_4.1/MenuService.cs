@@ -41,11 +41,10 @@ namespace Task_4._1
                 switch (commandButton)
                 {
                     case "1":
-                        Console.WriteLine("Началось наблюдение...");
                         Watcher.Run();
                         break;
                     case "2":
-                        LogCommits.Run();
+                        LogCommits.RunFixation();
                         break;
                 }
 

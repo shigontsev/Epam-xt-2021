@@ -49,7 +49,8 @@ namespace Task_4._1
             ListCommites = LogService.GetAllFixation(PathWatchtFolder + "\\FixationLog");
             CommitesCurrentFixation = new List<Log>();
 
-            _pathFixation = PathWatchtFolder + $"\\FixationLog\\{Guid.NewGuid()}.json";
+            Guid guid = Guid.NewGuid();
+            _pathFixation = PathWatchtFolder + $"\\FixationLog\\{guid}.json";
 
             FileSystemWatcher watcher = new FileSystemWatcher(PathWatchtFolder, "*.txt");
             watcher.NotifyFilter = NotifyFilters.LastAccess
@@ -66,14 +67,16 @@ namespace Task_4._1
             watcher.IncludeSubdirectories = true;
             watcher.EnableRaisingEvents = true;
 
-            Message.ShowLine("Введите \'q\' для завершения наблюдения.");
+            Notify?.Invoke("Началось наблюдение...");
+            Notify?.Invoke("Введите \'q\' для завершения наблюдения.");
             while (Console.Read() != 'q') ;
 
+            watcher.EnableRaisingEvents = false;
             //Save Fixation in file *.json, and save State
             if (CommitesCurrentFixation.Count > 0)
             {
                 LogService.SetListLog(CommitesCurrentFixation, _pathFixation);
-                LogService.SaveState(PathWatchtFolder);
+                LogService.SaveState(PathWatchtFolder, guid);
             }
             ListCommites.Clear();
             CommitesCurrentFixation.Clear();
@@ -234,10 +237,10 @@ namespace Task_4._1
             }
         }
 
-        private void RequestOnAddLog(Log source)
-        {
-            LogService.AddLog(source, PathLog, PathFolderLogContent);
-        }
+        //private void RequestOnAddLog(Log source)
+        //{
+        //    LogService.AddLog(source, PathLog, PathFolderLogContent);
+        //}
 
         private void AddCommit(Log source)
         {

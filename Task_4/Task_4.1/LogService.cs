@@ -34,33 +34,50 @@ namespace Task_4._1
             if (list.Count > 0)
             {
                 Serialize(list, pathLog);
+
+                if (!Directory.Exists(Environment.CurrentDirectory + "\\LogContent"))
+                {
+                    Directory.CreateDirectory(Environment.CurrentDirectory + "\\LogContent");
+                }
+
+                foreach (var log in list)
+                {
+                    //AddLog(log, pathLog)
+                    
+                    if (log.Type != LogType.Delete || log.Type != LogType.Rename)
+                    {
+                        string pathLogContent = $"{Environment.CurrentDirectory}\\LogContent\\{log.Id}.json";
+
+                        File.WriteAllText(pathLogContent, log.Content);
+                    }
+                }
             }
         }
 
-        public static void AddLog(Log source, string pathLog, string pathFolderLogContent)
-        {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
+        //public static void AddLog(Log source, string pathLog, string pathFolderLogContent)
+        //{
+        //    var options = new JsonSerializerOptions
+        //    {
+        //        WriteIndented = true
+        //    };
 
-            List<Log> list = GetListLog(pathLog);
-            list.Add(source);
+        //    List<Log> list = GetListLog(pathLog);
+        //    list.Add(source);
 
-            SetListLog(list, pathLog);
+        //    SetListLog(list, pathLog);
 
-            if (!Directory.Exists(pathFolderLogContent))
-            {
-                Directory.CreateDirectory(pathFolderLogContent);
-            }
+        //    if (!Directory.Exists(pathFolderLogContent))
+        //    {
+        //        Directory.CreateDirectory(pathFolderLogContent);
+        //    }
 
-            if (source.Type != LogType.Delete)
-            {
-                string pathLogContent = $"{pathFolderLogContent}\\{source.Id}.json";
+        //    if (source.Type != LogType.Delete)
+        //    {
+        //        string pathLogContent = $"{pathFolderLogContent}\\{source.Id}.json";
 
-                File.WriteAllText(pathLogContent, source.Content);
-            }
-        }
+        //        File.WriteAllText(pathLogContent, source.Content);
+        //    }
+        //}
 
         public static List<Log> GetAllFixation(string pathFixationLog)
         {
@@ -87,13 +104,13 @@ namespace Task_4._1
             return new List<Log>();
         }
 
-        public static void SaveState(string pathCurrent)
+        public static void SaveState(string pathCurrent, Guid guid)
         {
             if (!Directory.Exists(_pathDirectoryStates))
             {
                 Directory.CreateDirectory(_pathDirectoryStates);
             }
-            string pathDirectoryCurrentState = _pathDirectoryStates + "\\" + Guid.NewGuid();
+            string pathDirectoryCurrentState = _pathDirectoryStates + "\\" + guid;
             Directory.CreateDirectory(pathDirectoryCurrentState);
             //var currentInfo = new DirectoryInfo(pathCurrent);
             //var directorys = Directory.EnumerateDirectories(pathCurrent)
@@ -112,23 +129,26 @@ namespace Task_4._1
             //}
 
             //var direcoryAndFiles = GetRecursFiles(pathCurrent).Select(x => x.Replace(pathCurrent, "")).ToList();
-            var direcoryAndFiles = GetRecursFiles(pathCurrent);
 
-            Regex reg = new Regex(@".+\.txt$");
-            foreach (var item in direcoryAndFiles)
-            {
-                //Directory.CreateDirectory(_pathDirectoryStates + item);
+            CopyFiles(pathCurrent, pathDirectoryCurrentState);
 
-                //Console.WriteLine(item+"  "+reg.Match(item).Success);
-                if (reg.Match(item).Success)
-                {
-                    File.Copy(item, item.Replace(pathCurrent, pathDirectoryCurrentState));
-                }
-                else
-                {
-                    Directory.CreateDirectory(item.Replace(pathCurrent, pathDirectoryCurrentState));
-                }
-            }
+            //var direcoryAndFiles = GetRecursFiles(pathCurrent);
+
+            //Regex reg = new Regex(@".+\.txt$");
+            //foreach (var item in direcoryAndFiles)
+            //{
+            //    //Directory.CreateDirectory(_pathDirectoryStates + item);
+
+            //    //Console.WriteLine(item+"  "+reg.Match(item).Success);
+            //    if (reg.Match(item).Success)
+            //    {
+            //        File.Copy(item, item.Replace(pathCurrent, pathDirectoryCurrentState));
+            //    }
+            //    else
+            //    {
+            //        Directory.CreateDirectory(item.Replace(pathCurrent, pathDirectoryCurrentState));
+            //    }
+            //}
 
         }
 
@@ -147,6 +167,34 @@ namespace Task_4._1
                     ls.Add(filename);
                 }
             return ls;
+        }
+
+        /// <summary>
+        /// Copy file *.txt from Source to Dest directory
+        /// </summary>
+        public static void CopyFiles(string sourceDirectoryPath, string destDirectoryPath)
+        {
+            var direcoryAndFiles = GetRecursFiles(sourceDirectoryPath);
+
+            Regex reg = new Regex(@".+\.txt$");
+            foreach (var item in direcoryAndFiles)
+            {
+                //Directory.CreateDirectory(_pathDirectoryStates + item);
+
+                //Console.WriteLine(item+"  "+reg.Match(item).Success);
+                if (reg.Match(item).Success)
+                {
+                    File.Copy(item, item.Replace(sourceDirectoryPath, destDirectoryPath));
+                }
+                else
+                {
+                    string new_directory = item.Replace(sourceDirectoryPath, destDirectoryPath);
+                    if (!Directory.Exists(new_directory))
+                    {
+                        Directory.CreateDirectory(new_directory);
+                    }
+                }
+            }
         }
 
         /// <summary>

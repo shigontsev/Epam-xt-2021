@@ -16,6 +16,8 @@ namespace Task_4._1
 
         public List<Log> ListLog { get; private set; }
 
+        public Dictionary<string, InfoState> ListFixation { get; private set; }
+
         public FileResetter(string pathFolder)
         {
             if (!Directory.Exists(pathFolder))
@@ -55,6 +57,59 @@ namespace Task_4._1
             Message.ShowLine("Выход из списка");
         }
 
+        public void RunFixation()
+        {
+            //ListLog = LogService.GetAllFixation(PathCurrentFolder + "\\FixationLog");
+
+            ListFixation = LogService.GetStates();
+
+
+            ShowFixationLog();
+
+            if (ListFixation.Count() == 0)
+            {
+                Console.ReadLine();
+            }
+            else
+            {
+                string input = Input.String();
+                if (input == "q")
+                {
+                    Message.ShowLine("Выход из списка");
+                    return;
+                }
+                if (!Input.TryInt(input, out int index))
+                {
+                    Message.ShowLine("Выход из списка");
+                    return;
+                }
+
+                FixationResetByIndex(index);
+            }
+            Message.ShowLine("Выход из списка");
+        }
+
+        private void FixationResetByIndex(int index)
+        {
+            if (index > ListFixation.Count - 1 || index < 0)
+            {
+                Message.ShowLine("Выбран не верный индекс");
+                return;
+            }
+
+            var fixation = ListFixation.ElementAt(index);
+
+            DeleteAllTxt();
+            LogService.CopyFiles(fixation.Value.Path, PathCurrentFolder);
+
+            var eraseFixation = ListFixation.Skip(index + 1);
+            foreach (var item in eraseFixation)
+            {
+                Directory.Delete(item.Value.Path, true);
+                File.Delete(PathCurrentFolder +
+                    "\\FixationLog\\" + item.Key + ".json");
+            }
+        }
 
         private void CommitResetByIndex(int index)
         {            
@@ -125,6 +180,26 @@ namespace Task_4._1
                 foreach (var item in ListLog)
                 {
                     Message.ShowLine($"{i} : Date = {item.Date}; Type = {item.Type}; Path = {item.Path}");
+                    i++;
+                }
+                Message.ShowLine("Выберите индекс отката:");
+                Message.ShowLine("Или нажмите \'q\' для выхода.");
+            }
+            else
+            {
+                Message.ShowLine("Список пуст, введите любую клавишу для выхода.");
+            }
+            Message.Show("ВВОД : ");
+        }
+
+        private void ShowFixationLog()
+        {
+            int i = 0;
+            if (ListFixation.Count != 0)
+            {
+                foreach (var item in ListFixation)
+                {
+                    Message.ShowLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
                     i++;
                 }
                 Message.ShowLine("Выберите индекс отката:");
