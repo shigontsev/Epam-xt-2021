@@ -11,20 +11,26 @@ namespace Task_4._1
 {
     public class LogService
     {
-        public const string _nameFileLog = "\\log.json";
-
-
         private const string _nameFolderLogContent = "\\LogContent";
 
         private const string _nameFolderFixationLog = "\\FixationLog";
 
         private const string _pathDirectoryStates = "C:\\LogState";
 
-        public string CurrentPath { get; private set; } //Текущаю папка, объект иследования
+        /// <summary>
+        /// Current folder for researching
+        /// </summary>
+        public string CurrentPath { get; private set; }
 
-        public string LogContentPathFolder => CurrentPath + _nameFolderLogContent;//\\LogContent
+        /// <summary>
+        /// Path folder for keeping content of files
+        /// </summary>
+        public string LogContentPathFolder => CurrentPath + _nameFolderLogContent;
 
-        public string FixationLogPathFolder => CurrentPath + _nameFolderFixationLog;//"\\FixationLog"
+        /// <summary>
+        /// Path folder for keeping commite of fixation
+        /// </summary>
+        public string FixationLogPathFolder => CurrentPath + _nameFolderFixationLog;
 
         public LogService(string currentFolderPath)
         {
@@ -36,6 +42,11 @@ namespace Task_4._1
             return Deserialize(pathLog);
         }
 
+        /// <summary>
+        /// Return content selected file by commite
+        /// </summary>
+        /// <param name="id">Id commite</param>
+        /// <returns></returns>
         public string GetContentLogById(Guid id)
         {
             string pathContent = $"{LogContentPathFolder}\\{id}.json";
@@ -43,6 +54,11 @@ namespace Task_4._1
             return !File.Exists(pathContent) ? File.ReadAllText(pathContent) : null;
         }
 
+        /// <summary>
+        /// Save list commites by current status
+        /// </summary>
+        /// <param name="list">list commites</param>
+        /// <param name="pathLog">path current fixation</param>
         public void SetListLog(List<Log> list, string pathLog)
         {
             if (list.Count > 0)
@@ -54,10 +70,9 @@ namespace Task_4._1
                     Directory.CreateDirectory(LogContentPathFolder);
                 }
 
+                //save content files
                 foreach (var log in list)
-                {
-                    //AddLog(log, pathLog)
-                    
+                {                    
                     if (log.Type != LogType.Delete || log.Type != LogType.Rename)
                     {
                         string pathLogContent = $"{LogContentPathFolder}\\{log.Id}.json";
@@ -68,31 +83,10 @@ namespace Task_4._1
             }
         }
 
-        //public static void AddLog(Log source, string pathLog, string pathFolderLogContent)
-        //{
-        //    var options = new JsonSerializerOptions
-        //    {
-        //        WriteIndented = true
-        //    };
-
-        //    List<Log> list = GetListLog(pathLog);
-        //    list.Add(source);
-
-        //    SetListLog(list, pathLog);
-
-        //    if (!Directory.Exists(pathFolderLogContent))
-        //    {
-        //        Directory.CreateDirectory(pathFolderLogContent);
-        //    }
-
-        //    if (source.Type != LogType.Delete)
-        //    {
-        //        string pathLogContent = $"{pathFolderLogContent}\\{source.Id}.json";
-
-        //        File.WriteAllText(pathLogContent, source.Content);
-        //    }
-        //}
-
+        /// <summary>
+        /// Return all have fixations
+        /// </summary>
+        /// <returns></returns>
         public List<Log> GetAllFixation()
         {
             if (Directory.Exists(FixationLogPathFolder))
@@ -118,6 +112,10 @@ namespace Task_4._1
             return new List<Log>();
         }
 
+        /// <summary>
+        /// Save current status
+        /// </summary>
+        /// <param name="guid">Id fixation</param>
         public void SaveState(Guid guid)
         {
             if (!Directory.Exists(_pathDirectoryStates))
@@ -179,7 +177,7 @@ namespace Task_4._1
         }
 
         /// <summary>
-        /// Возвращает список состояний
+        /// Return list status
         /// </summary>
         /// <returns></returns>
         public Dictionary<string, InfoState> GetStates()
@@ -206,7 +204,7 @@ namespace Task_4._1
         }
 
         /// <summary>
-        /// Reader
+        /// Reader Json
         /// </summary>
         public static List<Log> Deserialize(string path)
         {
@@ -220,7 +218,7 @@ namespace Task_4._1
         }
 
         /// <summary>
-        /// Setter
+        /// Setter Json
         /// </summary>
         public static void Serialize(List<Log> list, string path)
         {

@@ -14,11 +14,8 @@ namespace Task_4._1
 
         private event EventHandler Notify;
 
+
         public string PathWatchtFolder { get; private set; }
-
-        //public string PathLog => PathWatchtFolder + LogService._nameFileLog;
-
-        //public string PathFolderLogContent => PathWatchtFolder + LogService._nameFolderLogContent;
 
         private string _pathAnFixation;
 
@@ -46,9 +43,12 @@ namespace Task_4._1
             Notify += Message.ShowLine;
         }
 
+        /// <summary>
+        /// Action FileWatcher by current path
+        /// </summary>
         public void Run()
         {
-            ListCommites = _Logger.GetAllFixation();//_Logger.FixationLogPath
+            ListCommites = _Logger.GetAllFixation();
             CommitesCurrentFixation = new List<Log>();
 
             Guid guid = Guid.NewGuid();
@@ -91,6 +91,9 @@ namespace Task_4._1
 
         private DateTime lastRead = DateTime.MinValue;
 
+        /// <summary>
+        /// Event Chaged
+        /// </summary>
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
             lock (_locker)
@@ -108,14 +111,6 @@ namespace Task_4._1
                     string content = File.ReadAllText(e.FullPath);
                     LogType logType = LogType.Edit;
 
-                    //RequestOnAddLog(new Log
-                    //{
-                    //    Id = Guid.NewGuid(),
-                    //    Date = lastWriteTime,
-                    //    Type = logType,
-                    //    Path = e.FullPath,
-                    //    Content = content
-                    //});
                     AddCommit(new Log
                     {
                         Id = Guid.NewGuid(),
@@ -131,6 +126,9 @@ namespace Task_4._1
             }
         }
 
+        /// <summary>
+        /// Event Created
+        /// </summary>
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
             lock (_locker)
@@ -148,14 +146,6 @@ namespace Task_4._1
                     string content = File.ReadAllText(e.FullPath);
                     LogType logType = LogType.Create;
 
-                    //RequestOnAddLog(new Log
-                    //{
-                    //    Id = Guid.NewGuid(),
-                    //    Date = lastWriteTime,
-                    //    Type = logType,
-                    //    Path = e.FullPath,
-                    //    Content = content
-                    //});
                     AddCommit(new Log
                     {
                         Id = Guid.NewGuid(),
@@ -171,6 +161,9 @@ namespace Task_4._1
             }
         }
 
+        /// <summary>
+        /// Event Deleted
+        /// </summary>
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
             lock (_locker)
@@ -186,13 +179,6 @@ namespace Task_4._1
                 }
 
                 LogType logType = LogType.Delete;
-                //RequestOnAddLog(new Log
-                //{
-                //    Id = Guid.NewGuid(),
-                //    Date = lastWriteTime,
-                //    Type = logType,
-                //    Path = e.FullPath
-                //});
 
                 AddCommit(new Log
                 {
@@ -206,6 +192,9 @@ namespace Task_4._1
             }
         }
 
+        /// <summary>
+        /// Event Renamed
+        /// </summary>
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
             lock (_locker)
@@ -219,14 +208,6 @@ namespace Task_4._1
                 LogType logType = LogType.Rename;
 
                 Guid id = ListCommites.LastOrDefault(x => x.Path == e.OldFullPath).Id;
-                //RequestOnAddLog(new Log
-                //{
-                //    Id = id == default(Guid)? Guid.NewGuid(): id,
-                //    Date = lastWriteTime,
-                //    Type = logType,
-                //    OldPath = e.OldFullPath,
-                //    Path = e.FullPath
-                //});
 
                 AddCommit(new Log
                 {
@@ -240,11 +221,6 @@ namespace Task_4._1
                 Notify?.Invoke($"{e.ChangeType} -> File: {e.OldFullPath} renamed to {e.FullPath}");
             }
         }
-
-        //private void RequestOnAddLog(Log source)
-        //{
-        //    LogService.AddLog(source, PathLog, PathFolderLogContent);
-        //}
 
         private void AddCommit(Log source)
         {

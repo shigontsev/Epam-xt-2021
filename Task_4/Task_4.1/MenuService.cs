@@ -48,7 +48,7 @@ namespace Task_4._1
                         Watcher.Run();
                         break;
                     case "2":
-                        //LogFixation.RunFixation();
+                        LogFixation.Run_Fixation();
                         LogFixation.Run_SelectResetByDate();
                         break;
                 }

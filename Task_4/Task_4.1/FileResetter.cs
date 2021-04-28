@@ -16,10 +16,6 @@ namespace Task_4._1
 
         public string PathCurrentFolder { get; private set; }
 
-        public string PathLog => PathCurrentFolder + LogService._nameFileLog;
-
-        //public string PathFolderLogContent => PathCurrentFolder + LogService._nameFolderLogContent;
-
         public List<Log> ListLog { get; private set; }
 
         public Dictionary<string, InfoState> ListFixation { get; private set; }
@@ -40,85 +36,12 @@ namespace Task_4._1
             Notify += Message.ShowLine;
         }
 
-        #region for commit
-        public void Run()
+        /// <summary>
+        /// Working by index Fixations
+        /// </summary>
+        public void Run_Fixation()
         {
-            ListLog = LogService.GetListLog(PathLog);
-
-            ShowCommiteLog();
-
-            if (ListLog.Count == 0)
-            {
-                Console.ReadLine();
-            }
-            else
-            {
-                string input = Input.String();
-                if (input == "q")
-                {
-                    Message.ShowLine("Выход из списка");
-                    return;
-                }
-                if (!Input.TryInt(input, out int index))
-                {
-                    Message.ShowLine("Выход из списка");
-                    return;
-                }
-
-                CommitResetByIndex(index);
-            }
-            Message.ShowLine("Выход из списка");
-        }
-
-        public void Run_SelectResetByDate()
-        {
-            //ListLog = LogService.GetListLog(PathLog);
             ListFixation = _Logger.GetStates();
-
-            ShowCommiteLogByDate();
-
-            if (ListFixation.Count == 0)
-            {
-                Console.ReadLine();
-            }
-            else
-            {
-                string input = Input.String();
-                if (input == "q")
-                {
-                    Notify?.Invoke("Выход из списка");
-                    return;
-                }
-
-                Notify?.Invoke("Введите дату и время:");
-
-                DateTime dateTime = Input.SetDateTime();
-
-                FixationResetByDateTime(dateTime);
-
-                //if (!Input.TryInt(input, out int index))
-                //{
-                //    Message.ShowLine("Выход из списка");
-                //    return;
-                //}
-
-                //CommitResetByIndex(index);
-            }
-            Notify?.Invoke("Выход из списка");
-
-            ListFixation.Clear();
-
-            Thread.Sleep(TimeSpan.FromSeconds(3));
-        }
-        #endregion for commit
-
-
-        public void RunFixation()
-        {
-            //ListLog = LogService.GetAllFixation(PathCurrentFolder + "\\FixationLog");
-
-            ListFixation = _Logger.GetStates();
-
 
             ShowFixationLog();
 
@@ -148,7 +71,46 @@ namespace Task_4._1
             Thread.Sleep(TimeSpan.FromSeconds(3));
         }
 
-        //For fixation
+        /// <summary>
+        /// Working by select DateTime Fixations
+        /// </summary>
+        public void Run_SelectResetByDate()
+        {
+            ListFixation = _Logger.GetStates();
+
+            ShowCommiteLogByDate();
+
+            if (ListFixation.Count == 0)
+            {
+                Console.ReadLine();
+            }
+            else
+            {
+                string input = Input.String();
+                if (input == "q")
+                {
+                    Notify?.Invoke("Выход из списка");
+                    return;
+                }
+
+                Notify?.Invoke("Введите дату и время:");
+
+                DateTime dateTime = Input.SetDateTime();
+
+                FixationResetByDateTime(dateTime);
+            }
+            Notify?.Invoke("Выход из списка");
+            ListFixation.Clear();
+
+            Thread.Sleep(TimeSpan.FromSeconds(3));
+        }
+
+        #region By index Fixations
+
+        /// <summary>
+        /// Reset to fixation by selected index
+        /// </summary>
+        /// <param name="index">index Fixation</param>
         private void FixationResetByIndex(int index)
         {
             if (index > ListFixation.Count - 1 || index < 0)
@@ -171,47 +133,42 @@ namespace Task_4._1
             }
         }
 
-        #region for commit
-        //for commit
-        private void CommitResetByIndex(int index)
-        {            
-            if (index > ListLog.Count - 1 || index < 0)
+        /// <summary>
+        /// Show list Fixation, and presenting command, for action by Index
+        /// </summary>
+        private void ShowFixationLog()
+        {
+            int i = 0;
+            if (ListFixation.Count != 0)
             {
-                Message.ShowLine("Выбран не верный индекс");
-                return;
-            }
-
-            var listLogNew = ListLog.GetRange(0, index + 1).ToList();
-
-            DeleteAllTxt();
-
-            foreach (var item in listLogNew)
-            {
-                switch (item.Type)
+                foreach (var item in ListFixation)
                 {
-                    case LogType.Create:
-                        CommitCreateOrEdit(item);
-                        break;
-                    case LogType.Edit:
-                        CommitCreateOrEdit(item);
-                        break;
-                    case LogType.Delete:
-                        CommitDelete(item);
-                        break;
-                    case LogType.Rename:
-                        CommitRename(item);
-                        break;
+                    Console.WriteLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
+                    i++;
                 }
+                Console.WriteLine("Выберите индекс отката:");
+                Console.WriteLine("Или нажмите \'q\' для выхода.");
             }
-
-            _Logger.SetListLog(listLogNew, PathLog);
+            else
+            {
+                Notify?.Invoke("Список пуст, введите любую клавишу для выхода.");
+            }
+            Console.Write("ВВОД : ");
         }
 
+        #endregion By index Fixations
+
+        #region By dateTime Fixations
+
+        /// <summary>
+        /// Reset to fixation by selected dateTime
+        /// </summary>
+        /// <param name="dateTime">dateTime Fixation</param>
         private void FixationResetByDateTime(DateTime dateTime)
         {
             if (dateTime >= ListFixation.Last().Value.Date || dateTime < ListFixation.First().Value.Date)
             {
-                Message.ShowLine("Выбрана не верная дата");
+                Notify.Invoke("Выбрана не верная дата");
                 return;
             }
 
@@ -251,10 +208,6 @@ namespace Task_4._1
                 Directory.Delete(item.Value.Path, true);
                 File.Delete($"{_Logger.FixationLogPathFolder}\\{item.Key}.json");
             }
-            
-
-            ////Edit Commits current Of Fixation *.json
-            //LogService.Serialize(currenCommitsOfFixation, pathCommitsOfFixation);
         }
 
         private void CommitCreateOrEdit(Log item)
@@ -272,38 +225,9 @@ namespace Task_4._1
             File.Move(item.OldPath, item.Path);
         }
 
-        private void DeleteAllTxt()
-        {
-            if (Directory.Exists(PathCurrentFolder))
-            {
-                var files = Directory.GetFiles(PathCurrentFolder, "*.txt", SearchOption.AllDirectories);
-                foreach (var file in files)
-                {
-                    File.Delete(file);
-                }
-            }
-        }
-
-        private void ShowCommiteLog()
-        {
-            int i = 0;
-            if (ListLog.Count != 0)
-            {
-                foreach (var item in ListLog)
-                {
-                    Message.ShowLine($"{i} : Date = {item.Date}; Type = {item.Type}; Path = {item.Path}");
-                    i++;
-                }
-                Message.ShowLine("Выберите индекс отката:");
-                Message.ShowLine("Или нажмите \'q\' для выхода.");
-            }
-            else
-            {
-                Message.ShowLine("Список пуст, введите любую клавишу для выхода.");
-            }
-            Message.Show("ВВОД : ");
-        }
-
+        /// <summary>
+        /// Show list Fixation, and presenting command, for action by DateTime
+        /// </summary>
         private void ShowCommiteLogByDate()
         {
             int i = 0;
@@ -324,30 +248,21 @@ namespace Task_4._1
             Console.Write("ВВОД : ");
         }
 
-        #endregion for commit
+        #endregion By dateTime Fixations
 
         /// <summary>
-        /// Show list Fixation, and presenting command
+        /// Clear current folder from *.txt files
         /// </summary>
-        private void ShowFixationLog()
+        private void DeleteAllTxt()
         {
-            int i = 0;
-            if (ListFixation.Count != 0)
+            if (Directory.Exists(PathCurrentFolder))
             {
-                foreach (var item in ListFixation)
+                var files = Directory.GetFiles(PathCurrentFolder, "*.txt", SearchOption.AllDirectories);
+                foreach (var file in files)
                 {
-                    Console.WriteLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
-                    i++;
+                    File.Delete(file);
                 }
-                Console.WriteLine("Выберите индекс отката:");
-                Console.WriteLine("Или нажмите \'q\' для выхода.");
             }
-            else
-            {
-                Notify?.Invoke("Список пуст, введите любую клавишу для выхода.");
-            }
-            Console.Write("ВВОД : ");
         }
-
     }
 }
