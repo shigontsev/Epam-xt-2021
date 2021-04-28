@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using System.Threading;
 
 namespace Task_4._1
 {
@@ -68,6 +69,47 @@ namespace Task_4._1
             }
             Message.ShowLine("Выход из списка");
         }
+
+        public void Run_SelectResetByDate()
+        {
+            //ListLog = LogService.GetListLog(PathLog);
+            ListFixation = _Logger.GetStates();
+
+            ShowCommiteLogByDate();
+
+            if (ListFixation.Count == 0)
+            {
+                Console.ReadLine();
+            }
+            else
+            {
+                string input = Input.String();
+                if (input == "q")
+                {
+                    Notify?.Invoke("Выход из списка");
+                    return;
+                }
+
+                Notify?.Invoke("Введите дату и время:");
+
+                DateTime dateTime = Input.SetDateTime();
+
+                FixationResetByDateTime(dateTime);
+
+                //if (!Input.TryInt(input, out int index))
+                //{
+                //    Message.ShowLine("Выход из списка");
+                //    return;
+                //}
+
+                //CommitResetByIndex(index);
+            }
+            Notify?.Invoke("Выход из списка");
+
+            ListFixation.Clear();
+
+            Thread.Sleep(TimeSpan.FromSeconds(3));
+        }
         #endregion for commit
 
 
@@ -101,6 +143,9 @@ namespace Task_4._1
                 FixationResetByIndex(index);
             }
             Notify?.Invoke("Выход из списка");
+            ListFixation.Clear();
+
+            Thread.Sleep(TimeSpan.FromSeconds(3));
         }
 
         //For fixation
@@ -162,6 +207,56 @@ namespace Task_4._1
             _Logger.SetListLog(listLogNew, PathLog);
         }
 
+        private void FixationResetByDateTime(DateTime dateTime)
+        {
+            if (dateTime >= ListFixation.Last().Value.Date || dateTime < ListFixation.First().Value.Date)
+            {
+                Message.ShowLine("Выбрана не верная дата");
+                return;
+            }
+
+            var currentFixation = ListFixation.First(x => x.Value.Date > dateTime);
+
+            string pathCommitsOfFixation = $"{_Logger.FixationLogPathFolder}\\{currentFixation.Key}.json";
+
+            var currenCommitsOfFixation = 
+                LogService.Deserialize(pathCommitsOfFixation)
+                .Where(x=>x.Date<=dateTime).ToList();
+
+            DeleteAllTxt();
+            LogService.CopyFiles(currentFixation.Value.Path, PathCurrentFolder);
+            foreach (var item in currenCommitsOfFixation)
+            {
+                switch (item.Type)
+                {
+                    case LogType.Create:
+                        CommitCreateOrEdit(item);
+                        break;
+                    case LogType.Edit:
+                        CommitCreateOrEdit(item);
+                        break;
+                    case LogType.Delete:
+                        CommitDelete(item);
+                        break;
+                    case LogType.Rename:
+                        CommitRename(item);
+                        break;
+                }
+            }
+
+            //Delete late fixations
+            var eraseFixation = ListFixation.Where(x=>x.Value.Date>dateTime);
+            foreach (var item in eraseFixation)
+            {
+                Directory.Delete(item.Value.Path, true);
+                File.Delete($"{_Logger.FixationLogPathFolder}\\{item.Key}.json");
+            }
+            
+
+            ////Edit Commits current Of Fixation *.json
+            //LogService.Serialize(currenCommitsOfFixation, pathCommitsOfFixation);
+        }
+
         private void CommitCreateOrEdit(Log item)
         {
             File.WriteAllText(item.Path, _Logger.GetContentLogById(item.Id));
@@ -207,6 +302,26 @@ namespace Task_4._1
                 Message.ShowLine("Список пуст, введите любую клавишу для выхода.");
             }
             Message.Show("ВВОД : ");
+        }
+
+        private void ShowCommiteLogByDate()
+        {
+            int i = 0;
+            if (ListFixation.Count != 0)
+            {
+                foreach (var item in ListFixation)
+                {
+                    Console.WriteLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
+                    i++;
+                }
+                Console.WriteLine("Введите любую клавишу для продолжения");
+                Console.WriteLine("Или нажмите \'q\' для выхода.");
+            }
+            else
+            {
+                Notify?.Invoke("Список пуст, введите любую клавишу для выхода.");
+            }
+            Console.Write("ВВОД : ");
         }
 
         #endregion for commit

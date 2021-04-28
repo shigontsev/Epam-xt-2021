@@ -11,7 +11,7 @@ namespace Task_4._1
                 
         public FileWatcher Watcher { get; private set; }
 
-        public FileResetter LogCommits { get; private set; }
+        public FileResetter LogFixation { get; private set; }
 
         public LogService Logger { get; private set; }
 
@@ -27,7 +27,7 @@ namespace Task_4._1
             Logger = new LogService(PathFolderWatching);
 
             Watcher = new FileWatcher(PathFolderWatching, Logger);
-            LogCommits = new FileResetter(PathFolderWatching, Logger);
+            LogFixation = new FileResetter(PathFolderWatching, Logger);
         }
 
         public void CallMenu()
@@ -48,7 +48,8 @@ namespace Task_4._1
                         Watcher.Run();
                         break;
                     case "2":
-                        LogCommits.RunFixation();
+                        //LogFixation.RunFixation();
+                        LogFixation.Run_SelectResetByDate();
                         break;
                 }
 

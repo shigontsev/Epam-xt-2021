@@ -84,6 +84,7 @@ namespace Task_4._1
             CommitesCurrentFixation.Clear();
             Notify?.Invoke("Фиксация завершена...");
 
+            Thread.Sleep(TimeSpan.FromSeconds(3));
         }
 
         private static object _locker = new object();

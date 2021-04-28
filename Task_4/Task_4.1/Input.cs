@@ -58,5 +58,45 @@ namespace Task_4._1
                 }
             } while (true);
         }
+
+        public static DateTime SetDateTime()
+        {
+            do
+            {
+                try
+                {
+                    DateTime new_dateTime = new DateTime(
+                        year: InputValueDateTime("Год"),
+                        month: InputValueDateTime("Месяц"),
+                        day: InputValueDateTime("День"),
+                        hour: InputValueDateTime("Час"),
+                        minute: InputValueDateTime("Минут"),
+                        second: InputValueDateTime("Секунд")
+                        );
+
+                    return new_dateTime;
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine($"Не верно введена дата, {ex.Message} повторите попытку:");
+                }
+            } while (true);
+        }
+
+        private static int InputValueDateTime(string messeg)
+        {            
+            while (true)
+            {
+                try
+                {
+                    Console.Write($"Ввод {messeg} = ");
+                    return Int();
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.Write($"{ex.ParamName}, повторите попытку: ");
+                }
+            }
+        }
     }
 }
