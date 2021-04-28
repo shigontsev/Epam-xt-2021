@@ -20,7 +20,7 @@ namespace Task_4._1
 
             menu.CallMenu();
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 

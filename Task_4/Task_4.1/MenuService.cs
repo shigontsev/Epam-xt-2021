@@ -11,7 +11,9 @@ namespace Task_4._1
                 
         public FileWatcher Watcher { get; private set; }
 
-        public FileResetter LogCommits { get; private set; }
+        public FileResetter LogFixation { get; private set; }
+
+        public LogService Logger { get; private set; }
 
         public MenuService(string pathFolderWatching)
         {
@@ -22,8 +24,10 @@ namespace Task_4._1
 
             PathFolderWatching = pathFolderWatching;
 
-            Watcher = new FileWatcher(PathFolderWatching);
-            LogCommits = new FileResetter(PathFolderWatching);
+            Logger = new LogService(PathFolderWatching);
+
+            Watcher = new FileWatcher(PathFolderWatching, Logger);
+            LogFixation = new FileResetter(PathFolderWatching, Logger);
         }
 
         public void CallMenu()
@@ -41,11 +45,11 @@ namespace Task_4._1
                 switch (commandButton)
                 {
                     case "1":
-                        Console.WriteLine("Началось наблюдение...");
                         Watcher.Run();
                         break;
                     case "2":
-                        LogCommits.Run();
+                        LogFixation.Run_Fixation();
+                        LogFixation.Run_SelectResetByDate();
                         break;
                 }
 

@@ -3,20 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using System.Threading;
 
 namespace Task_4._1
 {
     public class FileResetter
     {
+        private delegate void EventHandler(string message);
+
+        private event EventHandler Notify;
+
+
         public string PathCurrentFolder { get; private set; }
-
-        public string PathLog => PathCurrentFolder + LogService._nameFileLog;
-
-        public string PathFolderLogContent => PathCurrentFolder + LogService._nameFolderLogContent;
 
         public List<Log> ListLog { get; private set; }
 
-        public FileResetter(string pathFolder)
+        public Dictionary<string, InfoState> ListFixation { get; private set; }
+
+        private LogService _Logger;
+
+        public FileResetter(string pathFolder, LogService logger)
         {
             if (!Directory.Exists(pathFolder))
             {
@@ -24,15 +30,22 @@ namespace Task_4._1
             }
 
             PathCurrentFolder = pathFolder;
+
+            _Logger = logger;
+
+            Notify += Message.ShowLine;
         }
 
-        public void Run()
+        /// <summary>
+        /// Working by index Fixations
+        /// </summary>
+        public void Run_Fixation()
         {
-            ListLog = LogService.GetListLog(PathLog);
+            ListFixation = _Logger.GetStates();
 
-            ShowCommiteLog();
+            ShowFixationLog();
 
-            if (ListLog.Count == 0)
+            if (ListFixation.Count() == 0)
             {
                 Console.ReadLine();
             }
@@ -41,34 +54,135 @@ namespace Task_4._1
                 string input = Input.String();
                 if (input == "q")
                 {
-                    Message.ShowLine("Выход из списка");
+                    Notify?.Invoke("Выход из списка");
                     return;
                 }
                 if (!Input.TryInt(input, out int index))
                 {
-                    Message.ShowLine("Выход из списка");
+                    Notify?.Invoke("Выход из списка");
                     return;
                 }
 
-                CommitResetByIndex(index);
+                FixationResetByIndex(index);
             }
-            Message.ShowLine("Выход из списка");
+            Notify?.Invoke("Выход из списка");
+            ListFixation.Clear();
+
+            Thread.Sleep(TimeSpan.FromSeconds(3));
         }
 
+        /// <summary>
+        /// Working by select DateTime Fixations
+        /// </summary>
+        public void Run_SelectResetByDate()
+        {
+            ListFixation = _Logger.GetStates();
 
-        private void CommitResetByIndex(int index)
-        {            
-            if (index > ListLog.Count - 1 || index < 0)
+            ShowCommiteLogByDate();
+
+            if (ListFixation.Count == 0)
             {
-                Message.ShowLine("Выбран не верный индекс");
+                Console.ReadLine();
+            }
+            else
+            {
+                string input = Input.String();
+                if (input == "q")
+                {
+                    Notify?.Invoke("Выход из списка");
+                    return;
+                }
+
+                Notify?.Invoke("Введите дату и время:");
+
+                DateTime dateTime = Input.SetDateTime();
+
+                FixationResetByDateTime(dateTime);
+            }
+            Notify?.Invoke("Выход из списка");
+            ListFixation.Clear();
+
+            Thread.Sleep(TimeSpan.FromSeconds(3));
+        }
+
+        #region By index Fixations
+
+        /// <summary>
+        /// Reset to fixation by selected index
+        /// </summary>
+        /// <param name="index">index Fixation</param>
+        private void FixationResetByIndex(int index)
+        {
+            if (index > ListFixation.Count - 1 || index < 0)
+            {
+                Notify?.Invoke("Выбран не верный индекс");
                 return;
             }
 
-            var listLogNew = ListLog.GetRange(0, index + 1).ToList();
+            var fixation = ListFixation.ElementAt(index);
 
             DeleteAllTxt();
+            LogService.CopyFiles(fixation.Value.Path, PathCurrentFolder);
 
-            foreach (var item in listLogNew)
+            //Delete late fixations
+            var eraseFixation = ListFixation.Skip(index + 1);
+            foreach (var item in eraseFixation)
+            {
+                Directory.Delete(item.Value.Path, true);
+                File.Delete($"{_Logger.FixationLogPathFolder}\\{item.Key}.json");
+            }
+        }
+
+        /// <summary>
+        /// Show list Fixation, and presenting command, for action by Index
+        /// </summary>
+        private void ShowFixationLog()
+        {
+            int i = 0;
+            if (ListFixation.Count != 0)
+            {
+                foreach (var item in ListFixation)
+                {
+                    Console.WriteLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
+                    i++;
+                }
+                Console.WriteLine("Выберите индекс отката:");
+                Console.WriteLine("Или нажмите \'q\' для выхода.");
+            }
+            else
+            {
+                Notify?.Invoke("Список пуст, введите любую клавишу для выхода.");
+            }
+            Console.Write("ВВОД : ");
+        }
+
+        #endregion By index Fixations
+
+        #region By dateTime Fixations
+
+        /// <summary>
+        /// Reset to fixation by selected dateTime
+        /// </summary>
+        /// <param name="dateTime">dateTime Fixation</param>
+        private void FixationResetByDateTime(DateTime dateTime)
+        {
+            if (dateTime >= ListFixation.Last().Value.Date || dateTime < ListFixation.First().Value.Date)
+            {
+                Notify.Invoke("Выбрана не верная дата");
+                return;
+            }
+
+            var currentFixation = ListFixation.First(x => x.Value.Date > dateTime);
+
+            string pathCommitsOfFixation = $"{_Logger.FixationLogPathFolder}\\{currentFixation.Key}.json";
+
+            var currenCommitsOfFixation = 
+                LogService.Deserialize(pathCommitsOfFixation)
+                .Where(x=>x.Date<=dateTime).ToList();
+
+            DeleteAllTxt();
+            LogService.CopyFiles(currentFixation.Value.Path, PathCurrentFolder);
+            foreach (var item in currenCommitsOfFixation)
             {
                 switch (item.Type)
                 {
@@ -87,12 +201,18 @@ namespace Task_4._1
                 }
             }
 
-            LogService.SetListLog(listLogNew, PathLog);
+            //Delete late fixations
+            var eraseFixation = ListFixation.Where(x=>x.Value.Date>dateTime);
+            foreach (var item in eraseFixation)
+            {
+                Directory.Delete(item.Value.Path, true);
+                File.Delete($"{_Logger.FixationLogPathFolder}\\{item.Key}.json");
+            }
         }
 
         private void CommitCreateOrEdit(Log item)
         {
-            File.WriteAllText(item.Path, LogService.GetContentLogById(item.Id, PathFolderLogContent));
+            File.WriteAllText(item.Path, _Logger.GetContentLogById(item.Id));
         }
 
         private void CommitDelete(Log item)
@@ -105,6 +225,34 @@ namespace Task_4._1
             File.Move(item.OldPath, item.Path);
         }
 
+        /// <summary>
+        /// Show list Fixation, and presenting command, for action by DateTime
+        /// </summary>
+        private void ShowCommiteLogByDate()
+        {
+            int i = 0;
+            if (ListFixation.Count != 0)
+            {
+                foreach (var item in ListFixation)
+                {
+                    Console.WriteLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
+                    i++;
+                }
+                Console.WriteLine("Введите любую клавишу для продолжения");
+                Console.WriteLine("Или нажмите \'q\' для выхода.");
+            }
+            else
+            {
+                Notify?.Invoke("Список пуст, введите любую клавишу для выхода.");
+            }
+            Console.Write("ВВОД : ");
+        }
+
+        #endregion By dateTime Fixations
+
+        /// <summary>
+        /// Clear current folder from *.txt files
+        /// </summary>
         private void DeleteAllTxt()
         {
             if (Directory.Exists(PathCurrentFolder))
@@ -116,26 +264,5 @@ namespace Task_4._1
                 }
             }
         }
-
-        private void ShowCommiteLog()
-        {
-            int i = 0;
-            if (ListLog.Count != 0)
-            {
-                foreach (var item in ListLog)
-                {
-                    Message.ShowLine($"{i} : Date = {item.Date}; Type = {item.Type}; Path = {item.Path}");
-                    i++;
-                }
-                Message.ShowLine("Выберите индекс отката:");
-                Message.ShowLine("Или нажмите \'q\' для выхода.");
-            }
-            else
-            {
-                Message.ShowLine("Список пуст, введите любую клавишу для выхода.");
-            }
-            Message.Show("ВВОД : ");
-        }
-
     }
 }
