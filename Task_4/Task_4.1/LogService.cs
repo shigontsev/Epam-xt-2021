@@ -13,18 +13,18 @@ namespace Task_4._1
     {
         public const string _nameFileLog = "\\log.json";
 
-        public const string _nameFolderLogContent = "\\LogContent";
 
+        private const string _nameFolderLogContent = "\\LogContent";
 
+        private const string _nameFolderFixationLog = "\\FixationLog";
 
+        private const string _pathDirectoryStates = "C:\\LogState";
 
-        public const string _pathDirectoryStates = "C:\\LogState";
+        public string CurrentPath { get; private set; } //Текущаю папка, объект иследования
 
-        public string CurrentPath { get; private set; }
+        public string LogContentPathFolder => CurrentPath + _nameFolderLogContent;//\\LogContent
 
-        public string LogContentPath => CurrentPath + "\\LogContent";
-
-        public string FixationLogPath => CurrentPath + "\\FixationLog";
+        public string FixationLogPathFolder => CurrentPath + _nameFolderFixationLog;//"\\FixationLog"
 
         public LogService(string currentFolderPath)
         {
@@ -36,9 +36,9 @@ namespace Task_4._1
             return Deserialize(pathLog);
         }
 
-        public string GetContentLogById(Guid id, string pathFolderLogContent)
+        public string GetContentLogById(Guid id)
         {
-            string pathContent = $"{pathFolderLogContent}\\{id}.json";
+            string pathContent = $"{LogContentPathFolder}\\{id}.json";
 
             return !File.Exists(pathContent) ? File.ReadAllText(pathContent) : null;
         }
@@ -49,9 +49,9 @@ namespace Task_4._1
             {
                 Serialize(list, pathLog);
 
-                if (!Directory.Exists(Environment.CurrentDirectory + "\\LogContent"))
+                if (!Directory.Exists(LogContentPathFolder))
                 {
-                    Directory.CreateDirectory(Environment.CurrentDirectory + "\\LogContent");
+                    Directory.CreateDirectory(LogContentPathFolder);
                 }
 
                 foreach (var log in list)
@@ -60,7 +60,7 @@ namespace Task_4._1
                     
                     if (log.Type != LogType.Delete || log.Type != LogType.Rename)
                     {
-                        string pathLogContent = $"{Environment.CurrentDirectory}\\LogContent\\{log.Id}.json";
+                        string pathLogContent = $"{LogContentPathFolder}\\{log.Id}.json";
 
                         File.WriteAllText(pathLogContent, log.Content);
                     }
@@ -93,11 +93,11 @@ namespace Task_4._1
         //    }
         //}
 
-        public List<Log> GetAllFixation(string pathFixationLog)
+        public List<Log> GetAllFixation()
         {
-            if (Directory.Exists(pathFixationLog))
+            if (Directory.Exists(FixationLogPathFolder))
             {
-                var files = Directory.GetFiles(pathFixationLog, "*.json");
+                var files = Directory.GetFiles(FixationLogPathFolder, "*.json");
                 if (files.Count() > 0)
                 {
                     var filesBefore = new Dictionary<string, DateTime>();
@@ -114,11 +114,11 @@ namespace Task_4._1
                     return list;
                 }
             }
-            Directory.CreateDirectory(pathFixationLog);
+            Directory.CreateDirectory(FixationLogPathFolder);
             return new List<Log>();
         }
 
-        public void SaveState(string pathCurrent, Guid guid)
+        public void SaveState(Guid guid)
         {
             if (!Directory.Exists(_pathDirectoryStates))
             {
@@ -126,65 +126,34 @@ namespace Task_4._1
             }
             string pathDirectoryCurrentState = _pathDirectoryStates + "\\" + guid;
             Directory.CreateDirectory(pathDirectoryCurrentState);
-            //var currentInfo = new DirectoryInfo(pathCurrent);
-            //var directorys = Directory.EnumerateDirectories(pathCurrent)
-            //    .Select(x => x.Replace(pathCurrent, "")).ToList();
-            //var files = Directory.GetFiles(pathCurrent, "*.txt", SearchOption.AllDirectories)
-            //    .Select(x => x.Replace(pathCurrent, "")).ToList();
-            //foreach (var item in directorys)
-            //{
-            //    //Directory.CreateDirectory(_pathDirectoryStates + item);
-            //    Console.WriteLine(item);
-            //}
-            //foreach (var item in files)
-            //{
-            //    //Directory.CreateDirectory(_pathDirectoryStates + item);
-            //    Console.WriteLine(item);
-            //}
-
-            //var direcoryAndFiles = GetRecursFiles(pathCurrent).Select(x => x.Replace(pathCurrent, "")).ToList();
-
-            CopyFiles(pathCurrent, pathDirectoryCurrentState);
-
-            //var direcoryAndFiles = GetRecursFiles(pathCurrent);
-
-            //Regex reg = new Regex(@".+\.txt$");
-            //foreach (var item in direcoryAndFiles)
-            //{
-            //    //Directory.CreateDirectory(_pathDirectoryStates + item);
-
-            //    //Console.WriteLine(item+"  "+reg.Match(item).Success);
-            //    if (reg.Match(item).Success)
-            //    {
-            //        File.Copy(item, item.Replace(pathCurrent, pathDirectoryCurrentState));
-            //    }
-            //    else
-            //    {
-            //        Directory.CreateDirectory(item.Replace(pathCurrent, pathDirectoryCurrentState));
-            //    }
-            //}
-
+            
+            CopyFiles(CurrentPath, pathDirectoryCurrentState);
         }
 
+        /// <summary>
+        /// Get list path *.txt files by selected folder path
+        /// </summary>
+        /// <param name="start_path">select folder path</param>
+        /// <returns></returns>
         private static List<string> GetRecursFiles(string start_path)
         {
             List<string> ls = new List<string>();
-                string[] folders = Directory.GetDirectories(start_path);
-                foreach (string folder in folders)
-                {
-                    ls.Add(folder);
-                    ls.AddRange(GetRecursFiles(folder));
-                }
-                string[] files = Directory.GetFiles(start_path,"*.txt");
-                foreach (string filename in files)
-                {
-                    ls.Add(filename);
-                }
+            string[] folders = Directory.GetDirectories(start_path);
+            foreach (string folder in folders)
+            {
+                ls.Add(folder);
+                ls.AddRange(GetRecursFiles(folder));
+            }
+            string[] files = Directory.GetFiles(start_path, "*.txt");
+            foreach (string filename in files)
+            {
+                ls.Add(filename);
+            }
             return ls;
         }
 
         /// <summary>
-        /// Copy file *.txt from Source to Dest directory
+        /// Copy file *.txt from Source to Dest directory, in folder and down
         /// </summary>
         public static void CopyFiles(string sourceDirectoryPath, string destDirectoryPath)
         {
@@ -193,15 +162,13 @@ namespace Task_4._1
             Regex reg = new Regex(@".+\.txt$");
             foreach (var item in direcoryAndFiles)
             {
-                //Directory.CreateDirectory(_pathDirectoryStates + item);
-
-                //Console.WriteLine(item+"  "+reg.Match(item).Success);
                 if (reg.Match(item).Success)
                 {
                     File.Copy(item, item.Replace(sourceDirectoryPath, destDirectoryPath));
                 }
                 else
                 {
+                    //Replace path by parent path
                     string new_directory = item.Replace(sourceDirectoryPath, destDirectoryPath);
                     if (!Directory.Exists(new_directory))
                     {

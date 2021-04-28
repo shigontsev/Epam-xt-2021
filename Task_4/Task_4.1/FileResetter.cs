@@ -8,11 +8,16 @@ namespace Task_4._1
 {
     public class FileResetter
     {
+        private delegate void EventHandler(string message);
+
+        private event EventHandler Notify;
+
+
         public string PathCurrentFolder { get; private set; }
 
         public string PathLog => PathCurrentFolder + LogService._nameFileLog;
 
-        public string PathFolderLogContent => PathCurrentFolder + LogService._nameFolderLogContent;
+        //public string PathFolderLogContent => PathCurrentFolder + LogService._nameFolderLogContent;
 
         public List<Log> ListLog { get; private set; }
 
@@ -30,8 +35,11 @@ namespace Task_4._1
             PathCurrentFolder = pathFolder;
 
             _Logger = logger;
+
+            Notify += Message.ShowLine;
         }
 
+        #region for commit
         public void Run()
         {
             ListLog = LogService.GetListLog(PathLog);
@@ -60,6 +68,8 @@ namespace Task_4._1
             }
             Message.ShowLine("Выход из списка");
         }
+        #endregion for commit
+
 
         public void RunFixation()
         {
@@ -79,25 +89,26 @@ namespace Task_4._1
                 string input = Input.String();
                 if (input == "q")
                 {
-                    Message.ShowLine("Выход из списка");
+                    Notify?.Invoke("Выход из списка");
                     return;
                 }
                 if (!Input.TryInt(input, out int index))
                 {
-                    Message.ShowLine("Выход из списка");
+                    Notify?.Invoke("Выход из списка");
                     return;
                 }
 
                 FixationResetByIndex(index);
             }
-            Message.ShowLine("Выход из списка");
+            Notify?.Invoke("Выход из списка");
         }
 
+        //For fixation
         private void FixationResetByIndex(int index)
         {
             if (index > ListFixation.Count - 1 || index < 0)
             {
-                Message.ShowLine("Выбран не верный индекс");
+                Notify?.Invoke("Выбран не верный индекс");
                 return;
             }
 
@@ -106,15 +117,17 @@ namespace Task_4._1
             DeleteAllTxt();
             LogService.CopyFiles(fixation.Value.Path, PathCurrentFolder);
 
+            //Delete late fixations
             var eraseFixation = ListFixation.Skip(index + 1);
             foreach (var item in eraseFixation)
             {
                 Directory.Delete(item.Value.Path, true);
-                File.Delete(PathCurrentFolder +
-                    "\\FixationLog\\" + item.Key + ".json");
+                File.Delete($"{_Logger.FixationLogPathFolder}\\{item.Key}.json");
             }
         }
 
+        #region for commit
+        //for commit
         private void CommitResetByIndex(int index)
         {            
             if (index > ListLog.Count - 1 || index < 0)
@@ -151,7 +164,7 @@ namespace Task_4._1
 
         private void CommitCreateOrEdit(Log item)
         {
-            File.WriteAllText(item.Path, _Logger.GetContentLogById(item.Id, PathFolderLogContent));
+            File.WriteAllText(item.Path, _Logger.GetContentLogById(item.Id));
         }
 
         private void CommitDelete(Log item)
@@ -196,6 +209,11 @@ namespace Task_4._1
             Message.Show("ВВОД : ");
         }
 
+        #endregion for commit
+
+        /// <summary>
+        /// Show list Fixation, and presenting command
+        /// </summary>
         private void ShowFixationLog()
         {
             int i = 0;
@@ -203,17 +221,17 @@ namespace Task_4._1
             {
                 foreach (var item in ListFixation)
                 {
-                    Message.ShowLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
+                    Console.WriteLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
                     i++;
                 }
-                Message.ShowLine("Выберите индекс отката:");
-                Message.ShowLine("Или нажмите \'q\' для выхода.");
+                Console.WriteLine("Выберите индекс отката:");
+                Console.WriteLine("Или нажмите \'q\' для выхода.");
             }
             else
             {
-                Message.ShowLine("Список пуст, введите любую клавишу для выхода.");
+                Notify?.Invoke("Список пуст, введите любую клавишу для выхода.");
             }
-            Message.Show("ВВОД : ");
+            Console.Write("ВВОД : ");
         }
 
     }

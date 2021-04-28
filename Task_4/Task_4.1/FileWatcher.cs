@@ -10,7 +10,7 @@ namespace Task_4._1
 {
     public class FileWatcher
     {
-        public delegate void EventHandler(string message);
+        private delegate void EventHandler(string message);
 
         private event EventHandler Notify;
 
@@ -18,9 +18,9 @@ namespace Task_4._1
 
         //public string PathLog => PathWatchtFolder + LogService._nameFileLog;
 
-        public string PathFolderLogContent => PathWatchtFolder + LogService._nameFolderLogContent;
+        //public string PathFolderLogContent => PathWatchtFolder + LogService._nameFolderLogContent;
 
-        private string _pathFixation;
+        private string _pathAnFixation;
 
         private List<Log> ListCommites;
 
@@ -44,17 +44,15 @@ namespace Task_4._1
             _Logger = logger;
 
             Notify += Message.ShowLine;
-
-            
         }
 
         public void Run()
         {
-            ListCommites = _Logger.GetAllFixation(PathWatchtFolder + "\\FixationLog");
+            ListCommites = _Logger.GetAllFixation();//_Logger.FixationLogPath
             CommitesCurrentFixation = new List<Log>();
 
             Guid guid = Guid.NewGuid();
-            _pathFixation = PathWatchtFolder + $"\\FixationLog\\{guid}.json";
+            _pathAnFixation = $"{_Logger.FixationLogPathFolder}\\{guid}.json";
 
             FileSystemWatcher watcher = new FileSystemWatcher(PathWatchtFolder, "*.txt");
             watcher.NotifyFilter = NotifyFilters.LastAccess
@@ -79,11 +77,12 @@ namespace Task_4._1
             //Save Fixation in file *.json, and save State
             if (CommitesCurrentFixation.Count > 0)
             {
-                _Logger.SetListLog(CommitesCurrentFixation, _pathFixation);
-                _Logger.SaveState(PathWatchtFolder, guid);
+                _Logger.SetListLog(CommitesCurrentFixation, _pathAnFixation);
+                _Logger.SaveState(guid);//PathWatchtFolder
             }
             ListCommites.Clear();
             CommitesCurrentFixation.Clear();
+            Notify?.Invoke("Фиксация завершена...");
 
         }
 
@@ -91,7 +90,7 @@ namespace Task_4._1
 
         private DateTime lastRead = DateTime.MinValue;
 
-        private void OnChanged(object source, FileSystemEventArgs e)
+        private void OnChanged(object sender, FileSystemEventArgs e)
         {
             lock (_locker)
             {
@@ -131,7 +130,7 @@ namespace Task_4._1
             }
         }
 
-        private void OnCreated(object source, FileSystemEventArgs e)
+        private void OnCreated(object sender, FileSystemEventArgs e)
         {
             lock (_locker)
             {
@@ -171,7 +170,7 @@ namespace Task_4._1
             }
         }
 
-        private void OnDeleted(object source, FileSystemEventArgs e)
+        private void OnDeleted(object sender, FileSystemEventArgs e)
         {
             lock (_locker)
             {
@@ -206,7 +205,7 @@ namespace Task_4._1
             }
         }
 
-        private void OnRenamed(object source, RenamedEventArgs e)
+        private void OnRenamed(object sender, RenamedEventArgs e)
         {
             lock (_locker)
             {
