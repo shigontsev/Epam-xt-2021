@@ -14,27 +14,20 @@ namespace Task_3._1._1
                 try
                 {
                     int result = int.Parse(Console.ReadLine());
-                    if (result < 0)
+                    if (result <= 0)
                     {
-                        throw new NegativeException();
+                        throw new ArgumentOutOfRangeException();
                     }
-                    if (result == 0)
-                    {
-                        throw new ArgumentZeroException();
-                    }
+
                     return result;
                 }
                 catch (FormatException)
                 {
                     Console.WriteLine("Не верный формат ввода, повторите попытку.");
                 }
-                catch (ArgumentZeroException)
+                catch (ArgumentOutOfRangeException)
                 {
-                    Console.WriteLine("Нулевое значение ввода, повторите попытку.");
-                }
-                catch (NegativeException)
-                {
-                    Console.WriteLine("Отрицательное значение, повторите попытку.");
+                    Console.WriteLine("Введено значение < 1, повторите попытку.");
                 }
             } while (true);
         }

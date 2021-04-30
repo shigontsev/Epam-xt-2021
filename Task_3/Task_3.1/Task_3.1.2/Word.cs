@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Task_3._1._2
 {
-    public class Frequency
+    public class Word
     {
-        public string Value { get; private set; }
+        public string Value { get;}
 
-        public int Count { get; private set; }
+        public int Count { get;}
 
-        public Frequency(string value, int count)
+        public Word(string value, int count)
         {
             Value = value;
             Count = count;

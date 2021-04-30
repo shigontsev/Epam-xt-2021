@@ -21,10 +21,7 @@ namespace Task_3._1._2
             Console.WriteLine();
             TextAnalysis frq = new TextAnalysis(text);
 
-            frq.ShowStatisticsByCount();
-
-            //frq.ShowStatisticsByValue();
-                       
+            frq.ShowStatisticsByCount();                       
 
             Console.ReadLine();
         }

@@ -14,14 +14,9 @@ namespace Task_3._1._2
             get { return _text; }
             private set 
             {
-                if (value is null)
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentNullException(nameof(value) + " is null");
-                }
-                value.Trim();
-                if (value == string.Empty)
-                {
-                    throw new ArgumentException(nameof(value) + " is Empty");
+                    throw new ArgumentException(nameof(value) + " is Null or Empty");
                 }
 
                 _text = value; 
@@ -29,7 +24,7 @@ namespace Task_3._1._2
         }
 
 
-        private List<Frequency> distinctWords = new List<Frequency>();
+        private List<Word> distinctWords = new List<Word>();
 
         private List<string> allWords = new List<string>();
 
@@ -57,8 +52,10 @@ namespace Task_3._1._2
 
         private void GroupingWords()
         {
-            var bufferDistWords = allWords.GroupBy(x => x).Select(x => new Frequency(value: x.Key, count: x.Count()));
-            distinctWords = bufferDistWords.ToList();
+            distinctWords = allWords
+                .GroupBy(x => x)
+                .Select(x => new Word(value: x.Key, count: x.Count()))
+                .ToList();
         }
 
 
@@ -72,7 +69,7 @@ namespace Task_3._1._2
             GetInfo(distinctWords.OrderBy(x => x.Value).ToList());
         }
 
-        private void GetInfo(List<Frequency> list)
+        private void GetInfo(List<Word> list)
         {
             Console.WriteLine("List of frequency words:");
             Console.WriteLine(string.Join(Environment.NewLine, list));
