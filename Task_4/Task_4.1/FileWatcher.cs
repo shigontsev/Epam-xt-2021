@@ -82,7 +82,8 @@ namespace Task_4._1
             }
             ListCommites.Clear();
             CommitesCurrentFixation.Clear();
-            Notify?.Invoke("Фиксация завершена...");
+            Notify?.Invoke(CommitesCurrentFixation.Count > 0?
+                "Фиксация завершена...": "Изменений не наблюдалось.Конец операции...");
 
             Thread.Sleep(TimeSpan.FromSeconds(3));
         }

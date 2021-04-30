@@ -11,7 +11,7 @@ namespace Task_4._1
                 
         public FileWatcher Watcher { get; private set; }
 
-        public FileResetter LogFixation { get; private set; }
+        public FileResetter Resetter { get; private set; }
 
         public LogService Logger { get; private set; }
 
@@ -27,14 +27,27 @@ namespace Task_4._1
             Logger = new LogService(PathFolderWatching);
 
             Watcher = new FileWatcher(PathFolderWatching, Logger);
-            LogFixation = new FileResetter(PathFolderWatching, Logger);
+            Resetter = new FileResetter(PathFolderWatching, Logger);
         }
 
         public void CallMenu()
         {
             string[] contentMenu = { "Выберите следующее:", "1 : Наблюдение", "2 : Откат изменений"
                     , "Ввод \'q\' Выйти из приложения", "ENTER: " };
-
+            string[] contentMenu_Resetter = { "Выбран откат изменений","Выберите следующее:", "1 : Откат по индексу фиксации", "2 : Откат по выбранной дате и времени"
+                    , "Ввод \'q\' Вернуться назад", "ENTER: " };
+            
+            //MenuAction
+            DelegateMenu(contentMenu, 
+                Watcher.Run, delegate {
+                    DelegateMenu(contentMenu_Resetter, 
+                        Resetter.Run_Fixation, Resetter.Run_SelectResetByDate);
+                }
+                );
+        }
+        
+        private void DelegateMenu(string[] contentMenu, Action action1, Action action2)
+        {
             string commandButton = "";
             do
             {
@@ -45,17 +58,15 @@ namespace Task_4._1
                 switch (commandButton)
                 {
                     case "1":
-                        Watcher.Run();
+                        action1?.Invoke();
                         break;
                     case "2":
-                        //Select by index
-                        LogFixation.Run_Fixation();
-                        ////Select by dateTime
-                        //LogFixation.Run_SelectResetByDate();
+                        action2?.Invoke();
                         break;
                 }
 
             } while (commandButton != "q");
-        }        
+        }
     }
+
 }
