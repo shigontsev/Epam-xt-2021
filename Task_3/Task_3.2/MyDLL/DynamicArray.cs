@@ -7,7 +7,7 @@ namespace MyDLL
 {
     public class DynamicArray<T>: IEnumerable<T>, IEnumerable, ICloneable
     {
-        private const int size = 8;
+        private const int DefaultCapacity = 8;
 
         private T[] mainArray;
 
@@ -17,7 +17,7 @@ namespace MyDLL
 
         public DynamicArray()
         {
-            mainArray = new T[size];
+            mainArray = new T[DefaultCapacity];
         }
 
         public DynamicArray(int capacity)
@@ -106,7 +106,7 @@ namespace MyDLL
         {
             if (Capacity < length)
             {
-                int tempSize = size;
+                int tempSize = DefaultCapacity;
                 while (tempSize < length)
                 {
                     tempSize *= 2;
@@ -159,19 +159,19 @@ namespace MyDLL
 
         public virtual IEnumerator<T> GetEnumerator()
         {
-            //for (int i = 0; i < Length; i++)
-            //{
-            //    yield return mainArray[i];
-            //}
-
-            IEnumerator ie = mainArray.GetEnumerator();
-            int i = 0;
-            while (ie.MoveNext() && i < Length)
+            for (int i = 0; i < Length; i++)
             {
-                yield return (T)ie.Current;
-                i++;
+                yield return mainArray[i];
             }
-            ie.Reset();
+
+            //IEnumerator ie = mainArray.GetEnumerator();
+            //int i = 0;
+            //while (ie.MoveNext() && i < Length)
+            //{
+            //    yield return (T)ie.Current;
+            //    i++;
+            //}
+            //ie.Reset();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
