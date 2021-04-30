@@ -48,7 +48,7 @@ namespace Task_3._3._3
 
         private void Cook(Order order)
         {
-            Thread.Sleep(order.Pizza.TimeCook);
+            Thread.Sleep(order.Pizza.TimeToCook);
             PizzaCooked?.Invoke(order);
         }
     }

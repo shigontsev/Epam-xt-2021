@@ -19,6 +19,15 @@ namespace Task_3._3._1
             //byte b2 = 5;
             //byte c = (byte)(b1 + b2);
             //Console.WriteLine(c);
+            Console.WriteLine("--------------");
+            var arr123 = new int[] { int.MaxValue, 1 };
+            Console.WriteLine(arr123.Sum());
+            Console.WriteLine(arr123.Avg());
+            Console.WriteLine(arr123.Franquency());
+            //arr123.EditArray(x => ((sbyte)x * 3));
+            arr123.ShowArray();
+            int aa = int.MinValue;
+            Console.WriteLine(aa);
             Console.ReadLine();
         }
 

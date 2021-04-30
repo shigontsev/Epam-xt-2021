@@ -12,7 +12,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (sbyte) arr.Sum(x => x);
+            sbyte result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static sbyte Avg(this sbyte[] arr)
@@ -36,7 +42,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (short)arr.Sum(x => x);
+            short result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static short Avg(this short[] arr)
@@ -58,29 +70,19 @@ namespace Task_3._3._1
         #region Int type
         public static int Sum(this int[] arr)
         {
-            //if (arr is null)
-            //{
-            //    throw new ArgumentNullException("array is null");
-            //}
-            //if (arr.Length == 0)
-            //{
-            //    throw new ArgumentException("array is empty");
-            //}
             arr.HelperExeption();
 
-            return arr.Sum(x => x);
+            int result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static int Avg(this int[] arr)
         {
-            //if (arr is null)
-            //{
-            //    throw new ArgumentNullException("array is null");
-            //}
-            //if (arr.Length == 0)
-            //{
-            //    throw new ArgumentException("array is empty");
-            //}
             arr.HelperExeption();
 
             return (int)arr.Average(x => x);
@@ -88,14 +90,6 @@ namespace Task_3._3._1
 
         public static int Franquency(this int[] arr)
         {
-            //if (arr is null)
-            //{
-            //    throw new ArgumentNullException("array is null");
-            //}
-            //if (arr.Length == 0)
-            //{
-            //    throw new ArgumentException("array is empty");
-            //}
             arr.HelperExeption();
 
             var a = arr.GroupBy(x => x).OrderByDescending(x => x.Count());
@@ -108,7 +102,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (long)arr.Sum(x => x);
+            long result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static long Avg(this long[] arr)
@@ -132,7 +132,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (byte)arr.Sum(x => x);
+            byte result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static byte Avg(this byte[] arr)
@@ -156,7 +162,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (ushort)arr.Sum(x => x);
+            ushort result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static ushort Avg(this ushort[] arr)
@@ -180,7 +192,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (uint)arr.Sum(x => x);
+            uint result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static uint Avg(this uint[] arr)
@@ -204,7 +222,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (ulong)arr.Sum(x => (decimal) x);
+            ulong result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static ulong Avg(this ulong[] arr)
@@ -228,7 +252,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (float)arr.Sum(x => x);
+            float result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static float Avg(this float[] arr)
@@ -252,7 +282,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (double)arr.Sum(x => x);
+            double result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static double Avg(this double[] arr)
@@ -276,7 +312,13 @@ namespace Task_3._3._1
         {
             arr.HelperExeption();
 
-            return (decimal)arr.Sum(x => x);
+            decimal result = 0;
+            foreach (var item in arr)
+            {
+                result += item;
+            }
+
+            return result;
         }
 
         public static decimal Avg(this decimal[] arr)
@@ -456,10 +498,6 @@ namespace Task_3._3._1
             if (source is null)
             {
                 throw new ArgumentNullException("array is null");
-            }
-            if (source.Length == 0)
-            {
-                throw new ArgumentException("array is empty");
             }
         }
     }

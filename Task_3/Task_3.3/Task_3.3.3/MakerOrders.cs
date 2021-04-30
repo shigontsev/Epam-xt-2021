@@ -24,14 +24,14 @@ namespace Task_3._3._3
                 ShowAssortiment();
                 Console.Write("Enter number of pizza: ");
                 int.TryParse(Console.ReadLine().Trim(), out int select);
-                ChangePizza(select);
+                OrderPizza(select);
                 Console.Write("Enter any button for continue...");
                 Console.ReadKey();
                 Console.WriteLine(Environment.NewLine);
             } while (true);
         }
 
-        private void ChangePizza(int select)
+        private void OrderPizza(int select)
         {
             switch (select)
             {
@@ -61,7 +61,7 @@ namespace Task_3._3._3
 
         private void OrderCreated(Order order)
         {
-            Console.WriteLine($"Order № {order.Id}: {order.Pizza.Name} accepted. Wait for it {order.Pizza.TimeCook.Seconds} minutes");
+            Console.WriteLine($"Order № {order.Id}: {order.Pizza.Name} accepted. Wait for it {order.Pizza.TimeToCook.Seconds} minutes");
         }
 
         private void PizzaCooked(Order order)
