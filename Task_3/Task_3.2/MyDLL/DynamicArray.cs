@@ -25,26 +25,30 @@ namespace MyDLL
             mainArray = new T[capacity];
         }
 
-        public DynamicArray(IEnumerable<T> sourse) : this()
+        public DynamicArray(IEnumerable<T> sourse)
         {
-            T[] tempArr = sourse.ToArray();
-            ReSize(tempArr.Length);
+            Length = sourse.Count();
 
-            Array.Copy(tempArr, mainArray, tempArr.Length);
+            mainArray = Length <= DefaultCapacity ?
+                new T[DefaultCapacity] :
+                (Length % DefaultCapacity == 0 ?
+                new T[Length] :
+                new T[Length / DefaultCapacity * DefaultCapacity * 2]);
+
+            Array.Copy(sourse.ToArray(), mainArray, Length);
         }
 
         public void Add(T item)
         {
-            if (Length+1 >= Capacity)
+            if (Length == Capacity)
             {
-                ReSize(Length + 1);
-                mainArray[Length - 1] = item;
+                ReCapacity(Length + 1);
             }
             else
             {
                 Length++;
-                mainArray[Length - 1] = item;
             }
+            mainArray[Length - 1] = item;
         }
 
         public void AddRange(IEnumerable<T> sourse)
@@ -55,7 +59,7 @@ namespace MyDLL
                 int tempLength = this.Length;
                 if (Length + tempArr.Length >= Capacity)
                 {
-                    ReSize(Length + tempArr.Length);
+                    ReCapacity(Length + tempArr.Length);
                 }
                 else
                 {
@@ -94,7 +98,7 @@ namespace MyDLL
             {
                 throw new ArgumentOutOfRangeException();
             }
-            ReSize(Length + 1);
+            ReCapacity(Length + 1);
 
             Array.Copy(mainArray, index, mainArray, index + 1, Length - index);
             mainArray[index] = item;
@@ -102,22 +106,20 @@ namespace MyDLL
         }
 
 
-        private void ReSize(int length)
+        private void ReCapacity(int length)
         {
             if (Capacity < length)
             {
-                int tempSize = DefaultCapacity;
-                while (tempSize < length)
+                int tempCapacity = DefaultCapacity;
+                while (tempCapacity < length)
                 {
-                    tempSize *= 2;
+                    tempCapacity *= 2;
                 }
 
-                //which ToArray is better?
                 var tempArr = mainArray.ToArray();
-                //T[] tempArr = this.ToArray();
 
                 this.Length = length;
-                mainArray = new T[tempSize];
+                mainArray = new T[tempCapacity];
                 
                 Array.Copy(tempArr, mainArray, tempArr.Length);
             }
@@ -131,17 +133,17 @@ namespace MyDLL
         {
             get
             {
-                index = HelperOfIndex(index);
+                index = ResolveIndex(index);
                 return mainArray[index];
             }
             set
             {
-                index = HelperOfIndex(index);
+                index = ResolveIndex(index);
                 mainArray[index] = value;
             }
         }
 
-        private int HelperOfIndex(int index)
+        private int ResolveIndex(int index)
         {
             if (index >= Length || index < 0 - Length)
             {
@@ -163,15 +165,6 @@ namespace MyDLL
             {
                 yield return mainArray[i];
             }
-
-            //IEnumerator ie = mainArray.GetEnumerator();
-            //int i = 0;
-            //while (ie.MoveNext() && i < Length)
-            //{
-            //    yield return (T)ie.Current;
-            //    i++;
-            //}
-            //ie.Reset();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -191,7 +184,7 @@ namespace MyDLL
             return newArr;
         }
 
-        public void EditCapacity(int capacity)
+        public void SetCapacity(int capacity)
         {
             if (capacity == this.Capacity)
             {
@@ -199,7 +192,7 @@ namespace MyDLL
             }
             else if (capacity < 0)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(capacity), $"{nameof(capacity)} < 0");
             }
             else
             {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyDLL
 {
-    public class CycledDynamicArray<T> : DynamicArray<T>, IEnumerable, IEnumerable<T>
+    public class CycledDynamicArray<T> : DynamicArray<T>
     {
         public CycledDynamicArray() : base()
         {
@@ -20,16 +20,10 @@ namespace MyDLL
         }
 
         public override IEnumerator<T> GetEnumerator()
-        {            
-            while (true)
+        {
+            for (int i = 0; ; i++)
             {
-                IEnumerator a = base.GetEnumerator();
-                int i = 0;
-                while (a.MoveNext() && i < Length)
-                {
-                    yield return (T)a.Current;
-                    i++;
-                }
+                yield return this[i % Length];
             }
         }
     }
