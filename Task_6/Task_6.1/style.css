@@ -1,0 +1,15 @@
+ul {
+ width: 200px;
+ background-color: rgb(248, 190, 82);
+ border-radius: 5px;
+ border-style: solid;
+ border-width: thin;
+ border-color: black;
+ list-style-type: none;
+ padding: 5px;
+ box-shadow: 5px 5px 0px rgba(102, 5, 5, 0.671);
+}
+
+li {
+    color:rgba(102, 5, 5, 0.671);
+}
