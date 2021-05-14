@@ -11,29 +11,24 @@ namespace Task_4._1
     {
         private delegate void EventHandler(string message);
 
-        private event EventHandler Notify;
-
-
-        public string PathCurrentFolder { get; private set; }
-
+        private event Action<string> Notify;
+        
         public List<Log> ListLog { get; private set; }
 
         public Dictionary<string, InfoState> ListFixation { get; private set; }
 
-        private LogService _Logger;
+        private GIT _Logger;
 
-        public FileResetter(string pathFolder, LogService logger)
+        public FileResetter(GIT logger, Action<string> modeNotify)
         {
-            if (!Directory.Exists(pathFolder))
-            {
-                throw new FileNotFoundException(nameof(pathFolder), "По данной директории папки не существует");
-            }
-
-            PathCurrentFolder = pathFolder;
-
             _Logger = logger;
 
-            Notify += Message.ShowLine;
+            if (!Directory.Exists(_Logger.CurrentPath))
+            {
+                throw new FileNotFoundException(nameof(_Logger.CurrentPath), "По данной директории папки не существует");
+            }
+
+            Notify = modeNotify;
         }
 
         /// <summary>
@@ -93,7 +88,7 @@ namespace Task_4._1
                     return;
                 }
 
-                Notify?.Invoke("Введите дату и время:");
+                //Notify?.Invoke("Введите дату и время в формате \"dd.MM.yyyy HH:mm:ss\" :");
 
                 DateTime dateTime = Input.SetDateTime();
 
@@ -122,7 +117,7 @@ namespace Task_4._1
             var fixation = ListFixation.ElementAt(index);
 
             DeleteAllTxt();
-            LogService.CopyFiles(fixation.Value.Path, PathCurrentFolder);
+            _Logger.CopyFiles(fixation.Value.Path, _Logger.CurrentPath);
 
             //Delete late fixations
             var eraseFixation = ListFixation.Skip(index + 1);
@@ -143,17 +138,17 @@ namespace Task_4._1
             {
                 foreach (var item in ListFixation)
                 {
-                    Console.WriteLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
+                    Notify?.Invoke($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
                     i++;
                 }
-                Console.WriteLine("Выберите индекс отката:");
-                Console.WriteLine("Или нажмите \'q\' для выхода.");
+                Notify?.Invoke("Выберите индекс отката:");
+                Notify?.Invoke("Или нажмите \'q\' для выхода.");
             }
             else
             {
                 Notify?.Invoke("Список пуст, введите любую клавишу для выхода.");
             }
-            Console.Write("ВВОД : ");
+            Notify?.Invoke("ВВОД : ");
         }
 
         #endregion By index Fixations
@@ -174,14 +169,14 @@ namespace Task_4._1
 
             var currentFixation = ListFixation.First(x => x.Value.Date > dateTime);
 
-            string pathCommitsOfFixation = $"{_Logger.FixationLogPathFolder}\\{currentFixation.Key}.json";
+            string pathCommitsOfFixation = Path.Combine(_Logger.FixationLogPathFolder, $"{currentFixation.Key}.json");
 
             var currenCommitsOfFixation = 
-                LogService.Deserialize(pathCommitsOfFixation)
+                JsonService.Deserialize(pathCommitsOfFixation)
                 .Where(x=>x.Date<=dateTime).ToList();
 
             DeleteAllTxt();
-            LogService.CopyFiles(currentFixation.Value.Path, PathCurrentFolder);
+            _Logger.CopyFiles(currentFixation.Value.Path, _Logger.CurrentPath);
             foreach (var item in currenCommitsOfFixation)
             {
                 switch (item.Type)
@@ -206,7 +201,7 @@ namespace Task_4._1
             foreach (var item in eraseFixation)
             {
                 Directory.Delete(item.Value.Path, true);
-                File.Delete($"{_Logger.FixationLogPathFolder}\\{item.Key}.json");
+                File.Delete(Path.Combine(_Logger.FixationLogPathFolder, $"{item.Key}.json"));
             }
         }
 
@@ -235,17 +230,17 @@ namespace Task_4._1
             {
                 foreach (var item in ListFixation)
                 {
-                    Console.WriteLine($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
+                    Notify?.Invoke($"{i} : Date = {item.Value.Date}; Key = {item.Key};");
                     i++;
                 }
-                Console.WriteLine("Введите любую клавишу для продолжения");
-                Console.WriteLine("Или нажмите \'q\' для выхода.");
+                Notify?.Invoke("Введите любую клавишу для продолжения");
+                Notify?.Invoke("Или нажмите \'q\' для выхода.");
             }
             else
             {
                 Notify?.Invoke("Список пуст, введите любую клавишу для выхода.");
             }
-            Console.Write("ВВОД : ");
+            Notify?.Invoke("ВВОД : ");
         }
 
         #endregion By dateTime Fixations
@@ -255,9 +250,10 @@ namespace Task_4._1
         /// </summary>
         private void DeleteAllTxt()
         {
-            if (Directory.Exists(PathCurrentFolder))
+            if (Directory.Exists(_Logger.CurrentPath))
             {
-                var files = Directory.GetFiles(PathCurrentFolder, "*.txt", SearchOption.AllDirectories);
+                var files = Directory.GetFiles(_Logger.CurrentPath, "*.txt", SearchOption.AllDirectories)
+                    .Where(f => !f.Contains(_Logger.LoggerPathFolder));
                 foreach (var file in files)
                 {
                     File.Delete(file);

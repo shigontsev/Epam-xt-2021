@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 
 namespace Task_4._1
 {
-    public class LogService
+    public class GIT
     {
-        private const string _nameFolderLogContent = "\\LogContent";
+        private const string _nameFolderLogger = @"\GIT";
 
-        private const string _nameFolderFixationLog = "\\FixationLog";
+        private const string _nameFolderLogContent = @"\LogContent";
 
-        private const string _pathDirectoryStates = "C:\\LogState";
+        private const string _nameFolderFixationLog = @"\FixationLog";
+
+        private const string _nameFolderStates = @"\LogState";
+
 
         /// <summary>
         /// Current folder for researching
@@ -23,25 +26,48 @@ namespace Task_4._1
         public string CurrentPath { get; private set; }
 
         /// <summary>
+        /// Path folder Logger
+        /// </summary>
+        public string LoggerPathFolder => CurrentPath + _nameFolderLogger;
+
+        /// <summary>
         /// Path folder for keeping content of files
         /// </summary>
-        public string LogContentPathFolder => CurrentPath + _nameFolderLogContent;
+        public string LogContentPathFolder => LoggerPathFolder + _nameFolderLogContent;
 
         /// <summary>
         /// Path folder for keeping commite of fixation
         /// </summary>
-        public string FixationLogPathFolder => CurrentPath + _nameFolderFixationLog;
+        public string FixationLogPathFolder => LoggerPathFolder + _nameFolderFixationLog;
 
-        public LogService(string currentFolderPath)
+        /// <summary>
+        /// Path folder for keeping commite of fixation
+        /// </summary>
+        public string StateLogPathFolder => LoggerPathFolder + _nameFolderStates;
+
+        public GIT(string currentFolderPath)
         {
             CurrentPath = currentFolderPath;
-        }
 
-        public static List<Log> GetListLog(string pathLog)
-        {
-            return Deserialize(pathLog);
+            if (!Directory.Exists(LoggerPathFolder))
+            {
+                DirectoryInfo di = Directory.CreateDirectory(LoggerPathFolder);
+                di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+            }
+            if (!Directory.Exists(LogContentPathFolder))
+            {
+                Directory.CreateDirectory(LogContentPathFolder);
+            }
+            if (!Directory.Exists(FixationLogPathFolder))
+            {
+                Directory.CreateDirectory(FixationLogPathFolder);
+            }
+            if (!Directory.Exists(StateLogPathFolder))
+            {
+                Directory.CreateDirectory(StateLogPathFolder);
+            }
         }
-
+        
         /// <summary>
         /// Return content selected file by commite
         /// </summary>
@@ -63,7 +89,7 @@ namespace Task_4._1
         {
             if (list.Count > 0)
             {
-                Serialize(list, pathLog);
+                JsonService.Serialize(list, pathLog);
 
                 if (!Directory.Exists(LogContentPathFolder))
                 {
@@ -75,7 +101,7 @@ namespace Task_4._1
                 {                    
                     if (log.Type != LogType.Delete || log.Type != LogType.Rename)
                     {
-                        string pathLogContent = $"{LogContentPathFolder}\\{log.Id}.json";
+                        string pathLogContent = Path.Combine(LogContentPathFolder, $"{log.Id}.json");
 
                         File.WriteAllText(pathLogContent, log.Content);
                     }
@@ -92,20 +118,15 @@ namespace Task_4._1
             if (Directory.Exists(FixationLogPathFolder))
             {
                 var files = Directory.GetFiles(FixationLogPathFolder, "*.json");
+
                 if (files.Count() > 0)
                 {
-                    var filesBefore = new Dictionary<string, DateTime>();
-                    foreach (var item in files)
-                    {
-                        filesBefore.Add(item, File.GetLastWriteTime(item));
-                    }
-                    var filesAfter = filesBefore.OrderBy(x => x.Value).ToList();
-                    var list = new List<Log>();
-                    foreach (var file in filesAfter)
-                    {
-                        list.AddRange(Deserialize(file.Key));
-                    }
-                    return list;
+                    var filesByDate = files
+                        .Select(path => new { path, WriteTime = File.GetLastWriteTime(path) })
+                        .OrderBy(x => x.WriteTime)
+                        .ToList();
+
+                    return filesByDate.SelectMany(x => JsonService.Deserialize(x.path)).ToList();
                 }
             }
             Directory.CreateDirectory(FixationLogPathFolder);
@@ -118,47 +139,31 @@ namespace Task_4._1
         /// <param name="guid">Id fixation</param>
         public void SaveState(Guid guid)
         {
-            if (!Directory.Exists(_pathDirectoryStates))
+            if (!Directory.Exists(StateLogPathFolder))
             {
-                Directory.CreateDirectory(_pathDirectoryStates);
+                Directory.CreateDirectory(StateLogPathFolder);
             }
-            string pathDirectoryCurrentState = _pathDirectoryStates + "\\" + guid;
+            string pathDirectoryCurrentState = Path.Combine(StateLogPathFolder, guid.ToString());
             Directory.CreateDirectory(pathDirectoryCurrentState);
             
             CopyFiles(CurrentPath, pathDirectoryCurrentState);
         }
-
-        /// <summary>
-        /// Get list path *.txt files by selected folder path
-        /// </summary>
-        /// <param name="start_path">select folder path</param>
-        /// <returns></returns>
-        private static List<string> GetRecursFiles(string start_path)
-        {
-            List<string> ls = new List<string>();
-            string[] folders = Directory.GetDirectories(start_path);
-            foreach (string folder in folders)
-            {
-                ls.Add(folder);
-                ls.AddRange(GetRecursFiles(folder));
-            }
-            string[] files = Directory.GetFiles(start_path, "*.txt");
-            foreach (string filename in files)
-            {
-                ls.Add(filename);
-            }
-            return ls;
-        }
-
+        
         /// <summary>
         /// Copy file *.txt from Source to Dest directory, in folder and down
         /// </summary>
-        public static void CopyFiles(string sourceDirectoryPath, string destDirectoryPath)
+        public void CopyFiles(string sourceDirectoryPath, string destDirectoryPath)
         {
-            var direcoryAndFiles = GetRecursFiles(sourceDirectoryPath);
+            bool isSourcePathOfLogger = sourceDirectoryPath.Contains(LoggerPathFolder);
+
+            var listPathFiles = Directory.GetFiles(sourceDirectoryPath, "*.txt", SearchOption.AllDirectories)
+                .Where(f => isSourcePathOfLogger ? true : !f.Contains(LoggerPathFolder));
+            var listPathFolders = Directory.GetDirectories(sourceDirectoryPath, "", SearchOption.AllDirectories)
+                .Where(f => isSourcePathOfLogger ? true : !f.Contains(LoggerPathFolder)); ;
+
 
             Regex reg = new Regex(@".+\.txt$");
-            foreach (var item in direcoryAndFiles)
+            foreach (var item in listPathFolders.Union(listPathFiles))
             {
                 if (reg.Match(item).Success)
                 {
@@ -182,55 +187,17 @@ namespace Task_4._1
         /// <returns></returns>
         public Dictionary<string, InfoState> GetStates()
         {
-            var folders = Directory.EnumerateDirectories(_pathDirectoryStates);
+            var folders = Directory.EnumerateDirectories(StateLogPathFolder);
             if (folders.Count() == 0)
             {
                 return new Dictionary<string, InfoState>();
             }
 
-            var states = new List<InfoState>();
-            foreach (var item in folders)
-            {
-                states.Add(new InfoState(Directory.GetLastWriteTime(item), item));
-            }
-            var states_Sorted = states.OrderBy(x => x.Date).ToList();
-            var result = new Dictionary<string, InfoState>();
-            foreach (var item in states_Sorted)
-            {
-                result.Add(item.Path.Replace(_pathDirectoryStates + "\\", ""), item);
-            }
-
-            return result;
+            return folders
+                .Select(f => new InfoState(Directory.GetLastWriteTime(f), f))
+                .OrderBy(Is => Is.Date)
+                .ToDictionary(Is => Is.Path.Replace(StateLogPathFolder + "\\", ""), Is => Is);
         }
-
-        /// <summary>
-        /// Reader Json
-        /// </summary>
-        public static List<Log> Deserialize(string path)
-        {
-            if (!File.Exists(path))
-            {
-                return new List<Log>();
-            }
-
-            string jsonString = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<List<Log>>(jsonString);
-        }
-
-        /// <summary>
-        /// Setter Json
-        /// </summary>
-        public static void Serialize(List<Log> list, string path)
-        {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-
-            string jsonString = JsonSerializer.Serialize(list, options);
-            File.WriteAllText(path, jsonString);
-        }
-
 
     }
 }

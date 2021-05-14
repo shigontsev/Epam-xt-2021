@@ -38,7 +38,7 @@ namespace Task_4._1
             }
             else
             {
-                Message.ShowLine("Введено не числовое значение");
+                Console.WriteLine("Введено не числовое значение");
                 return false;
             }            
         }
@@ -65,18 +65,21 @@ namespace Task_4._1
             {
                 try
                 {
-                    DateTime new_dateTime = new DateTime(
-                        year: InputValueDateTime("Год"),
-                        month: InputValueDateTime("Месяц"),
-                        day: InputValueDateTime("День"),
-                        hour: InputValueDateTime("Час"),
-                        minute: InputValueDateTime("Минут"),
-                        second: InputValueDateTime("Секунд")
-                        );
+                    //DateTime new_dateTime = new DateTime(
+                    //    year: InputValueDateTime("Год"),
+                    //    month: InputValueDateTime("Месяц"),
+                    //    day: InputValueDateTime("День"),
+                    //    hour: InputValueDateTime("Час"),
+                    //    minute: InputValueDateTime("Минут"),
+                    //    second: InputValueDateTime("Секунд")
+                    //    );
+
+                    Console.WriteLine("Введите дату и время в формате \"dd.MM.yyyy HH:mm:ss\" :");
+                    DateTime new_dateTime = DateTime.Parse(Console.ReadLine());
 
                     return new_dateTime;
                 }
-                catch (ArgumentOutOfRangeException ex)
+                catch (FormatException ex)
                 {
                     Console.WriteLine($"Не верно введена дата, {ex.Message} повторите попытку:");
                 }

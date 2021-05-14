@@ -14,13 +14,12 @@ namespace Task_4._1
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var menu = new Menu(Environment.CurrentDirectory);
 
-            var menu = new MenuService(Environment.CurrentDirectory);
-
+            var listPathFiles = Directory.GetFiles(Environment.CurrentDirectory, "*.txt", SearchOption.AllDirectories);
+            var listPathFolders = Directory.GetDirectories(Environment.CurrentDirectory, "", SearchOption.AllDirectories);
+            Console.WriteLine(0x80070020 & 0x0000FFFF);
             menu.CallMenu();
-
-            //Console.ReadLine();
         }
     }
 

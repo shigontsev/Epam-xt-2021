@@ -12,35 +12,44 @@ namespace Task_4._1
     {
         private delegate void EventHandler(string message);
 
-        private event EventHandler Notify;
+        private event Action<string> Notify;
+                
+        /// <summary>
+        /// Full list commits
+        /// </summary>
+        private List<Log> ListCommits;
 
+        /// <summary>
+        /// List commits of current active state
+        /// </summary>
+        private List<Log> ListCommitsCurrentState;
 
-        public string PathWatchtFolder { get; private set; }
+        private GIT _Logger;
 
-        private string _pathAnFixation;
+        /// <summary>
+        /// For async events of File Watcher
+        /// </summary>
+        private object _locker = new object();
 
-        private List<Log> ListCommites;
-
-        private List<Log> CommitesCurrentFixation;
-
-        private LogService _Logger;
+        /// <summary>
+        /// For eliminate duplicate events (change and create)
+        /// </summary>
+        private DateTime _lastRead = DateTime.MinValue;
 
         /// <summary>
         /// FileWatcher with selected path
         /// </summary>
         /// <param name="watchFolderPath">Path current folder</param>
-        public FileWatcher(string watchFolderPath, LogService logger)
+        public FileWatcher(GIT logger, Action<string> modeNotify)
         {
-            if (!Directory.Exists(watchFolderPath))
-            {
-                throw new FileNotFoundException(nameof(watchFolderPath), "По данной директории папка не существует");
-            }
-
-            PathWatchtFolder = watchFolderPath;
-
             _Logger = logger;
 
-            Notify += Message.ShowLine;
+            if (!Directory.Exists(_Logger.CurrentPath))
+            {
+                throw new FileNotFoundException(nameof(_Logger.CurrentPath), "По данной директории папка не существует");
+            }            
+
+            Notify = modeNotify;
         }
 
         /// <summary>
@@ -48,20 +57,43 @@ namespace Task_4._1
         /// </summary>
         public void Run()
         {
-            ListCommites = _Logger.GetAllFixation();
-            CommitesCurrentFixation = new List<Log>();
+            ListCommits = _Logger.GetAllFixation();
+            ListCommitsCurrentState = new List<Log>();
 
             Guid guid = Guid.NewGuid();
-            _pathAnFixation = $"{_Logger.FixationLogPathFolder}\\{guid}.json";
+            string pathAnFixation = Path.Combine(_Logger.FixationLogPathFolder, $"{guid}.json");
 
-            FileSystemWatcher watcher = new FileSystemWatcher(PathWatchtFolder, "*.txt");
+            ScanFiles();
+
+            //Save Fixation in file *.json, and save State
+            if (ListCommitsCurrentState.Count > 0)
+            {
+                _Logger.SetListLog(ListCommitsCurrentState, pathAnFixation);
+                _Logger.SaveState(guid);//PathWatchtFolder
+            }
+            
+            Notify?.Invoke(ListCommitsCurrentState.Count > 0?
+                "Фиксация завершена...": "Изменений не наблюдалось. Конец операции...");
+
+            ListCommits.Clear();
+            ListCommitsCurrentState.Clear();
+
+            Thread.Sleep(TimeSpan.FromSeconds(3));
+        }
+
+        /// <summary>
+        /// Action scan *.txt files by FileSystemWatcher
+        /// </summary>
+        private void ScanFiles()
+        {
+            FileSystemWatcher watcher = new FileSystemWatcher(_Logger.CurrentPath, "*.txt");
             watcher.NotifyFilter = NotifyFilters.LastAccess
                     | NotifyFilters.LastWrite
                     | NotifyFilters.CreationTime
                     | NotifyFilters.FileName;
 
-            watcher.Changed += new FileSystemEventHandler(OnChanged);
-            watcher.Created += new FileSystemEventHandler(OnCreated);
+            watcher.Changed += new FileSystemEventHandler(OnChangedOrCreated);
+            watcher.Created += new FileSystemEventHandler(OnChangedOrCreated);
             watcher.Deleted += new FileSystemEventHandler(OnDeleted);
             watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
@@ -74,43 +106,31 @@ namespace Task_4._1
             while (Console.Read() != 'q') ;
 
             watcher.EnableRaisingEvents = false;
-            //Save Fixation in file *.json, and save State
-            if (CommitesCurrentFixation.Count > 0)
-            {
-                _Logger.SetListLog(CommitesCurrentFixation, _pathAnFixation);
-                _Logger.SaveState(guid);//PathWatchtFolder
-            }
-            ListCommites.Clear();
-            CommitesCurrentFixation.Clear();
-            Notify?.Invoke(CommitesCurrentFixation.Count > 0?
-                "Фиксация завершена...": "Изменений не наблюдалось.Конец операции...");
-
-            Thread.Sleep(TimeSpan.FromSeconds(3));
         }
 
-        private static object _locker = new object();
-
-        private DateTime lastRead = DateTime.MinValue;
-
         /// <summary>
-        /// Event Chaged
+        /// Event Chaged or Created
         /// </summary>
-        private void OnChanged(object sender, FileSystemEventArgs e)
+        private void OnChangedOrCreated(object sender, FileSystemEventArgs e)
         {
             lock (_locker)
             {
-                if (e.ChangeType != WatcherChangeTypes.Changed)
+                if (e.FullPath.Contains(_Logger.LoggerPathFolder)
+                    || (e.ChangeType != WatcherChangeTypes.Changed &&
+                    e.ChangeType != WatcherChangeTypes.Created))
                 {
                     return;
                 }
+
                 while (!File.Exists(e.FullPath)) ;
                 while (IOService.IsFileLocked(new FileInfo(e.FullPath))) ;
 
                 DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
-                if (lastWriteTime != lastRead)
+                if (lastWriteTime != _lastRead)
                 {
                     string content = File.ReadAllText(e.FullPath);
-                    LogType logType = LogType.Edit;
+                    LogType logType = e.ChangeType == WatcherChangeTypes.Changed ? 
+                        LogType.Edit : LogType.Create;
 
                     AddCommit(new Log
                     {
@@ -122,42 +142,7 @@ namespace Task_4._1
                     });
 
                     Notify?.Invoke(e.ChangeType + " -> File: " + e.FullPath);
-                    lastRead = lastWriteTime;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Event Created
-        /// </summary>
-        private void OnCreated(object sender, FileSystemEventArgs e)
-        {
-            lock (_locker)
-            {
-                if (e.ChangeType != WatcherChangeTypes.Created)
-                {
-                    return;
-                }
-                while (!File.Exists(e.FullPath)) ;
-                while (IOService.IsFileLocked(new FileInfo(e.FullPath))) ;
-
-                DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
-                if (lastWriteTime != lastRead)
-                {
-                    string content = File.ReadAllText(e.FullPath);
-                    LogType logType = LogType.Create;
-
-                    AddCommit(new Log
-                    {
-                        Id = Guid.NewGuid(),
-                        Date = lastWriteTime,
-                        Type = logType,
-                        Path = e.FullPath,
-                        Content = content
-                    });
-
-                    Notify?.Invoke(e.ChangeType + " -> File: " + e.FullPath);
-                    lastRead = lastWriteTime;
+                    _lastRead = lastWriteTime;
                 }
             }
         }
@@ -169,16 +154,14 @@ namespace Task_4._1
         {
             lock (_locker)
             {
-                DateTime lastWriteTime = DateTime.Now;
-                if (lastRead >= lastWriteTime - TimeSpan.FromSeconds(1))
-                {
-                    return;
-                }
-                if (e.ChangeType != WatcherChangeTypes.Deleted)
+                if (e.FullPath.Contains(_Logger.LoggerPathFolder)
+                    || e.ChangeType != WatcherChangeTypes.Deleted
+                    || File.Exists(e.FullPath))
                 {
                     return;
                 }
 
+                DateTime lastWriteTime = DateTime.Now;
                 LogType logType = LogType.Delete;
 
                 AddCommit(new Log
@@ -200,7 +183,8 @@ namespace Task_4._1
         {
             lock (_locker)
             {
-                if (e.ChangeType != WatcherChangeTypes.Renamed)
+                if (e.FullPath.Contains(_Logger.LoggerPathFolder)
+                    || e.ChangeType != WatcherChangeTypes.Renamed)
                 {
                     return;
                 }
@@ -208,11 +192,11 @@ namespace Task_4._1
                 DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
                 LogType logType = LogType.Rename;
 
-                Guid id = ListCommites.LastOrDefault(x => x.Path == e.OldFullPath).Id;
+                Guid id = ListCommits.LastOrDefault(x => x.Path == e.OldFullPath).Id;
 
                 AddCommit(new Log
                 {
-                    Id = id == null ? Guid.NewGuid() : id,
+                    Id = id == default(Guid) ? Guid.NewGuid() : id,
                     Date = lastWriteTime,
                     Type = logType,
                     OldPath = e.OldFullPath,
@@ -225,8 +209,8 @@ namespace Task_4._1
 
         private void AddCommit(Log source)
         {
-            ListCommites.Add(source);
-            CommitesCurrentFixation.Add(source);
+            ListCommits.Add(source);
+            ListCommitsCurrentState.Add(source);
         }
     }
 }
