@@ -14,7 +14,7 @@ namespace MyDLL
         }
         public ArraySymbol(string text)
         {
-            arrChar = (char[]) text.Clone();
+            arrChar = text.ToCharArray();
         }
         public ArraySymbol(char[] text)
         {
@@ -35,7 +35,7 @@ namespace MyDLL
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as ArraySymbol);
+            return this.arrChar.Equals(obj as ArraySymbol);
         }
 
         public bool Equals(ArraySymbol arr)
@@ -52,29 +52,16 @@ namespace MyDLL
 
         public int CompareTo(ArraySymbol c)
         {
-            if (c is null)
+            if (c is null || c.Length != Length)
                 return 1;
             int result = 0;
-
-            int currentLength = c.Length < arrChar.Length ? 
-                c.Length : arrChar.Length; 
-
-            for (int i = 0; i < currentLength; i++)
+            for (int i = 0; i < c.Length; i++)
             {
                 result = this[i].CompareTo(c[i]);
                 if (result!=0)
                 {
                     return result;
                 }
-            }
-
-            if (arrChar.Length > c.Length)
-            {
-                return 1;
-            }
-            if (arrChar.Length < c.Length)
-            {
-                return -1;
             }
             return result;
         }
@@ -96,11 +83,10 @@ namespace MyDLL
 
         public ArraySymbol Concat(char[] arr)
         {
-            if (arr is null || arr.Length == 0)
-            {
-                return this;
-            }            
-            arrChar = String.Concat(arrChar, arr).ToCharArray();
+            var arrNew = new char[Length + arr.Length];
+            arrChar.CopyTo(arrNew, 0);
+            arr.CopyTo(arrNew, Length);
+            arrChar = arrNew;
             return this;
 
         }
