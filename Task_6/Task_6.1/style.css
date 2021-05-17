@@ -1,15 +1,15 @@
-ul {
- width: 200px;
+.Menu {
+    width: 200px;
+ max-width: 200px; 
+ padding: 5px;
+
  background-color: rgb(248, 190, 82);
  border-radius: 5px;
- border-style: solid;
- border-width: thin;
- border-color: black;
- list-style-type: none;
- padding: 5px;
- box-shadow: 5px 5px 0px rgba(102, 5, 5, 0.671);
+ border: thin solid black;
+ list-style: none;
+ box-shadow: 5px 5px 0px brown;
 }
 
-li {
-    color:rgba(102, 5, 5, 0.671);
+.Menu li {
+    color:brown;
 }
