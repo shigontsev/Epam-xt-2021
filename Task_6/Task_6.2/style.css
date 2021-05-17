@@ -17,10 +17,29 @@
     margin: 0;
 }
 
+.e-mail input{
+    width: 100%;
+}
 
-.inputPassword > div{
-    float: left; 
-    
+.inputPassword {
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+}
+
+.inputPassword input{
+    width: 100%;
+}
+
+.inputPassword :nth-child(1)
+{
+    width: 100%;
+    margin-right: 3%;
+}
+.inputPassword :nth-child(2)
+{
+    width: 100%;
+    margin-left: 3%;
 }
 
 .fRegist hr{
@@ -28,6 +47,10 @@
     position: relative;
 }
 
+.Btn{
+    background-color: khaki;
+    border: 0;
+}
 
 
 
