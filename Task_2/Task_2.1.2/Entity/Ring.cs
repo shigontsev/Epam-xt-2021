@@ -5,21 +5,24 @@ using Task_2._1._2.UI;
 
 namespace Task_2._1._2.Entity
 {
-    public class Ring : Axis, IFigure
+    public class Ring : Figure
     {
-        public Round inner;
-        public Round outer;
+        public Round inner { get; set; }
+
+        public Round outer { get; set; }
+
         public Ring(double inR, double outR): this(inR, outR, 0, 0)
         {
-            //inner = new Round(inR);
-            //outer = new Round(outR);
+            
         }
+
         public Ring(double inR, double outR, double x, double y) : base(x, y)
         {            
-            inner = new Round(inR, X, Y);
-            outer = new Round(outR, X, Y);
+            inner = new Round(inR, Position.X, Position.Y);
+            outer = new Round(outR, Position.X, Position.Y);
         }
-        public static Ring Enter(double inR, double outR, double x, double y)
+
+        public static Ring CreateFigure(double inR, double outR, double x, double y)
         {
             while (outR <= inR)
             {
@@ -28,19 +31,24 @@ namespace Task_2._1._2.Entity
             }
             return new Ring(inR, outR, x, y);
         }
-        public double GetArea
-            => outer.GetArea - inner.GetArea;
-        public double Length
-            => outer.Length + inner.Length;
 
-        public virtual void Info()
+        public double Area => outer.Area - inner.Area;
+
+        public double Length => outer.Length + inner.Length;
+
+        public override void PrintInfo()
         {
-            Console.WriteLine("Фигура: Кольцо");
-            Console.WriteLine("Центр = " + base.ToString());
-            Console.WriteLine("Внутренний радиус = " + inner.Radius);
-            Console.WriteLine("Внешний радиус = " + outer.Radius);
-            Console.WriteLine("Длина = " + Length);
-            Console.WriteLine("Площадь = " + GetArea);
+            Console.WriteLine(this.ToString());
+        }
+
+        public override string ToString()
+        {
+            return new string("Фигура: Кольцо" + Environment.NewLine +
+                "Центр = " + Position + Environment.NewLine +
+                "Внутренний радиус = " + inner.Radius + Environment.NewLine +
+                "Внешний радиус = " + outer.Radius + Environment.NewLine +
+                "Длина = " + Length + Environment.NewLine +
+                "Площадь = " + Area);
         }
     }
 }

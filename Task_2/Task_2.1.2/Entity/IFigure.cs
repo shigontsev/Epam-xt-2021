@@ -6,6 +6,6 @@ namespace Task_2._1._2.Entity
 {
     public interface IFigure
     {
-        void Info();
+        void PrintInfo();
     }
 }
