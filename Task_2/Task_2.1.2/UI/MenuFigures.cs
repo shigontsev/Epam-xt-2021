@@ -50,32 +50,25 @@ namespace Task_2._1._2.UI
             {
                 case FigureType.Line:
                     Console.WriteLine("Выбрана фигура " + type);
-                    AddFigure(Line.CreateFigure(Input.X(), Input.Y(), Input.X(), Input.Y())); break;
-                //Figures.Add(Line.Enter(Input.X(), Input.Y(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Line.CreateFigure(new Point(Input.X(), Input.Y()), new Point(Input.X(), Input.Y()))); break;
                 case FigureType.Circle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    AddFigure(Circle.CreateFigure(Input.R(), Input.X(), Input.Y())); break;
-                //Figures.Add(Circle.Enter(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;                    
+                    AddFigure(Circle.CreateFigure(Input.R(), new Point(Input.X(), Input.Y()))); break;                  
                 case FigureType.Round:
                     Console.WriteLine("Выбрана фигура " + type);
-                    AddFigure(Round.CreateFigure(Input.R(), Input.X(), Input.Y())); break;
-                //Figures.Add(Round.Enter(Input.R(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Round.CreateFigure(Input.R(), new Point(Input.X(), Input.Y()))); break;
                 case FigureType.Ring:
                     Console.WriteLine("Выбрана фигура " + type);
-                    AddFigure(Ring.CreateFigure(Input.InnerR(), Input.OuterR(), Input.X(), Input.Y())); break;
-                //Figures.Add(Ring.Enter(Input.InnerR(), Input.OuterR(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Ring.CreateFigure(Input.InnerR(), Input.OuterR(), new Point(Input.X(), Input.Y()))); break;
                 case FigureType.Rectangle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    AddFigure(Rectangle.CreateFigure(Input.A(), Input.B(), Input.X(), Input.Y())); break;
-                //Figures.Add(Rectangle.Enter(Input.A(), Input.B(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Rectangle.CreateFigure(Input.A(), Input.B(), new Point(Input.X(), Input.Y()))); break;
                 case FigureType.Square:
                     Console.WriteLine("Выбрана фигура " + type);
-                    AddFigure(Square.CreateFigure(Input.A(), Input.X(), Input.Y())); break;
-                //Figures.Add(Square.Enter(Input.A(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Square.CreateFigure(Input.A(), new Point(Input.X(), Input.Y()))); break;
                 case FigureType.Triangle:
                     Console.WriteLine("Выбрана фигура " + type);
-                    AddFigure(Triangle.CreateFigure(Input.A(), Input.B(), Input.C(), Input.X(), Input.Y())); break;
-                //Figures.Add(Triangle.Enter(Input.A(), Input.B(), Input.C(), Input.X(), Input.Y())); ShowLastFigure(); break;
+                    AddFigure(Triangle.CreateFigure(Input.A(), Input.B(), Input.C(), new Point(Input.X(), Input.Y()))); break;
                 default: Console.WriteLine("Не выбрана"); break;
             }
             Console.WriteLine();
@@ -97,7 +90,7 @@ namespace Task_2._1._2.UI
             Console.WriteLine(Environment.NewLine + "Список фигур");
             foreach (var item in Figures)
             {
-                item.PrintInfo();
+                item.ShowInfo();
                 Console.WriteLine();
             }
             Console.WriteLine();
@@ -131,7 +124,7 @@ namespace Task_2._1._2.UI
         
         private void ShowLastFigure()
         {
-            Figures.Last().PrintInfo();
+            Figures.Last().ShowInfo();
         }
     }
     public enum FigureType

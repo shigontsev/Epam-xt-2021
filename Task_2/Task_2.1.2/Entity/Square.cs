@@ -11,32 +11,27 @@ namespace Task_2._1._2.Entity
 
         }
 
-        public Square(double side, double x, double y) : base(side, side, x, y)
+        public Square(double side, Point position) : base(side, side, position)
         {
 
         }
 
-        public static Square CreateFigure(double side, double x, double y)
+        public static Square CreateFigure(double side, Point position)
         {
             if (!isCorrect(side, side))
             {
                 Console.WriteLine("Такую фигуру не создать");
                 return null;
             }
-            return new Square(side, x, y);
+            return new Square(side, position);
         }
-
-        public override void PrintInfo()
-        {
-            Console.WriteLine(this.ToString());
-        }
-
+        
         public override string ToString()
         {
-            return new string("Фигура: Квадрат" + Environment.NewLine +
-                "Центр = " + Position + Environment.NewLine +
-                $"Со стороной A={Width}" + Environment.NewLine +
-                "Периметр = " + Length + Environment.NewLine +
+            return string.Join(Environment.NewLine, "Фигура: Квадрат",
+                "Центр = " + Position,
+                $"Со стороной A={Width}",
+                "Периметр = " + Length,
                 "Площадь = " + Area);
         }
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Circle:Figure
+    public class Circle : Figure
     {
         private double radius;
 
@@ -16,43 +16,38 @@ namespace Task_2._1._2.Entity
             }
             set
             {
-                if (value == 1)
+                if (value == 0)
                     value = 1;
-                //{ throw new ArgumentException(" Wrong! "); }
                 radius = Math.Abs(value);
             }
         }
 
-        public Circle():this(1)
+        public Circle() : this(1)
         {
         }
 
-        public Circle(double r):this(r, 0, 0)
+        public Circle(double r) : this(r, new Point())
         {
 
         }
 
-        public Circle(double r, double x, double y):base(x, y)
+        public Circle(double r, Point position) : base(position)
         {
             Radius = r;
         }
 
-        public static Circle CreateFigure(double r, double x, double y)
+        public static Circle CreateFigure(double r, Point position)
         {
-            return new Circle(r, x, y);
+            return new Circle(r, position);
         }
 
         public double Length => 2 * Math.PI * radius;
 
-        public override void PrintInfo()
-        {
-            Console.WriteLine(this.ToString());
-        }
         public override string ToString()
         {
-            return new string("Фигура: Окружность"+Environment.NewLine+
-                "Центр = " + Position + Environment.NewLine +
-                "Радиус = " + Radius + Environment.NewLine +
+            return string.Join(Environment.NewLine, "Фигура: Окружность",
+                "Центр = " + Position,
+                "Радиус = " + Radius,
                 "Длина = " + Length);
         }
     }

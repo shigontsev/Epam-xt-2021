@@ -11,43 +11,38 @@ namespace Task_2._1._2.Entity
 
         public Round outer { get; set; }
 
-        public Ring(double inR, double outR): this(inR, outR, 0, 0)
+        public Ring(double inR, double outR): this(inR, outR, new Point())
         {
             
         }
 
-        public Ring(double inR, double outR, double x, double y) : base(x, y)
+        public Ring(double inR, double outR, Point position) : base(position)
         {            
-            inner = new Round(inR, Position.X, Position.Y);
-            outer = new Round(outR, Position.X, Position.Y);
+            inner = new Round(inR, Position);
+            outer = new Round(outR, Position);
         }
 
-        public static Ring CreateFigure(double inR, double outR, double x, double y)
+        public static Ring CreateFigure(double inR, double outR, Point position)
         {
             while (outR <= inR)
             {
                 Console.WriteLine("Не верный внешний Радиус, Повторите Ввод:");
                 outR = Input.OuterR();
             }
-            return new Ring(inR, outR, x, y);
+            return new Ring(inR, outR, position);
         }
 
         public double Area => outer.Area - inner.Area;
 
         public double Length => outer.Length + inner.Length;
 
-        public override void PrintInfo()
-        {
-            Console.WriteLine(this.ToString());
-        }
-
         public override string ToString()
         {
-            return new string("Фигура: Кольцо" + Environment.NewLine +
-                "Центр = " + Position + Environment.NewLine +
-                "Внутренний радиус = " + inner.Radius + Environment.NewLine +
-                "Внешний радиус = " + outer.Radius + Environment.NewLine +
-                "Длина = " + Length + Environment.NewLine +
+            return string.Join(Environment.NewLine, "Фигура: Кольцо",
+                "Центр = " + Position,
+                "Внутренний радиус = " + inner.Radius,
+                "Внешний радиус = " + outer.Radius,
+                "Длина = " + Length,
                 "Площадь = " + Area);
         }
     }

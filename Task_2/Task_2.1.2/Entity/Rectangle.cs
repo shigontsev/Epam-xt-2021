@@ -4,31 +4,31 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Rectangle:Figure
+    public class Rectangle : Figure
     {
-        public double Width { get; set; }
+        public double Width { get; private set; }
 
-        public double Height { get; set; }
+        public double Height { get; private set; }
 
-        public Rectangle(double width, double height):this(width, height, 0, 0)
+        public Rectangle(double width, double height) : this(width, height, new Point())
         {
             
         }
 
-        public Rectangle(double width, double height, double x, double y) : base(x, y)
+        public Rectangle(double width, double height, Point position) : base(position)
         {
             Width = width;
             Height = height;
         }
 
-        public static Rectangle CreateFigure(double width, double height, double x, double y)
+        public static Rectangle CreateFigure(double width, double height, Point position)
         {
             if (!isCorrect(width, height))
             {
                 Console.WriteLine("Такую фигуру не создать");
                 return null;
             }
-            return new Rectangle(width, height, x, y);
+            return new Rectangle(width, height, position);
         }
 
         public double Length => 2 * (Width + Height);
@@ -39,18 +39,13 @@ namespace Task_2._1._2.Entity
         {
             return !(a < 0 || b < 0);
         }
-
-        public override void PrintInfo()
-        {
-            Console.WriteLine(this.ToString());
-        }
-
+        
         public override string ToString()
         {
-            return new string("Фигура: Прямоугольник" + Environment.NewLine +
-                "Центр = " + Position + Environment.NewLine +
-                $"Со сторонами A={Width}; B={Height}" + Environment.NewLine +
-                "Периметр = " + Length + Environment.NewLine +
+            return string.Join(Environment.NewLine, "Фигура: Прямоугольник",
+                "Центр = ",
+                $"Со сторонами A={Width}; B={Height}",
+                "Периметр = " + Length,
                 "Площадь = " + Area);
         }
     }

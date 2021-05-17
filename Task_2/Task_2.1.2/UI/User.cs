@@ -10,7 +10,7 @@ namespace Task_2._1._2.UI
     {
         public string Name { get; private set; }
 
-        public List<Figure> Figures;
+        public List<Figure> Figures { get; private set; }
 
         public User(string name)
         {

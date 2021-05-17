@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task_2._1._2.Entity
 {
-    public class Triangle: Figure
+    public class Triangle : Figure
     {
         public double A { get; set; }
 
@@ -12,24 +12,24 @@ namespace Task_2._1._2.Entity
 
         public double C { get; set; }
         
-        public Triangle(double a, double b, double c) : this(a, b, c, 0, 0)
+        public Triangle(double a, double b, double c) : this(a, b, c, new Point())
         {
            
         }
-        public Triangle(double a, double b, double c, double x, double y):base(x, y)
+        public Triangle(double a, double b, double c, Point position) : base(position)
         {            
             A = a;
             B = b;
             C = c;            
         }
-        public static Triangle CreateFigure(double a, double b, double c, double x, double y)
+        public static Triangle CreateFigure(double a, double b, double c, Point position)
         {
             if(!isTriangle(a, b, c) || !isCorrect(a, b, c))
             {
                 Console.WriteLine("Такую фигуру не создать");
                 return null;
             }
-            return new Triangle(a, b, c, x, y);
+            return new Triangle(a, b, c, position);
         }
 
         private static bool isCorrect(double a, double b, double c)
@@ -47,19 +47,15 @@ namespace Task_2._1._2.Entity
         private double LengthHalf => Length / 2;
 
         //Формула Герона
-        public double Area => Math.Sqrt(LengthHalf * (LengthHalf - A) * (LengthHalf - B) * (LengthHalf - C));
-
-        public override void PrintInfo()
-        {
-            Console.WriteLine(this.ToString());
-        }
-
+        public double Area => 
+            Math.Sqrt(LengthHalf * (LengthHalf - A) * (LengthHalf - B) * (LengthHalf - C));
+        
         public override string ToString()
         {
-            return new string("Фигура: Треугольник" + Environment.NewLine +
-                "Центр = " + Position + Environment.NewLine +
-                $"Со сторонами A={A}; B={B}; C={C}" + Environment.NewLine +
-                "Периметр = " + Length + Environment.NewLine +
+            return string.Join(Environment.NewLine, "Фигура: Треугольник",
+                "Центр = " + Position,
+                $"Со сторонами A={A}; B={B}; C={C}",
+                "Периметр = " + Length,
                 "Площадь = " + Area);
         }
     }
