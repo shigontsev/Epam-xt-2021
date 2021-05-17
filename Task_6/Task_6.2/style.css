@@ -1,0 +1,33 @@
+.fRegist{
+    width: 400px;
+    background-color: #008cff9c;
+    border: thin solid blue;
+    font-size: 12px;
+    color: white;
+    /*padding-block: 5%;*/
+}
+
+.fRegist > div{
+    padding-inline: 5%;
+    padding-block: 2%;
+}
+
+.fRegist p{
+    font-size: 18px;
+    margin: 0;
+}
+
+
+.inputPassword > div{
+    float: left; 
+    
+}
+
+.fRegist hr{
+    padding: 0;
+    position: relative;
+}
+
+
+
+
