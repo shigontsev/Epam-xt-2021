@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Task_2._2.Entity;
+﻿using Task_2._2.Entity;
+using Task_2._2.Entity.Person;
 
 namespace Task_2._2.Logics
 {

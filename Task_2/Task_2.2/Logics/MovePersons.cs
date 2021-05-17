@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Task_2._2.Logics
+﻿namespace Task_2._2.Logics
 {
     public static class MovePersons
     {

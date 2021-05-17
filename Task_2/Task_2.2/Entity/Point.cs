@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Task_2._2.Entity
+﻿namespace Task_2._2.Entity
 {
     public class Point
     {
-        public double X { get; set; }
-        public double Y { get; set; }
+        public int X { get; set; }
 
-        //public Point() : this(0, 0)
-        //{
+        public int Y { get; set; }
 
-        //}
-        public Point(double x, double y)
+        public Point(int x, int y)
         {
             X = x;
             Y = y;
