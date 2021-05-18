@@ -1,0 +1,36 @@
+body{
+    background: #333333;
+    padding: 35px 2px;
+}
+
+.window{
+    position: relative;
+    color: lavenderblush;
+    text-align: center;
+    width: auto;
+    min-width: min-content;
+    background: #88B7D5;
+    border: 4px solid #C2E1F5;
+}
+
+.window p{
+    margin: 5px;
+}
+
+.window::after, .window::before{
+    margin-left: -35px;
+    position: absolute;
+    content: '';
+    align-content: center;
+  }
+
+.window::before{
+    top: -70px;
+    border: 35px solid transparent;
+    border-bottom-color: #C2E1F5 ;  
+}
+.window::after{
+    top: -65px;
+    border: 35px solid transparent;
+    border-bottom-color: #88B7D5;  
+}
