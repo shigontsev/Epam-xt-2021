@@ -2,22 +2,34 @@
     width: 400px;
     background-color: #008cff9c;
     border: thin solid blue;
-    font-size: 12px;
+    font-size: 14px;
     color: white;
-    /*padding-block: 5%;*/
-}
-
-.fRegist > div{
-    padding-inline: 5%;
     padding-block: 2%;
 }
 
-.fRegist p{
-    font-size: 18px;
+.fRegist > div{
+    padding: 10px 40px 10px 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.fRegist :nth-child(1){
+    padding-bottom: 0;
     margin: 0;
 }
 
+.fRegist p{
+    font-size: 20px;
+    margin: 0;
+}
+
+.fRegist hr{
+    padding: 0;
+    position: relative;
+}
+
 .e-mail input{
+    box-sizing: border-box;
     width: 100%;
 }
 
@@ -28,6 +40,7 @@
 }
 
 .inputPassword input{
+    box-sizing: border-box;
     width: 100%;
 }
 
@@ -42,14 +55,12 @@
     margin-left: 3%;
 }
 
-.fRegist hr{
-    padding: 0;
-    position: relative;
-}
-
 .Btn{
     background-color: khaki;
     border: 0;
+    font-size: 10px;
+    width: 65px;
+    height: 20px;
 }
 
 
