@@ -22,11 +22,6 @@
     margin: 0;
 }
 
-.fRegist hr{
-    padding: 0;
-    position: relative;
-}
-
 .e-mail input{
     box-sizing: border-box;
     width: 100%;
@@ -34,8 +29,6 @@
 
 .inputPassword {
     display: flex;
-    flex-direction: row;
-    justify-content:flex-start;
 }
 
 .inputPassword input{
