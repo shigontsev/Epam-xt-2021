@@ -1,5 +1,5 @@
 body {
-    background: #5f6b94;    
+    background: #5f6b94;
 }
 
 .containerInfo{
@@ -10,7 +10,8 @@ body {
     background: white;
     padding: 10px;
     margin:20px auto;
-    box-shadow:0 30px  50px black;    
+    box-shadow:0 30px  50px black;       
+    font-size: 20px; 
 }
 
 .window{
@@ -18,6 +19,8 @@ body {
     flex-direction:column;
     align-items: center;
     margin-inline: 10px;
+    margin: 0 auto;
+    width: 33%;
 }
 
 .item{
@@ -35,8 +38,8 @@ body {
     font-weight: bold ;
 }
 
-.price{
-    font-size: 20px;
+.price::after{
+    content: " в месяц";
 }
 
 .button{
