@@ -14,8 +14,8 @@
 
         function Calculat(str) {
             let ms = str.match(expDigit);
-            if (ms == null) {
-                return "null expression";
+            if (ms == null || ms[0][0] == '=') {
+                throw "null expression";
             }
 
             return MathExp(ms);
