@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATH CALCULATOR</title>
+</head>
+<body>
+    <script>
+        let str = "3.5 +4*10-5.3 /5 = ";
+
+        const expDigit =/([+\-\*\/]?\d+(\.\d+)?)|([=].*)/ig;
+
+        function Calculat(str) {
+            let ms = str.match(expDigit);
+            if (ms == null) {
+                return "null expression";
+            }
+
+            return MathExp(ms);
+        }
+
+        function MathExp([...ms]) {
+            let result = parseFloat(ms[0]);
+            for (let i = 1; i < ms.length; i++) {
+                switch (ms[i][0]) {
+                    case '+':
+                        result +=parseFloat(ms[i].substr(1, ms[i].length)); 
+                        break;
+                    case '-':
+                        result -=parseFloat(ms[i].substr(1, ms[i].length)); 
+                        break;
+                    case '*':
+                        result *=parseFloat(ms[i].substr(1, ms[i].length)); 
+                        break;
+                    case '/':
+                        result /=parseFloat(ms[i].substr(1, ms[i].length)); 
+                        break;
+                    default:
+                        return result.toFixed(2);
+                        break;
+                }
+            }
+        }
+
+        console.log(Calculat(str));
+    </script>
+</body>
+</html>
