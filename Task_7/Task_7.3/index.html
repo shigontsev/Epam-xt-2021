@@ -4,75 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
     <title>MINI CRUD</title>
 </head>
 <body>
-    <script>
-        function Service(){
-            // let data = { number: 0};
-            let content = [{id:"1",value: 123},{id: "2", value: 12443}];
-            // let length = content.length;
-     
-            return {
-                // sum: function(n){
-                //     data.number += n;
-                // },
-                // subtract: function(n){
-                //     data.number -= n;
-                // },
-                // display: function(){
-                //     console.log("Result: ", data.number);
-                // }
-
-                //принимает объект и позволяет добавить его в коллекцию
-                add: function(item){
-                    // data.number += n;
-                    content.push({id:"3",value: item});
-                },
-                //принимает id и возвращает найденный объект или NULL если не найден
-                getById: function(id){
-                    // data.number += n;
-                    for (const obj of content) {
-                        if (obj.id == id) {
-                            return obj.value;
-                        }
-                    }
-                    return null
-                },
-                //возвращает весь массив объектов
-                getAll: function(){
-                    // data.number += n;
-                    return content;
-                },
-                //принимает id и возвращает удаленный объект
-                deleteById: function(id){
-                    // data.number += n;
-                    
-                    // let index = null;
-                    // let value = null;
-                    // for (const obj of content) {
-                    //     if (obj.id == id) {
-                    //         value = obj.value.;
-                    //         break;
-                    //     }
-                    //     index++;
-                    // }
-                    // return value != null?
-                    //      ()=>{content[index]}
-                    // return null
-                },
-                // принимает id первым параметром и объект-вторым. Обновляет поля объекта
-                //новыми значениями
-                updateById: function(id, item){
-                    // data.number += n;
-                },
-                // принимает id и заменяет старый объект - новым
-                replaceById: function(id){
-                    // data.number += n;
-                },
-            }
-        };
-        var storage = new Service();
-    </script>
+    <!-- <script>
+        
+    </script> -->
+    <!-- <script src="test.js"></script> -->
 </body>
 </html>
