@@ -1,6 +1,6 @@
 class Service{
-    #storage = [{id:"0",value: 123},{id: "1", value: 12443}];
-    #_word="s";
+    // #storage = [{id:"0",value: 123},{id: "1", value: 12443}];
+    #storage = [];
 
     //принимает объект и позволяет добавить его в коллекцию
     add(obj){
@@ -56,12 +56,48 @@ class Service{
         this.#checkId(id);
         this.#checkObject(obj);
 
-
+        for (const key in this.#storage) {
+            if (Object.hasOwnProperty.call(this.#storage, key) &&
+            this.#storage[key].id === id) {
+                return this.#updateCurrentObject(this.#storage[key], obj);
+            }
+        }
+        return false;
     }
+
+    #updateCurrentObject(curObj, newObj){
+        if (newObj["id"] && typeof newObj["id"] !== "string") {
+            return false;
+        }
+
+        for (const key in newObj) {
+            if (Object.hasOwnProperty.call(newObj, key)) {
+                if(curObj[key] === undefined){
+                    return false;
+                }
+                // if (key == "id" && typeof newObj[key] !== "string") {
+                //     return false;
+                // }
+            }
+        }
+        for (const key in newObj) {
+            if (Object.hasOwnProperty.call(newObj, key)) {                
+                curObj[key] = newObj[key];
+            }
+        }
+
+        return true
+    }
+
+
     // принимает id и заменяет старый объект - новым
     replaceById(id, obj){
         this.#checkId(id);
         this.#checkObject(obj);
+
+        if (obj["id"] && typeof obj["id"] !== "string") {
+            return false;
+        }
 
         for (const key in this.#storage) {
             if (Object.hasOwnProperty.call(this.#storage, key) &&
@@ -82,8 +118,12 @@ class Service{
         if (typeof obj !== "object" || Array.isArray(obj)) {
             throw new Error ("В качестве объекта принимается только колекция");
         }
+        // else if (obj["id"]) {
+        //     throw new Error ("Объект не может содержать свойство Id");
+        // }
     }
 
     
 };
-var storage = new Service();
+
+// export {Service};
