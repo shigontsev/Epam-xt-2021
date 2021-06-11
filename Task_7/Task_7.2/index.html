@@ -7,63 +7,6 @@
     <title>MATH CALCULATOR</title>
 </head>
 <body>
-    <script>
-        let str = "3.5 +4*10-5.3 /5 = ";
-
-        const expDigit =/([+\-\*\/]?\d+(\.\d+)?)|([=].*)/ig;
-
-        function Calculate(str) {
-            str = str.replace(/\s+/g,'').replace(/(?:=).+/,'=');
-
-            if (str[str.length - 1] != '=') {
-                throw "incorrect mathematical expression: have't '='";
-            }            
-            // search anomalies by length of expression
-            // let matchEx = str.match(/[\d=\-+*/\.]/g);
-            // if (matchEx==null?true:(matchEx.length==str.length?false:true)) {
-            //     throw "incorrect mathematical expressionAAA";
-            // }
-            let matchEx = str.match(/[^\d=\-+*/\.]/g);
-            if (matchEx != null) {
-                throw "incorrect mathematical expression: " + matchEx;
-            }
-
-            let ms = str.match(expDigit);
-
-            if (ms == null || ms[0][0] == '=') {
-                throw "null expression";
-            }
-            if (ms[0].match(/^[+-]?\d+(\.\d+)?/i) == null ) {
-                throw "incorrect mathematical expression, wrong symbol at the beginning: " + ms[0][0];
-            }            
-
-            return MathExp(ms);
-        }
-
-        function MathExp([...ms]) {
-            let result = parseFloat(ms[0]);
-            for (let i = 1; i < ms.length; i++) {
-                switch (ms[i][0]) {
-                    case '+':
-                        result +=parseFloat(ms[i].substr(1, ms[i].length)); 
-                        break;
-                    case '-':
-                        result -=parseFloat(ms[i].substr(1, ms[i].length)); 
-                        break;
-                    case '*':
-                        result *=parseFloat(ms[i].substr(1, ms[i].length)); 
-                        break;
-                    case '/':
-                        result /=parseFloat(ms[i].substr(1, ms[i].length)); 
-                        break;
-                    case '=':
-                        return result.toFixed(2);
-                        break;
-                }
-            }
-        }
-
-        console.log(Calculate(str));
-    </script>
+    <script src="calc.js"></script>
 </body>
 </html>

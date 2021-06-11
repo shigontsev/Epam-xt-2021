@@ -5,19 +5,18 @@ class Service{
     //принимает объект и позволяет добавить его в коллекцию
     add(obj){
         this.#checkObject(obj);
-        // this.#storage.push(Object.assign({id: this.#storage.length.toString()}, obj));
         this.#storage.push(Object.assign({id: this.#generateId()}, obj));
     }
-
     #generateId(){
         while (true) {
-            let result = parseInt(Math.random()*10000).toString();
+            let result = parseInt(Math.random()*100000).toString();
             if(this.#storage.length == 0 ||
                  this.#storage.find(item => item.id === result) === undefined){
                 return result;
             }
         }
     }
+
     //принимает id и возвращает найденный объект или NULL если не найден
     getById(id){
         this.#checkId(id);
@@ -33,6 +32,7 @@ class Service{
     getAll(){
         return this.#storage.slice();
     }
+
     //принимает id и возвращает удаленный объект
     deleteById(id){
         this.#checkId(id);
@@ -49,7 +49,6 @@ class Service{
         return value;
     }
 
-
     // принимает id первым параметром и объект-вторым. Обновляет поля объекта
     //новыми значениями
     updateById(id, obj){
@@ -64,7 +63,6 @@ class Service{
         }
         return false;
     }
-
     #updateCurrentObject(curObj, newObj){
         if (newObj["id"] && typeof newObj["id"] !== "string") {
             return false;
@@ -75,9 +73,6 @@ class Service{
                 if(curObj[key] === undefined){
                     return false;
                 }
-                // if (key == "id" && typeof newObj[key] !== "string") {
-                //     return false;
-                // }
             }
         }
         for (const key in newObj) {
@@ -88,7 +83,6 @@ class Service{
 
         return true
     }
-
 
     // принимает id и заменяет старый объект - новым
     replaceById(id, obj){
@@ -125,5 +119,3 @@ class Service{
 
     
 };
-
-// export {Service};
