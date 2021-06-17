@@ -2,7 +2,22 @@ let textInput = "У попа! была, собака?";
 
 const separator = [...' \t\n?!:;,.'];
 
-function SubString(text) {
+function replaceDubChars(text) {
+    let words = subString(text);
+    let dubChars = getCharDub(words);
+
+    let new_text = [...text];
+            
+    for (let i = 0; i < new_text.length; i++) {
+        if (dubChars.includes(new_text[i])) {
+            new_text[i] = '';
+        }
+    }            
+            
+    return new_text.join('');
+}
+
+function subString(text) {
     let words = [];
     let lengthSub = 0;
     for (let index = 0; index < text.length; index++) {
@@ -21,7 +36,7 @@ function SubString(text) {
     return words;
 }
 
-function GetCharDub(words) {
+function getCharDub(words) {
     let dubChars = [];
     for (const word of words) {
         for (let i = 0; i < word.length - 1; i++) {
@@ -34,19 +49,4 @@ function GetCharDub(words) {
     return dubChars;
 }
 
-function ReplaceDubChars(text) {
-    let words = SubString(text);
-    let dubChars = GetCharDub(words);
-
-    let new_text = [...text];
-            
-    for (let i = 0; i < new_text.length; i++) {
-        if (dubChars.includes(new_text[i])) {
-            new_text[i] = '';
-        }
-    }            
-            
-    return new_text.join('');
-}
-
-console.log(ReplaceDubChars(textInput));
+console.log(replaceDubChars(textInput));

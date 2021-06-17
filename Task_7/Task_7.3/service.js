@@ -39,7 +39,7 @@ class Service{
         
         let value = null;
         for (const key in this.#storage) {
-            if (Object.hasOwnProperty.call(this.#storage, key) && this.#storage[key].id == id) {
+            if (this.#storage[key].id == id) {
                 value = this.#storage[key];
                 this.#storage.splice(key, 1);
                 break;
@@ -56,8 +56,7 @@ class Service{
         this.#checkObject(obj);
 
         for (const key in this.#storage) {
-            if (Object.hasOwnProperty.call(this.#storage, key) &&
-            this.#storage[key].id === id) {
+            if (this.#storage[key].id === id) {
                 return this.#updateCurrentObject(this.#storage[key], obj);
             }
         }
@@ -69,16 +68,12 @@ class Service{
         }
 
         for (const key in newObj) {
-            if (Object.hasOwnProperty.call(newObj, key)) {
-                if(curObj[key] === undefined){
-                    return false;
-                }
+            if(curObj[key] === undefined){
+                return false;
             }
         }
         for (const key in newObj) {
-            if (Object.hasOwnProperty.call(newObj, key)) {                
-                curObj[key] = newObj[key];
-            }
+            curObj[key] = newObj[key];
         }
 
         return true
@@ -94,8 +89,7 @@ class Service{
         }
 
         for (const key in this.#storage) {
-            if (Object.hasOwnProperty.call(this.#storage, key) &&
-            this.#storage[key].id === id) {
+            if (this.#storage[key].id === id) {
                 this.#storage[key] = Object.assign({id: id}, obj);
                 return true;
             }
