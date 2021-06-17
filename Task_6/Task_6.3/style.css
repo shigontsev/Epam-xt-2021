@@ -10,6 +10,7 @@ body{
     background: #88B7D5;
     border: 4px solid #C2E1F5;
     padding: 5px;
+    position: relative;
 }
 
 .window p{
@@ -17,18 +18,18 @@ body{
 }
 
 .window::after, .window::before{
-    margin-left: -35px;
+    transform: translateX(-50%);
     position: absolute;
     content: '';
   }
 
 .window::before{
-    top: -25px;
+    top: -70px;
     border: 35px solid transparent;
     border-bottom-color: #C2E1F5 ;  
 }
 .window::after{
-    top: -20px;
+    top: -65px;
     border: 35px solid transparent;
     border-bottom-color: #88B7D5;  
 }
