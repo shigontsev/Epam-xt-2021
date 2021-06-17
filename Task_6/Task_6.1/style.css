@@ -1,0 +1,19 @@
+ul.Menu {
+    width: 200px;
+    padding: 5px;
+
+    background-color: rgb(248, 190, 82);
+    border-radius: 5px;
+    border: thin solid black;
+    list-style: none;
+    box-shadow: 5px 5px 0px brown;
+}
+
+ul.Menu > li {
+    color:brown;
+    padding-bottom: 5px;
+}
+
+ul.Menu > :last-child{
+    padding-bottom: 0;
+}
