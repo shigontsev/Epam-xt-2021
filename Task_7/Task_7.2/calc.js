@@ -13,34 +13,34 @@ function calculate(str) {
         throw new Error ("incorrect mathematical expression: " + matchEx);
     }
     
-    let me = str.match(expDigit);/*mathematical expression*/
+    let mathExpr = str.match(expDigit);/*mathematical expression*/
 
-    if (me == null || me[0][0] == '=') {
+    if (mathExpr == null || mathExpr[0][0] == '=') {
         throw new Error ("null expression");
     }
-    if (me[0].match(/^[+-]?\d+(\.\d+)?/i) == null ) {
-        throw new Error ("incorrect mathematical expression, wrong symbol at the beginning: " + me[0][0]);
+    if (mathExpr[0].match(/^[+-]?\d+(\.\d+)?/i) == null ) {
+        throw new Error ("incorrect mathematical expression, wrong symbol at the beginning: " + mathExpr[0][0]);
     }            
 
-    return mathExp(me);
+    return solveMathExp(mathExpr);
 }
 
-/*'me' is mathematical expression*/
-function mathExp([...me]) {
-    let result = parseFloat(me[0]);
-    for (let i = 1; i < me.length; i++) {
-        switch (me[i][0]) {
+/*'mathExpr' is mathematical expression*/
+function solveMathExp([...mathExpr]) {
+    let result = parseFloat(mathExpr[0]);
+    for (let i = 1; i < mathExpr.length; i++) {
+        switch (mathExpr[i][0]) {
             case '+':
-                result +=parseFloat(me[i].substr(1, me[i].length)); 
+                result +=parseFloat(mathExpr[i].substr(1, mathExpr[i].length)); 
                 break;
             case '-':
-                result -=parseFloat(me[i].substr(1, me[i].length)); 
+                result -=parseFloat(mathExpr[i].substr(1, mathExpr[i].length)); 
                 break;
             case '*':
-                result *=parseFloat(me[i].substr(1, me[i].length)); 
+                result *=parseFloat(mathExpr[i].substr(1, mathExpr[i].length)); 
                 break;
             case '/':
-                result /=parseFloat(me[i].substr(1, me[i].length)); 
+                result /=parseFloat(mathExpr[i].substr(1, mathExpr[i].length)); 
                 break;
             case '=':
                 return result.toFixed(2);
