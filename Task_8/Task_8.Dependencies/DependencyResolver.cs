@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task_8.BLL;
+using Task_8.BLL.Interfaces;
+using Task_8.DAL.Interfaces;
+using Task_8.JsonDAL;
 
 namespace Task_8.Dependencies
 {
@@ -22,12 +26,22 @@ namespace Task_8.Dependencies
             }
         }
 
-          
+
 
         #endregion
 
-        //public INotesDAO NotesDAO => new NotesSqlDAO();
+        
 
-        //public INotesLogic NotesLogic => new NotesLogic(NotesDAO);
+        public IUsersDAO UsersDAO => new UsersDAO();
+
+        public IUsersLogic UsersLogic => new UsersLogic(UsersDAO);
+
+        public IAwardsDAO AwardsDAO => new AwardsDAO();
+
+        public IAwardsLogic AwardsLogic => new AwardsLogic(AwardsDAO);
+
+        public IUsersAndAwardsDAO UsersAndAwardsDAO => new UsersAndAwardsDAO();
+
+        public IUsersAndAwardsLogic UsersAndAwardsLogic => new UsersAndAwardsLogic(UsersAndAwardsDAO);
     }
 }

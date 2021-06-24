@@ -18,7 +18,7 @@ namespace Task_8.Entities
             Title = title ?? throw new ArgumentNullException(nameof(title), "Title string cannot be null!");
         }
 
-        public void Edit(string newTitle)
+        public void EditTitel(string newTitle)
         {
             Title = newTitle ?? throw new ArgumentNullException(nameof(newTitle), "Title string cannot be null!");
         }

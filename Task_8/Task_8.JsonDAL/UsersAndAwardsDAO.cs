@@ -40,5 +40,26 @@ namespace Task_8.JsonDAL
 
             return users;
         }
+
+        public bool AssignAwardToUser(Guid idAward, Guid idUser)
+        {
+            var list = GetAll();
+
+            if (list.Count > 0)
+            {
+                var isContains = list.FirstOrDefault(x => (x.IdAward == idAward && x.IdUser == idUser));
+                if (isContains != null)
+                {
+                    return false;
+                }
+                list.Add(new UsersAndAwards(list.Last().Id + 1, idUser, idAward));
+            }
+            else
+            {
+                list.Add(new UsersAndAwards(0, idUser, idAward));
+            }
+
+            return true;
+        }
     }
 }
