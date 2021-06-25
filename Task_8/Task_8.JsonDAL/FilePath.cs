@@ -16,10 +16,18 @@ namespace Task_8.JsonDAL
 
         //public const string JsonUsersAndAwardsPath = JsonFilesPath + "UsersAndAwards.json";
 
-        public const string JsonUsersPath = "Users.json";
+        //public const string JsonUsersPath = "Users.json";
 
-        public const string JsonAwardsPath = "Awards.json";
+        //public const string JsonAwardsPath = "Awards.json";
 
-        public const string JsonUsersAndAwardsPath = "UsersAndAwards.json";
+        //public const string JsonUsersAndAwardsPath = "UsersAndAwards.json";
+
+        private const string JsonFilesPath = @"App_Data\";
+
+        public const string JsonUsersPath = JsonFilesPath + "Users.json";
+
+        public const string JsonAwardsPath = JsonFilesPath + "Awards.json";
+
+        public const string JsonUsersAndAwardsPath = JsonFilesPath + "UsersAndAwards.json";
     }
 }

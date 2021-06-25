@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_8.JsonDAL", "Task_8.Js
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_8.ConsolePL", "Task_8.ConsolePL\Task_8.ConsolePL.csproj", "{128D56E1-532D-4969-9D66-2C6AC7CB51D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task_8.PL.WebPages", "Task_8.PL.WebPages\Task_8.PL.WebPages.csproj", "{FDBFF87A-8D4E-4256-8E89-7E90C6120E93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{128D56E1-532D-4969-9D66-2C6AC7CB51D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{128D56E1-532D-4969-9D66-2C6AC7CB51D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{128D56E1-532D-4969-9D66-2C6AC7CB51D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDBFF87A-8D4E-4256-8E89-7E90C6120E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDBFF87A-8D4E-4256-8E89-7E90C6120E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDBFF87A-8D4E-4256-8E89-7E90C6120E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDBFF87A-8D4E-4256-8E89-7E90C6120E93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +77,7 @@ Global
 		{918E7F3B-A2E9-4579-B26F-1552CE209A3B} = {70E5C02F-71E1-480A-A3E8-AE924655BAE8}
 		{A1245E71-13CA-451A-B606-F0EB656AE4EA} = {70E5C02F-71E1-480A-A3E8-AE924655BAE8}
 		{128D56E1-532D-4969-9D66-2C6AC7CB51D3} = {795EA08B-5320-41ED-B1B3-1BFBA402D067}
+		{FDBFF87A-8D4E-4256-8E89-7E90C6120E93} = {795EA08B-5320-41ED-B1B3-1BFBA402D067}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21CA2AC3-66AE-409F-97A7-38A3F71909E3}
