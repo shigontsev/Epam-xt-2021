@@ -12,11 +12,17 @@ namespace Task_8.Entities
 
         public string Title { get; private set; }
 
-        public Award(string title)
+        public Award(Guid id, string title)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Title = title ?? throw new ArgumentNullException(nameof(title), "Title string cannot be null!");
         }
+
+        //public Award(string title)
+        //{
+        //    Id = Guid.NewGuid();
+        //    Title = title ?? throw new ArgumentNullException(nameof(title), "Title string cannot be null!");
+        //}
 
         public void EditTitel(string newTitle)
         {

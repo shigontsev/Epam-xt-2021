@@ -18,21 +18,36 @@ namespace Task_8.BLL
             _usersDAO = usersDAO;
         }
 
-        public void AddUser(User user)
-        {
-            _usersDAO.AddUser(user);
-        }
-
-        public List<User> GetAllUsers()
+        public List<User> GetAllUser()
         {
             return _usersDAO.GetAllUsers();
         }
 
+        public void AddUser(User user)
+        {
+            _usersDAO.AddUser(user);
+        }
+        
         public void RemoveUser(Guid id)
         {
             _usersDAO.RemoveUser(id);
         }
 
         public void RemoveUser(User user) => RemoveUser(user.Id);
+
+        public void Edit(Guid id, string newName, DateTime newDateOfBirth)
+        {
+            _usersDAO.Edit(id, newName, newDateOfBirth);
+        }
+
+        public void EditDateOfBirth(Guid id, DateTime newDateOfBirth)
+        {
+            _usersDAO.EditDateOfBirth(id, newDateOfBirth);
+        }
+
+        public void EditName(Guid id, string newName)
+        {
+            _usersDAO.EditName(id, newName);
+        }
     }
 }

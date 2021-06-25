@@ -9,6 +9,8 @@ namespace Task_8.BLL.Interfaces
 {
     public interface IUsersAndAwardsLogic
     {
+        List<UsersAndAwards> GetAll();
+
         List<Award> GetAwardsByUser(Guid idUser);
 
         List<Award> GetAwardsByUser(User user);
@@ -16,5 +18,13 @@ namespace Task_8.BLL.Interfaces
         List<User> GetUsersByAward(Guid idAward);
 
         List<User> GetUsersByAward(Award award);
+
+        bool AssignAwardToUser(Guid idAward, Guid idUser);
+
+        bool AssignAwardToUser(UsersAndAwards usersAndAwards);
+
+        bool UnAssignAwardToUser(Guid idAward, Guid idUser);
+
+        bool UnAssignAwardToUser(UsersAndAwards usersAndAwards);
     }
 }

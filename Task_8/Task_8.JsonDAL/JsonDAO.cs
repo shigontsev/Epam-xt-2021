@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Task_8.Entities;
 
@@ -19,10 +20,12 @@ namespace Task_8.JsonDAL
         /// <returns></returns>
         internal static List<T> Deserialize(string filePath)
         {
+            //if (!File.Exists(filePath))
+            //    throw new FileNotFoundException(
+            //        string.Format("File at path {0} isn't exist!",
+            //            filePath));
             if (!File.Exists(filePath))
-                throw new FileNotFoundException(
-                    string.Format("File at path {0} isn't exist!",
-                        filePath));
+                return new List<T>();
 
             List<T> users = JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(filePath));
 
@@ -37,9 +40,13 @@ namespace Task_8.JsonDAL
         internal static void Serialize(string filePath, List<T> list)
         {
             if (!File.Exists(filePath))
-                throw new FileNotFoundException(
-                    string.Format("File at path {0} isn't exist!",
-                        filePath));
+            {
+                //throw new FileNotFoundException(
+                //    string.Format("File at path {0} isn't exist!",
+                //        filePath));
+                File.Create(filePath);
+                Thread.Sleep(TimeSpan.FromMilliseconds(300));
+            }
             File.WriteAllText(filePath, JsonConvert.SerializeObject(list));
         }
     }

@@ -49,5 +49,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Task_8.BLL.Interfaces\Task_8.BLL.Interfaces.csproj">
+      <Project>{2a851d3e-a0ed-49e9-bb16-d03bab5eaf0c}</Project>
+      <Name>Task_8.BLL.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Task_8.BLL\Task_8.BLL.csproj">
+      <Project>{30c1ae59-6c31-4597-b0e7-8e9affde2bf2}</Project>
+      <Name>Task_8.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Task_8.Dependencies\Task_8.Dependencies.csproj">
+      <Project>{382d46ff-b162-4525-958a-7054e7da9d08}</Project>
+      <Name>Task_8.Dependencies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Task_8.Entities\Task_8.Entities.csproj">
+      <Project>{6ef4cc10-00db-4bab-aedc-14754ed8ef3c}</Project>
+      <Name>Task_8.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

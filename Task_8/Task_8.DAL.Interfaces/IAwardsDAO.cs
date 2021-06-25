@@ -9,10 +9,12 @@ namespace Task_8.DAL.Interfaces
 {
     public interface IAwardsDAO
     {
+        List<Award> GetAllAwards();
+
         void AddAward(Award award);
 
         void RemoveAward(Guid id);
 
-        List<Award> GetAllAwards();
+        void EditTitel(Guid id, string newTitle);
     }
 }

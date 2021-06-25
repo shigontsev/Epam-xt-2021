@@ -14,7 +14,7 @@ namespace Task_8.JsonDAL
         {
             var list = JsonDAO<UsersAndAwards>.Deserialize(FilePath.JsonUsersAndAwardsPath);
 
-            return list;
+            return list ?? new List<UsersAndAwards>();
         }
 
         public List<Award> GetAwardsByUser(Guid idUser)
@@ -41,6 +41,12 @@ namespace Task_8.JsonDAL
             return users;
         }
 
+        /// <summary>
+        /// Присвоить награду пользователю
+        /// </summary>
+        /// <param name="idAward"></param>
+        /// <param name="idUser"></param>
+        /// <returns></returns>
         public bool AssignAwardToUser(Guid idAward, Guid idUser)
         {
             var list = GetAll();
@@ -59,7 +65,36 @@ namespace Task_8.JsonDAL
                 list.Add(new UsersAndAwards(0, idUser, idAward));
             }
 
+            JsonDAO<UsersAndAwards>.Serialize(FilePath.JsonUsersAndAwardsPath, list);
+
             return true;
+        }
+
+        /// <summary>
+        /// Лишить пользователя награды
+        /// </summary>
+        /// <param name="idAward"></param>
+        /// <param name="idUser"></param>
+        /// <returns></returns>
+        public bool UnAssignAwardToUser(Guid idAward, Guid idUser)
+        {
+            var list = GetAll();
+
+            if (list.Count > 0)
+            {
+                var isContains = list.FirstOrDefault(x => (x.IdAward == idAward && x.IdUser == idUser));
+                if (isContains == null)
+                {
+                    return false;
+                }
+                list.Remove(isContains);
+
+                JsonDAO<UsersAndAwards>.Serialize(FilePath.JsonUsersAndAwardsPath, list);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -9,10 +9,14 @@ namespace Task_8.DAL.Interfaces
 {
     public interface IUsersAndAwardsDAO
     {
+        List<UsersAndAwards> GetAll();
+
         List<Award> GetAwardsByUser(Guid idUser);
 
         List<User> GetUsersByAward(Guid idAward);
 
-        List<UsersAndAwards> GetAll();
+        bool AssignAwardToUser(Guid idAward, Guid idUser);
+
+        bool UnAssignAwardToUser(Guid idAward, Guid idUser);
     }
 }

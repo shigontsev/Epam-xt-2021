@@ -10,6 +10,13 @@ namespace Task_8.JsonDAL
 {
     public class AwardsDAO : IAwardsDAO
     {
+        public List<Award> GetAllAwards()
+        {
+            var awards = JsonDAO<Award>.Deserialize(FilePath.JsonAwardsPath);
+
+            return awards ?? new List<Award>();
+        }
+
         public void AddAward(Award award)
         {
             var awards = GetAllAwards();
@@ -23,14 +30,7 @@ namespace Task_8.JsonDAL
             awards.Add(award);
             JsonDAO<Award>.Serialize(FilePath.JsonAwardsPath, awards);
         }
-
-        public List<Award> GetAllAwards()
-        {
-            var awards = JsonDAO<Award>.Deserialize(FilePath.JsonAwardsPath);
-
-            return awards;
-        }
-
+        
         public void RemoveAward(Guid id)
         {
             var awards = GetAllAwards();
@@ -43,6 +43,26 @@ namespace Task_8.JsonDAL
 
             awards.Remove(isContains);
             JsonDAO<Award>.Serialize(FilePath.JsonAwardsPath, awards);
+
+            //remove users for current award in entities UsersAndAwards
+            var UaA = JsonDAO<UsersAndAwards>.Deserialize(FilePath.JsonUsersAndAwardsPath).TakeWhile(x => x.IdAward != id).ToList();
+            JsonDAO<UsersAndAwards>.Serialize(FilePath.JsonUsersAndAwardsPath, UaA);
+        }
+
+        public void EditTitel(Guid id, string newTitle)
+        {
+            GetAllAwards();
+
+            var awards = GetAllAwards();
+            var award = awards.FirstOrDefault(u => u.Id == id);
+            if (award is null)
+            {
+                throw new ArgumentNullException(nameof(id), $"Award at Id {id} doesn't exist");
+            }
+
+            award.EditTitel(newTitle);
+
+            JsonDAO<Award>.Serialize(FilePath.JsonUsersPath, awards);
         }
     }
 }

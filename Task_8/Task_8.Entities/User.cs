@@ -16,16 +16,42 @@ namespace Task_8.Entities
 
         public int Age => DateTime.Now.Year - DateOfBirth.Year;
 
-        public User(string name, DateTime dateOfBirth)
+        public User(Guid id, string name, DateTime dateOfBirth)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name ?? throw new ArgumentNullException(nameof(name), "Name string cannot be null!");
             DateOfBirth = dateOfBirth;
         }
 
+        //public User(string name, DateTime dateOfBirth)
+        //{
+        //    Id = Guid.NewGuid();
+        //    Name = name ?? throw new ArgumentNullException(nameof(name), "Name string cannot be null!");
+        //    DateOfBirth = dateOfBirth;
+        //}
+
+        public void Edit(string newName, DateTime newDateOfBirth)
+        {
+            if (newName is null)
+            {
+                throw new ArgumentNullException(nameof(newName), "Name string cannot be null!");
+            }
+            if (newDateOfBirth > DateTime.Now)
+            {
+                throw new ArgumentOutOfRangeException(nameof(newDateOfBirth), "New DateOfBirth cannot be upper than current Date!");
+            }
+
+            Name = newName;
+            DateOfBirth = newDateOfBirth;
+        }
+
         public void EditName(string newName)
         {
-            Name = newName ?? throw new ArgumentNullException(nameof(newName), "Name string cannot be null!");
+            if (newName is null)
+            {
+                throw new ArgumentNullException(nameof(newName), "Name string cannot be null!");
+            }
+            Name = newName;
         }
 
         public void EditDateOfBirth(DateTime newDateOfBirth)

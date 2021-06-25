@@ -9,12 +9,14 @@ namespace Task_8.BLL.Interfaces
 {
     public interface IAwardsLogic
     {
+        List<Award> GetAllAwards();
+
         void AddAward(Award award);
 
         void RemoveAward(Guid id);
 
         void RemoveAward(Award award);
 
-        List<Award> GetAllAwards();
+        void EditTitel(Guid id, string newTitle);
     }
 }

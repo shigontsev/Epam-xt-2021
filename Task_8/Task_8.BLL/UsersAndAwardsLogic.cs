@@ -18,6 +18,11 @@ namespace Task_8.BLL
             _usersAndAwardsDAO = usersAndAwardsDAO;
         }
 
+        public List<UsersAndAwards> GetAll()
+        {
+            return _usersAndAwardsDAO.GetAll();
+        }
+        
         public List<Award> GetAwardsByUser(Guid idUser)
         {
             return _usersAndAwardsDAO.GetAwardsByUser(idUser);
@@ -31,5 +36,21 @@ namespace Task_8.BLL
         }
 
         public List<User> GetUsersByAward(Award award) => GetUsersByAward(award.Id);
+        
+        public bool AssignAwardToUser(Guid idAward, Guid idUser)
+        {
+            return _usersAndAwardsDAO.AssignAwardToUser(idAward, idUser);
+        }
+
+        public bool AssignAwardToUser(UsersAndAwards usersAndAwards)
+            => _usersAndAwardsDAO.AssignAwardToUser(usersAndAwards.IdAward, usersAndAwards.IdUser);
+
+        public bool UnAssignAwardToUser(Guid idAward, Guid idUser)
+        {
+            return _usersAndAwardsDAO.UnAssignAwardToUser(idAward, idUser);
+        }
+
+        public bool UnAssignAwardToUser(UsersAndAwards usersAndAwards)
+            => _usersAndAwardsDAO.UnAssignAwardToUser(usersAndAwards.IdAward, usersAndAwards.IdUser);
     }
 }

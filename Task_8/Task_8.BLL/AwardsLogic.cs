@@ -34,5 +34,10 @@ namespace Task_8.BLL
         }
 
         public void RemoveAward(Award award) => RemoveAward(award.Id);
+
+        public void EditTitel(Guid id, string newTitle)
+        {
+            _awardsDAO.EditTitel(id, newTitle);
+        }
     }
 }

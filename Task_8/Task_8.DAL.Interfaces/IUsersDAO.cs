@@ -9,10 +9,16 @@ namespace Task_8.DAL.Interfaces
 {
     public interface IUsersDAO
     {
+        List<User> GetAllUsers();
+
         void AddUser(User user);
 
         void RemoveUser(Guid id);
 
-        List<User> GetAllUsers();
+        void Edit(Guid id, string newName, DateTime newDateOfBirth);
+
+        void EditName(Guid id, string newName);
+
+        void EditDateOfBirth(Guid id, DateTime newDateOfBirth);
     }
 }
