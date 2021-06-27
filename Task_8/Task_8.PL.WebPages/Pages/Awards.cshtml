@@ -1,0 +1,43 @@
+﻿@using Task_8.Entities;
+@using Task_8.Dependencies
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    //var usersBll = BLL.UsersBLL;
+    var awardsBll = DependencyResolver.Instance.AwardsLogic;
+
+    var awards = awardsBll.GetAllAwards();
+
+    PageData["Title"] = "Awards";
+}
+
+<p>
+    Hello Awards
+</p>
+
+<a class="btn btn-primary" href="~/Pages/AddAward.cshtml">Add</a>
+
+@{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+                foreach (var award in awards)
+                {
+                    index++;
+                    <tr>
+                        <th scope="row">@index</th>
+                        <td>@award.Title</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

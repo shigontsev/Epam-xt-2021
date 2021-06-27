@@ -1,0 +1,40 @@
+﻿@using Task_8.Entities;
+@using Task_8.Dependencies
+
+@{
+
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var awrdsBll = DependencyResolver.Instance.AwardsLogic;
+
+    PageData["Title"] = "AddAward";
+}
+<h3>
+    Add Award
+</h3>
+<form method="post">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Title</span>
+        <input type="text" name="Title" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+@if (IsPost)
+{
+    try
+    {
+        string title = Request["Title"];
+
+        awrdsBll.AddAward(new Award(id: Guid.NewGuid(), title: title));
+        <div class="alert alert-success" role="alert">
+            A simple success alert—check it out!
+        </div>
+    }
+    catch (Exception ex)
+    {
+        <div class="alert alert-danger" role="alert">
+            A simple danger alert—check it out!
+        </div>
+    }
+}

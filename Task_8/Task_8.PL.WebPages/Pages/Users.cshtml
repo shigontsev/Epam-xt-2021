@@ -1,25 +1,63 @@
-﻿@using Task_8.PL.WebPages.Models;
+﻿@using Task_8.Entities;
+@using Task_8.Dependencies
 
 @{
-                Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
 
-                var usersBll = BLL.UsersBLL;
+    //var usersBll = BLL.UsersBLL;
+    var usersBll = DependencyResolver.Instance.UsersLogic;
 
-                var users = usersBll.GetAllUser();
+    var users = usersBll.GetAllUser();
+
+    PageData["Title"] = "Users";
 }
 
 
-<p>
+<h3>
     Hello Users
-</p>
+</h3>
 
-@foreach (var user in users)
-{
-<ul class="list-group list-group-horizontal">
-    <li class="list-group-item">AAA</li>
-    <li class="list-group-item">@user.Name</li>
-    <li class="list-group-item">@user.Age</li>
-    <li class="list-group-item">@user.DateOfBirth</li>
-</ul>
+<a class="btn btn-primary" href="~/Pages/AddUser.cshtml" >Add</a>
+
+@{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Age</th>
+                <th scope="col">DateOfBirth</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+                foreach (var user in users)
+                {
+                    index++;
+                    <tr>
+                        <th scope="row">@index</th>
+                        <td>@user.Name</td>
+                        <td>@user.Age</td>
+                        <td>@user.DateOfBirth</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    
+
+    
+    @*int index = 0;
+    foreach (var user in users)
+    {
+        index++;
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">@index</li>
+            <li class="list-group-item">@user.Name</li>
+            <li class="list-group-item">@user.Age</li>
+            <li class="list-group-item">@user.DateOfBirth</li>
+        </ul>
+    }*@
 }
 

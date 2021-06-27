@@ -1,23 +1,54 @@
-﻿@using Task_8.PL.WebPages.Models;
+﻿@using Task_8.Entities;
+@using Task_8.Dependencies
 
 @{
 
     Layout = "~/Pages/Layout/_BasicLayout.cshtml";
 
-    var usersBll = BLL.UsersBLL;
+    var usersBll = DependencyResolver.Instance.UsersLogic;
 
-    //var users = usersBll.GetAllUser
-
+    PageData["Title"] = "AddUser";
 }
+
+<h3>
+    Add User
+</h3>
 
 <form method="post">
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Name</span>
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+        <input type="text" name="UserName" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
     </div>
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">DateOfBirth</span>
-        <input type="date" class="form-control" placeholder="DateOfBirth" aria-label="DateOfBirth" aria-describedby="basic-addon1">
+        <input type="date" name="DateOfBirth" class="form-control" placeholder="DateOfBirth" aria-label="DateOfBirth" aria-describedby="basic-addon1" required>
     </div>
     <button type="submit" class="btn btn-primary">Add</button>
 </form>
+
+@if (IsPost)
+{
+    try
+    {
+        string userName = Request["UserName"];
+        bool isDate = DateTime.TryParse(Request["DateOfBirth"], out DateTime dateOfBirth);
+        if (!isDate)
+        {
+            <div class="alert alert-danger" role="alert">
+                Введен не верный формат даты
+            </div>
+            return;
+        }
+
+        usersBll.AddUser(new User(id: Guid.NewGuid(), name: userName, dateOfBirth: dateOfBirth));
+        <div class="alert alert-success" role="alert">
+            A simple success alert—check it out!
+        </div>
+    }
+    catch (Exception ex)
+    {
+        <div class="alert alert-danger" role="alert">
+            A simple danger alert—check it out!
+        </div>
+    }
+}
