@@ -24,7 +24,8 @@ namespace Task_8.JsonDAL
 
         //private const string JsonFilesPath = @"App_Data\";
 
-        private const string JsonFilesPath = @"E:\Repos\Epam-xt-2021\Task_8\Task_8.PL.WebPages\App_Data\";
+        //private const string JsonFilesPath = @"E:\Repos\Epam-xt-2021\Task_8\Task_8.PL.WebPages\App_Data\";
+        private const string JsonFilesPath = @"D:\ShigontsevY\LearningKEK\Учим\Epam\Epam-xt-2021\Task_8\Task_8.PL.WebPages\App_Data\";
 
         public const string JsonUsersPath = JsonFilesPath + "Users.json";
 

@@ -18,5 +18,9 @@ namespace Task_8.BLL.Interfaces
         void RemoveAward(Award award);
 
         void EditTitel(Guid id, string newTitle);
+
+        Award GetAward(Guid id);
+
+        Award GetAward(Award award);
     }
 }

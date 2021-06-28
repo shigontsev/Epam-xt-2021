@@ -32,15 +32,15 @@ namespace Task_8.Dependencies
 
         
 
-        public IUsersDAO UsersDAO => new UsersDAO();
+        private IUsersDAO UsersDAO => new UsersDAO();
 
         public IUsersLogic UsersLogic => new UsersLogic(UsersDAO);
 
-        public IAwardsDAO AwardsDAO => new AwardsDAO();
+        private IAwardsDAO AwardsDAO => new AwardsDAO();
 
         public IAwardsLogic AwardsLogic => new AwardsLogic(AwardsDAO);
 
-        public IUsersAndAwardsDAO UsersAndAwardsDAO => new UsersAndAwardsDAO();
+        private IUsersAndAwardsDAO UsersAndAwardsDAO => new UsersAndAwardsDAO();
 
         public IUsersAndAwardsLogic UsersAndAwardsLogic => new UsersAndAwardsLogic(UsersAndAwardsDAO);
     }

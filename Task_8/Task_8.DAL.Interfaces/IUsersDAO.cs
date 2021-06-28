@@ -20,5 +20,7 @@ namespace Task_8.DAL.Interfaces
         void EditName(Guid id, string newName);
 
         void EditDateOfBirth(Guid id, DateTime newDateOfBirth);
+
+        User GetUser(Guid id);
     }
 }

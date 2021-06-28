@@ -1,22 +1,21 @@
 ﻿@using Task_8.Dependencies
+@using Task_8.Entities
 
 @{
     Layout = "~/Pages/Layout/_BasicLayout.cshtml";
 
-    var awardsBll = DependencyResolver.Instance.AwardsLogic;
+    //var usersBll = DependencyResolver.Instance.UsersLogic;
 
-    var awards = awardsBll.GetAllAwards();
+    var usersAndAwards = DependencyResolver.Instance.UsersAndAwardsLogic;
 
-    PageData["Title"] = "Awards";
+    //var user = usersBll.GetUser(Guid.Parse(Request["id"]));
+
+    var awards = usersAndAwards.GetAwardsNotAvailableByUser(Guid.Parse(Request["id"]));
+    PageData["Title"] = "Awards for Assign";
 }
 
-<p>
-    Hello Awards
-</p>
-
-<a class="btn btn-primary" href="~/Pages/AddAward">Add</a>
-
-@{
+@if (awards.Count > 0)
+{
     <table class="table table-striped">
         <thead>
             <tr>
@@ -35,13 +34,17 @@
                         <th scope="row">@index</th>
                         <td>@award.Title</td>
                         <td>
-                            <a href="~/Pages/Award/Edit?id=@(award.Id)&name=@(award.Title)">Edit</a> |
-                            <a href="~/Pages/Award/Details?id=@(award.Id)">Details</a> |
-                            <a href="~/Pages/Award/Delete?id=@(award.Id)&name=@(award.Title)">Delete</a>
+                            <a href="~/Pages/Award/Details?id=@(award.Id)" class="btn btn-primary">Assign</a>
                         </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
+}
+else
+{
+    <h5>
+        Все достижения присвоенны
+    </h5>
 }

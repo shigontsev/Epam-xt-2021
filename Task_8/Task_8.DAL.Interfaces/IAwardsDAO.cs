@@ -16,5 +16,7 @@ namespace Task_8.DAL.Interfaces
         void RemoveAward(Guid id);
 
         void EditTitel(Guid id, string newTitle);
+
+        Award GetAward(Guid id);
     }
 }

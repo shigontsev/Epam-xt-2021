@@ -18,5 +18,9 @@ namespace Task_8.DAL.Interfaces
         bool AssignAwardToUser(Guid idAward, Guid idUser);
 
         bool UnAssignAwardToUser(Guid idAward, Guid idUser);
+
+        List<Award> GetAwardsNotAvailableByUser(Guid idUser);
+
+        List<User> GetUsersNotAvailableByAward(Guid idAward);
     }
 }

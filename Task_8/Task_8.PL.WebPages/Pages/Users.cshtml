@@ -1,10 +1,8 @@
-﻿@using Task_8.Entities;
-@using Task_8.Dependencies
+﻿@using Task_8.Dependencies
 
 @{
     Layout = "~/Pages/Layout/_BasicLayout.cshtml";
 
-    //var usersBll = BLL.UsersBLL;
     var usersBll = DependencyResolver.Instance.UsersLogic;
 
     var users = usersBll.GetAllUser();
@@ -17,7 +15,7 @@
     Hello Users
 </h3>
 
-<a class="btn btn-primary" href="~/Pages/AddUser.cshtml" >Add</a>
+<a class="btn btn-primary" href="~/Pages/AddUser">Add</a>
 
 @{
     <table class="table table-striped">
@@ -27,6 +25,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Age</th>
                 <th scope="col">DateOfBirth</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -39,25 +38,26 @@
                         <th scope="row">@index</th>
                         <td>@user.Name</td>
                         <td>@user.Age</td>
-                        <td>@user.DateOfBirth</td>
+                        <td>@user.DateOfBirth.ToString("D")</td>
+                        <td>
+                            <a href="~/Pages/User/Edit?id=@(user.Id)&name=@(user.Name)&date=@(user.DateOfBirth.ToString("d"))">Edit</a> |
+                            <a href="~/Pages/User/Details?id=@(user.Id)">Details</a> |
+                            <a href="~/Pages/User/Delete?id=@(user.Id)&name=@(user.Name)">Delete</a>                            
+                            @*<button id="editBtn" value="@user.Id.ToString()" type="button" class="btn btn-warning">Edit</button>*@
+                        </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
-    
 
+    @*<script>
+        $('#editBtn').click(function () {
+            var Id = (this).nodeValue;
+        location.href = '/pages/user/edit:{id}';
+
+        })
+    </script>*@
     
-    @*int index = 0;
-    foreach (var user in users)
-    {
-        index++;
-        <ul class="list-group list-group-horizontal">
-            <li class="list-group-item">@index</li>
-            <li class="list-group-item">@user.Name</li>
-            <li class="list-group-item">@user.Age</li>
-            <li class="list-group-item">@user.DateOfBirth</li>
-        </ul>
-    }*@
 }
 

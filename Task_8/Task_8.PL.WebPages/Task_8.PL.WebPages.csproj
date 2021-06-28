@@ -113,6 +113,16 @@
     <Content Include="Pages\Awards.cshtml" />
     <Content Include="Pages\AddAward.cshtml" />
     <Content Include="Pages\UsersAndAwards.cshtml" />
+    <Content Include="App_Data\Awards.json" />
+    <Content Include="App_Data\Users.json" />
+    <Content Include="App_Data\UsersAndAwards.json" />
+    <Content Include="Pages\User\Edit.cshtml" />
+    <Content Include="Pages\Award\Edit.cshtml" />
+    <Content Include="Pages\User\Delete.cshtml" />
+    <Content Include="Pages\Award\Delete.cshtml" />
+    <Content Include="Pages\User\Details.cshtml" />
+    <Content Include="Pages\Award\Details.cshtml" />
+    <Content Include="Pages\User\AssignAward.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -178,9 +188,7 @@
       <Name>Task_8.Entities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

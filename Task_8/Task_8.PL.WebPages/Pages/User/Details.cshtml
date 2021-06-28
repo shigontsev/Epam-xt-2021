@@ -1,0 +1,83 @@
+﻿@using Task_8.Dependencies
+@using Task_8.Entities
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var usersBll = DependencyResolver.Instance.UsersLogic;
+
+    var usersAndAwards = DependencyResolver.Instance.UsersAndAwardsLogic;
+
+    var user = usersBll.GetUser(Guid.Parse(Request["id"]));
+
+    var awards = usersAndAwards.GetAwardsByUser(user);
+    PageData["Title"] = "User Deteils";
+
+
+}
+
+
+<h3>
+    Hello @user.Name
+</h3>
+
+
+
+<div class="card" style="width: 300px;">
+    @*<img src="..." class="card-img-top" alt="...">*@
+    <div class="card-body">
+        @*<h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>*@
+        <p class="card-text">
+            Name : @user.Name
+        </p>
+        <p class="card-text">
+            Age : @user.Age
+        </p>
+        <p class="card-text">
+            DateOfBirth : @user.DateOfBirth
+        </p>
+        <h5>
+            List Awards
+        </h5>
+        <a class="btn btn-primary" href="~/Pages/User/AssignAward?id=@(user.Id)">Add</a>
+        @if (awards.Count > 0)
+        {
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int index = 0;
+                        foreach (var award in awards)
+                        {
+                            index++;
+                            <tr>
+                                <th scope="row">@index</th>
+                                <td>@award.Title</td>
+                                <td>
+                                    <a href="~/Pages/User/Edit?id=@(user.Id)&name=@(user.Name)&date=@(user.DateOfBirth.ToString("d"))">Edit</a> |
+                                    <a href="~/Pages/User/Details?id=@(user.Id)">Details</a> |
+                                    <a href="~/Pages/User/Delete?id=@(user.Id)&name=@(user.Name)">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="card-text">
+                List is Clear!!!
+            </p>
+        }
+    </div>
+</div>

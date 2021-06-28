@@ -96,5 +96,29 @@ namespace Task_8.JsonDAL
 
             return false;
         }
+
+        public List<Award> GetAwardsNotAvailableByUser(Guid idUser)
+        {
+            var idAwards = GetAll().FindAll(UaA => UaA.IdUser == idUser).Select(a => a.IdAward).ToList();
+            if (idAwards.Count == 0)
+            {
+                return new List<Award>();
+            }
+            var awards = JsonDAO<Award>.Deserialize(FilePath.JsonAwardsPath).FindAll(a => !idAwards.Contains(a.Id)).ToList();
+
+            return awards;
+        }
+
+        public List<User> GetUsersNotAvailableByAward(Guid idAward)
+        {
+            var idUsers = GetAll().FindAll(UaA => UaA.IdAward == idAward).Select(a => a.IdUser).ToList();
+            if (idUsers.Count == 0)
+            {
+                return new List<User>();
+            }
+            var users = JsonDAO<User>.Deserialize(FilePath.JsonUsersPath).FindAll(a => !idUsers.Contains(a.Id)).ToList();
+
+            return users;
+        }
     }
 }

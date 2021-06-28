@@ -26,5 +26,13 @@ namespace Task_8.BLL.Interfaces
         bool UnAssignAwardToUser(Guid idAward, Guid idUser);
 
         bool UnAssignAwardToUser(UsersAndAwards usersAndAwards);
+
+        List<Award> GetAwardsNotAvailableByUser(Guid idUser);
+
+        List<Award> GetAwardsNotAvailableByUser(User user);
+
+        List<User> GetUsersNotAvailableByAward(Guid idAward);
+
+        List<User> GetUsersNotAvailableByAward(Award award);
     }
 }

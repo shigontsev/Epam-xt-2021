@@ -90,5 +90,10 @@ namespace Task_8.JsonDAL
 
             JsonDAO<User>.Serialize(FilePath.JsonUsersPath, users);
         }
+
+        public User GetUser(Guid id)
+        {
+            return GetAllUsers().FirstOrDefault(u => u.Id == id);
+        }
     }
 }

@@ -39,5 +39,13 @@ namespace Task_8.BLL
         {
             _awardsDAO.EditTitel(id, newTitle);
         }
+
+        public Award GetAward(Guid id)
+        {
+            return _awardsDAO.GetAward(id);
+        }
+
+        public Award GetAward(Award award)
+            => GetAward(award.Id);
     }
 }

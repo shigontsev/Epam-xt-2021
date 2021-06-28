@@ -49,5 +49,13 @@ namespace Task_8.BLL
         {
             _usersDAO.EditName(id, newName);
         }
+
+        public User GetUser(Guid id)
+        {
+            return _usersDAO.GetUser(id);
+        }
+
+        public User GetUser(User user)
+            => GetUser(user.Id);
     }
 }

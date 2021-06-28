@@ -22,5 +22,9 @@ namespace Task_8.BLL.Interfaces
         void EditName(Guid id, string newName);
 
         void EditDateOfBirth(Guid id, DateTime newDateOfBirth);
+
+        User GetUser(Guid id);
+
+        User GetUser(User user);
     }
 }

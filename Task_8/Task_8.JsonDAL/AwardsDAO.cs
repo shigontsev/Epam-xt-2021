@@ -62,7 +62,12 @@ namespace Task_8.JsonDAL
 
             award.EditTitel(newTitle);
 
-            JsonDAO<Award>.Serialize(FilePath.JsonUsersPath, awards);
+            JsonDAO<Award>.Serialize(FilePath.JsonAwardsPath, awards);
+        }
+
+        public Award GetAward(Guid id)
+        {
+            return GetAllAwards().FirstOrDefault(a => a.Id == id);
         }
     }
 }

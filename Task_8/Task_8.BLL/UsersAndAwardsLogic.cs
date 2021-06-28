@@ -52,5 +52,21 @@ namespace Task_8.BLL
 
         public bool UnAssignAwardToUser(UsersAndAwards usersAndAwards)
             => _usersAndAwardsDAO.UnAssignAwardToUser(usersAndAwards.IdAward, usersAndAwards.IdUser);
+
+        public List<Award> GetAwardsNotAvailableByUser(Guid idUser)
+        {
+            return _usersAndAwardsDAO.GetAwardsNotAvailableByUser(idUser);
+        }
+
+        public List<Award> GetAwardsNotAvailableByUser(User user)
+            => GetAwardsNotAvailableByUser(user.Id);
+
+        public List<User> GetUsersNotAvailableByAward(Guid idAward)
+        {
+            return _usersAndAwardsDAO.GetUsersNotAvailableByAward(idAward);
+        }
+
+        public List<User> GetUsersNotAvailableByAward(Award award)
+            => GetUsersNotAvailableByAward(award.Id);
     }
 }
