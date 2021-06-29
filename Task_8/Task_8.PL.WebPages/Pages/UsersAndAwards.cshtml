@@ -24,6 +24,7 @@
                 <th scope="col">#</th>
                 <th scope="col">IdUser</th>
                 <th scope="col">IdAward</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -36,9 +37,50 @@
                         <th scope="row">@index</th>
                         <td>@row.IdUser</td>
                         <td>@row.IdAward</td>
+                        <td>
+                            <button class="btn btn-primary" id="deleteBtn@(index)" name="deleteRow" value="@row.Id">Delete</button>
+                            <script>
+                                $('#deleteBtn@(index)').click(function (event) {
+                                    let value = @row.Id;
+                                    
+                                    let isDelete = confirm("Точно хотите удалить " + value);
+                                    if (isDelete) {
+                                        alert('Удалить')
+                                    }
+                                    else {
+                                        alert('Отказаться')
+                                    }
+                                });
+                            </script>
+
+                        </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
 }
+
+
+<script>
+    $('#deleteBtn').click(function (event) {
+        @*<div>
+            @Request["deleteBtn"]
+        </div>*@
+        //<div class="alert alert-success" role="alert">
+        //    A simple success alert—check it out!
+        //</div>
+        //$(this).slideUp();
+        //var Id = (this).nodeValue;
+        //location.href = '/pages/user/edit:{id}';
+        let value = event.button.valueOf();
+        let isDelete = confirm("Точно хотите удалить " + value);
+        if (isDelete) {
+            alert('Удалить')
+        }
+        else {
+            alert('Отказаться')
+        }
+    });
+    onclick
+</script>

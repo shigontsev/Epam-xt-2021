@@ -4,47 +4,73 @@
 @{
     Layout = "~/Pages/Layout/_BasicLayout.cshtml";
 
-    //var usersBll = DependencyResolver.Instance.UsersLogic;
-
+    var usersBll = DependencyResolver.Instance.UsersLogic;
     var usersAndAwards = DependencyResolver.Instance.UsersAndAwardsLogic;
 
-    //var user = usersBll.GetUser(Guid.Parse(Request["id"]));
+    var idUser = Guid.Parse(Request["id"]);
+    var user = usersBll.GetUser(idUser);
+    var awards = usersAndAwards.GetAwardsNotAvailableByUser(user);
 
-    var awards = usersAndAwards.GetAwardsNotAvailableByUser(Guid.Parse(Request["id"]));
     PageData["Title"] = "Awards for Assign";
 }
+<h3>Присвоение достижения пользователю : @user.Name</h3>
 
-@if (awards.Count > 0)
+@if (!IsPost)
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int index = 0;
-                foreach (var award in awards)
-                {
-                    index++;
-                    <tr>
-                        <th scope="row">@index</th>
-                        <td>@award.Title</td>
-                        <td>
-                            <a href="~/Pages/Award/Details?id=@(award.Id)" class="btn btn-primary">Assign</a>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
+    if (awards.Count > 0)
+    {
+        <form method="post">
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-2 pt-0">Awards</legend>
+                <div class="col-sm-10">
+                    @{
+                        int index = 0;
+                        foreach (var item in awards)
+                        {
+                            index++;
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios@index" value="@item.Id" checked>
+                                <label class="form-check-label" for="gridRadios@index">
+                                    @item.Title
+                                </label>
+                            </div>
+                        }
+                    }
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Turn</button>
+        </form>
+    }
+    else
+    {
+        <h5>
+            Все достижения присвоенны
+        </h5>
+    }
 }
 else
 {
-    <h5>
-        Все достижения присвоенны
-    </h5>
+    try
+    {
+        var idAward = Request["gridRadios"];
+        var result = usersAndAwards.AssignAwardToUser(idAward: Guid.Parse(idAward), idUser: idUser);
+        if (result)
+        {
+            <div class="alert alert-success" role="alert">
+                A simple success alert—check it out!
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                A simple danger alert—check it out!
+            </div>
+        }
+    }
+    catch (Exception ex)
+    {
+        <div class="alert alert-danger" role="alert">
+            A simple danger alert—check it out!
+        </div>
+    }
 }

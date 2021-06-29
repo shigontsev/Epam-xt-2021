@@ -102,7 +102,7 @@ namespace Task_8.JsonDAL
             var idAwards = GetAll().FindAll(UaA => UaA.IdUser == idUser).Select(a => a.IdAward).ToList();
             if (idAwards.Count == 0)
             {
-                return new List<Award>();
+                return JsonDAO<Award>.Deserialize(FilePath.JsonAwardsPath)?? new List<Award>();//return list awards
             }
             var awards = JsonDAO<Award>.Deserialize(FilePath.JsonAwardsPath).FindAll(a => !idAwards.Contains(a.Id)).ToList();
 
@@ -114,7 +114,7 @@ namespace Task_8.JsonDAL
             var idUsers = GetAll().FindAll(UaA => UaA.IdAward == idAward).Select(a => a.IdUser).ToList();
             if (idUsers.Count == 0)
             {
-                return new List<User>();
+                return JsonDAO<User>.Deserialize(FilePath.JsonUsersPath)?? new List<User>();//return list users
             }
             var users = JsonDAO<User>.Deserialize(FilePath.JsonUsersPath).FindAll(a => !idUsers.Contains(a.Id)).ToList();
 

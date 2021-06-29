@@ -22,17 +22,18 @@
 </head>
 <body>
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     @*<div class="dropdown">
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="~/Pages/Users.cshtml">Users</a></li>
-            <li><a class="dropdown-item" href="#">Awards</a></li>
-            <li><a class="dropdown-item" href="#">UsersAndAwards</a></li>
-        </ul>
-    </div>*@
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="~/Pages/Users.cshtml">Users</a></li>
+                <li><a class="dropdown-item" href="#">Awards</a></li>
+                <li><a class="dropdown-item" href="#">UsersAndAwards</a></li>
+            </ul>
+        </div>*@
     <div class="list-group list-group-horizontal" style="">
         @*<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-            The current link item
-        </a>*@
+                The current link item
+            </a>*@
         <a href="~/Pages/Users.cshtml" class="list-group-item">Users</a>
         <a href="~/Pages/Awards.cshtml" class="list-group-item">Awards</a>
         <a href="~/Pages/UsersAndAwards.cshtml" class="list-group-item">UsersAndAwards</a>
@@ -40,6 +41,5 @@
     <div>
         @RenderBody()
     </div>
-    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
 </body>
 </html>
