@@ -5,7 +5,7 @@
     Layout = "~/Pages/Layout/_BasicLayout.cshtml";
 
     var usersAndAwardsBll = DependencyResolver.Instance.UsersAndAwardsLogic;
-    var usersAndAwards = usersAndAwardsBll.GetAll();
+    var usersAndAwards = usersAndAwardsBll.GetAllFull();
 
     PageData["Title"] = "UsersAndAwards";
 }
@@ -22,8 +22,8 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">IdUser</th>
-                <th scope="col">IdAward</th>
+                <th scope="col">NameUser</th>
+                <th scope="col">TitleAward</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -35,8 +35,8 @@
                     index++;
                     <tr>
                         <th scope="row">@index</th>
-                        <td>@row.IdUser</td>
-                        <td>@row.IdAward</td>
+                        <td>@row.NameUser</td>
+                        <td>@row.TitleAward</td>
                         <td>
                             <button class="btn btn-primary delete" id="deleteBtn@(index)" name="deleteRow" value="@row.Id">Delete</button>
                             @*<script>
