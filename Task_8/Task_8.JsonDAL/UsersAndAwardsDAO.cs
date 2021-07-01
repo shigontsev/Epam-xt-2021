@@ -120,5 +120,50 @@ namespace Task_8.JsonDAL
 
             return users;
         }
+
+        /// <summary>
+        /// Возвращает колекцию с полной строкой
+        /// </summary>
+        /// <returns></returns>
+        public List<UsersAndAwardsFull> GetAllFull()
+        {
+            var usersAndAwards = GetAll();
+            if (usersAndAwards.Count == 0)
+            {
+                return new List<UsersAndAwardsFull>();
+            }
+
+            var users = JsonDAO<User>.Deserialize(FilePath.JsonUsersPath);
+            var awards = JsonDAO<Award>.Deserialize(FilePath.JsonAwardsPath);
+
+            var result = new List<UsersAndAwardsFull>();
+            foreach (var row in usersAndAwards)
+            {
+                result.Add(new UsersAndAwardsFull(
+                    id: row.Id,
+                    idUser: row.IdUser,
+                    idAward: row.IdAward,
+                    nameUser: users.First(u => u.Id == row.IdUser).Name,
+                    titleAward: awards.First(a => a.Id == row.IdAward).Title
+                    )) ;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Возвращает полную строку
+        /// </summary>
+        /// <param name="idRow"></param>
+        /// <returns></returns>
+        public UsersAndAwardsFull GetRowFull(int idRow)
+        {
+            return GetAllFull().FirstOrDefault(r => r.Id == idRow);
+        }
+
+        public UsersAndAwardsFull GetRowFull(Guid idUser, Guid idAward)
+        {
+            return GetAllFull().FirstOrDefault(r => r.IdUser == idUser && r.IdAward == idAward);
+        }
     }
 }

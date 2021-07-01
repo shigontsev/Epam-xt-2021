@@ -22,5 +22,11 @@ namespace Task_8.DAL.Interfaces
         List<Award> GetAwardsNotAvailableByUser(Guid idUser);
 
         List<User> GetUsersNotAvailableByAward(Guid idAward);
+
+        List<UsersAndAwardsFull> GetAllFull();
+
+        UsersAndAwardsFull GetRowFull(int idRow);
+
+        UsersAndAwardsFull GetRowFull(Guid idUser, Guid idAward);
     }
 }

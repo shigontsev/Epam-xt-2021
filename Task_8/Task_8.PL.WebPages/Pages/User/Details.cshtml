@@ -24,11 +24,7 @@
 
 
 <div class="card" style="width: 300px;">
-    @*<img src="..." class="card-img-top" alt="...">*@
     <div class="card-body">
-        @*<h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>*@
         <p class="card-text">
             Name : @user.Name
         </p>
@@ -38,6 +34,7 @@
         <p class="card-text">
             DateOfBirth : @user.DateOfBirth
         </p>
+        <a href="~/Pages/User/Edit?id=@(user.Id)&name=@(user.Name)&date=@(user.DateOfBirth.ToString("d"))">Edit</a>
         <h5>
             List Awards
         </h5>
@@ -63,9 +60,7 @@
                                 <th scope="row">@index</th>
                                 <td>@award.Title</td>
                                 <td>
-                                    <a href="~/Pages/User/Edit?id=@(user.Id)&name=@(user.Name)&date=@(user.DateOfBirth.ToString("d"))">Edit</a> |
-                                    <a href="~/Pages/User/Details?id=@(user.Id)">Details</a> |
-                                    <a href="~/Pages/User/Delete?id=@(user.Id)&name=@(user.Name)">Delete</a>
+                                    <a class="btn btn-primary unAssign" href="~/Pages/User/UnAssingAward?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
                                 </td>
                             </tr>
                         }
@@ -81,3 +76,16 @@
         }
     </div>
 </div>
+
+
+<script>
+    $('.unAssign').click(function (event) {
+
+        let value = event.target.getAttribute('href');
+
+        let isDelete = confirm("Точно хотите удалить ?"));
+        if (isDelete) {
+            location.href = value;
+        }
+    });
+</script>

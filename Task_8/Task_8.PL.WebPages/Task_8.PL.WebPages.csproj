@@ -123,6 +123,11 @@
     <Content Include="Pages\User\Details.cshtml" />
     <Content Include="Pages\Award\Details.cshtml" />
     <Content Include="Pages\User\AssignAward.cshtml" />
+    <Content Include="Pages\UsersAndAwards\Delete.cshtml" />
+    <Content Include="Partial\_UnAssing.cshtml" />
+    <Content Include="Pages\User\UnAssingAward.cshtml" />
+    <Content Include="Pages\Award\UnAssignUser.cshtml" />
+    <Content Include="Pages\Award\AssignUser.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />

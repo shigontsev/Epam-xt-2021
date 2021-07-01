@@ -68,5 +68,20 @@ namespace Task_8.BLL
 
         public List<User> GetUsersNotAvailableByAward(Award award)
             => GetUsersNotAvailableByAward(award.Id);
+
+        public List<UsersAndAwardsFull> GetAllFull()
+        {
+            return _usersAndAwardsDAO.GetAllFull();
+        }
+
+        public UsersAndAwardsFull GetRowFull(int idRow)
+        {
+            return _usersAndAwardsDAO.GetRowFull(idRow);
+        }
+
+        public UsersAndAwardsFull GetRowFull(Guid idUser, Guid idAward)
+        {
+            return _usersAndAwardsDAO.GetRowFull(idUser, idAward);
+        }
     }
 }

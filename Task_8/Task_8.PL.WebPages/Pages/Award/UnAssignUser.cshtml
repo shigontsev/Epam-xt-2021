@@ -1,0 +1,16 @@
+﻿@using Task_8.Entities;
+@using Task_8.Dependencies
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var usersAndAwardsBll = DependencyResolver.Instance.UsersAndAwardsLogic;
+
+    PageData["Title"] = "UnAssign User";
+}
+
+
+<a href="~/Pages/Award/Details?id=@Request["idAward"]" class="btn btn-primary">Back</a>
+
+
+@RenderPage("~/Partial/_UnAssing.cshtml", new { idRow = usersAndAwardsBll.GetRowFull(@Guid.Parse(Request["idUser"]), @Guid.Parse(Request["idAward"])).Id })

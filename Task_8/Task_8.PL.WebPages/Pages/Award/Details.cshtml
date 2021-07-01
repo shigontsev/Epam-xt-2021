@@ -21,16 +21,18 @@
     Hello @award.Title
 </h3>
 
-<a class="btn btn-primary" href="~/Pages/AddUser">Add</a>
+
 
 <div class="card" style="width: 300px;">
     <div class="card-body">
         <p class="card-text">
             Title : @award.Title
         </p>
+        <a href="~/Pages/Award/Edit?id=@(award.Id)&Title=@(award.Title)">Edit</a>
         <h5>
             List Users
         </h5>
+        <a class="btn btn-primary" href="~/Pages/Award/AssignUser?id=@(award.Id)">Add</a>
         @if (users.Count > 0)
         {
 
@@ -52,20 +54,31 @@
                                 <th scope="row">@index</th>
                                 <td>@user.Name</td>
                                 <td>
-                                    <a href="~/Pages/User/Edit?id=@(user.Id)&name=@(user.Name)&date=@(user.DateOfBirth.ToString("d"))">Edit</a> |
-                                    <a href="~/Pages/User/Details?id=@(user.Id)">Details</a> |
-                                    <a href="~/Pages/User/Delete?id=@(user.Id)&name=@(user.Name)">Delete</a>
+                                    <a class="btn btn-primary unAssign" href="~/Pages/Award/UnAssingAward?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
                                 </td>
                             </tr>
                         }
                     }
                 </tbody>
             </table>
-         } 
-         else{
+        }
+        else
+        {
             <p class="card-text">
                 List is Clear!!!
             </p>
-             }
+        }
     </div>
 </div>
+
+<script>
+    $('.unAssign').click(function (event) {
+
+        let value = event.target.getAttribute('href');
+
+        let isDelete = confirm("Точно хотите удалить ?"));
+        if (isDelete) {
+            location.href = value;
+        }
+    });
+</script>

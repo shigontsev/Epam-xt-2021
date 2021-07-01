@@ -4,21 +4,21 @@
 @{
     Layout = "~/Pages/Layout/_BasicLayout.cshtml";
 
-    var usersBll = DependencyResolver.Instance.UsersLogic;
+    var awardBll = DependencyResolver.Instance.AwardsLogic;
     var usersAndAwards = DependencyResolver.Instance.UsersAndAwardsLogic;
 
-    var idUser = Guid.Parse(Request["id"]);
-    var user = usersBll.GetUser(idUser);
-    var awards = usersAndAwards.GetAwardsNotAvailableByUser(user);
+    var idAward = Guid.Parse(Request["id"]);
+    var award = awardBll.GetAward(idAward);
+    var users = usersAndAwards.GetUsersNotAvailableByAward(award);
 
-    PageData["Title"] = "Awards for Assign";
+    PageData["Title"] = "Users for Assign";
 }
-<h3>Присвоение достижения пользователю : @user.Name</h3>
-<a href="~/Pages/User/Details?id=@Request["id"]" class="btn btn-primary">Back</a>
+<h3>Присвоение пользователя достижению : @award.Title</h3>
+<a href="~/Pages/Award/Details?id=@Request["id"]" class="btn btn-primary">Back</a>
 
 @if (!IsPost)
 {
-    if (awards.Count > 0)
+    if (users.Count > 0)
     {
         <form method="post">
             <fieldset class="row mb-3">
@@ -26,13 +26,13 @@
                 <div class="col-sm-10">
                     @{
                         int index = 0;
-                        foreach (var item in awards)
+                        foreach (var item in users)
                         {
                             index++;
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios@index" value="@item.Id" checked>
                                 <label class="form-check-label" for="gridRadios@index">
-                                    @item.Title
+                                    @item.Name
                                 </label>
                             </div>
                         }
@@ -45,7 +45,7 @@
     else
     {
         <h5>
-            Все достижения присвоенны
+            Все пользователи присвоенны
         </h5>
     }
 }
@@ -53,8 +53,8 @@ else
 {
     try
     {
-        var idAward = Request["gridRadios"];
-        var result = usersAndAwards.AssignAwardToUser(idAward: Guid.Parse(idAward), idUser: idUser);
+        var idUser = Request["gridRadios"];
+        var result = usersAndAwards.AssignAwardToUser(idAward: idAward, idUser: Guid.Parse(idUser));
         if (result)
         {
             <div class="alert alert-success" role="alert">

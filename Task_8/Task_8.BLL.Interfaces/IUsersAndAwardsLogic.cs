@@ -34,5 +34,11 @@ namespace Task_8.BLL.Interfaces
         List<User> GetUsersNotAvailableByAward(Guid idAward);
 
         List<User> GetUsersNotAvailableByAward(Award award);
+
+        List<UsersAndAwardsFull> GetAllFull();
+
+        UsersAndAwardsFull GetRowFull(int idRow);
+
+        UsersAndAwardsFull GetRowFull(Guid idUser, Guid idAward);
     }
 }
