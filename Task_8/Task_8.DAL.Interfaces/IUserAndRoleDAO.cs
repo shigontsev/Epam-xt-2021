@@ -17,6 +17,8 @@ namespace Task_8.DAL.Interfaces
 
         void AssignRole(Guid idUser, int idRole);
 
-        Role GetRoleByUser(Guid idUser);
+        List<Role> GetRoleByUser(Guid idUser);
+
+        List<UserAndRoleNames> GetUserAndRoleNames();
     }
 }

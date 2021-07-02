@@ -128,6 +128,15 @@
     <Content Include="Pages\User\UnAssingAward.cshtml" />
     <Content Include="Pages\Award\UnAssignUser.cshtml" />
     <Content Include="Pages\Award\AssignUser.cshtml" />
+    <Content Include="Pages\SignIn.cshtml" />
+    <Content Include="Pages\SignOut.cshtml" />
+    <Content Include="Index.cshtml" />
+    <Content Include="Partial\_Menu.cshtml" />
+    <Content Include="Pages\Layout\_GuestLayout.cshtml" />
+    <Content Include="Pages\SignUp.cshtml" />
+    <Content Include="App_Data\AuthData.json" />
+    <Content Include="App_Data\Roles.json" />
+    <Content Include="App_Data\UserAndRole.json" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -137,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BLL.cs" />
+    <Compile Include="Models\CalculatorRoleProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

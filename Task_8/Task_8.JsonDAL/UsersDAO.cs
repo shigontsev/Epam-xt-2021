@@ -95,5 +95,10 @@ namespace Task_8.JsonDAL
         {
             return GetAllUsers().FirstOrDefault(u => u.Id == id);
         }
+
+        public User GetUser(string name)
+        {
+            return GetAllUsers().FirstOrDefault(u => u.Name == name);
+        }
     }
 }

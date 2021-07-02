@@ -30,7 +30,7 @@ namespace Task_8.JsonDAL
 
             userAndRole.Add(new UserAndRole(idUser, idRole));
 
-            JsonDAO<UserAndRole>.Serialize(FilePath.JsonUsersAndAwardsPath, userAndRole);
+            JsonDAO<UserAndRole>.Serialize(FilePath.JsonUserAndRolePath, userAndRole);
         }
 
         public void CreateRole(string nameRole)
@@ -42,13 +42,32 @@ namespace Task_8.JsonDAL
             }
 
             roles.Add(new Role(roles.Count == 0 ? 0 : roles.Last().Id + 1, nameRole));
+            JsonDAO<Role>.Serialize(FilePath.JsonRolesPath, roles);
         }
 
-        public Role GetRoleByUser(Guid idUser)
+        public List<Role> GetRoleByUser(Guid idUser)
         {
             var roles = GetRoles();
-            var idRole = GetUserAndRoles().First(r => r.IdUser == idUser).IdRole;
-            return GetRoles().First(r=>r.Id == idRole);
+            var userRole = GetUserAndRoles().FindAll(r => r.IdUser == idUser);
+
+            return roles.Where(r=>userRole.FirstOrDefault(x=>x.IdRole==r.Id)!=null).ToList();
+        }
+
+        public List<UserAndRoleNames> GetUserAndRoleNames()
+        {
+            var roles = GetRoles();
+            var users = JsonDAO<User>.Deserialize(FilePath.JsonUsersPath);
+            var userAndRole = GetUserAndRoles();
+
+            var result = new List<UserAndRoleNames>();
+            foreach (var row in userAndRole)
+            {
+                string userName = users.First(u => u.Id == row.IdUser).Name;
+                string roleName = roles.First(r => r.Id == row.IdRole).Name;
+                result.Add(new UserAndRoleNames(userName, roleName));
+            }
+
+            return result;
         }
     }
 }

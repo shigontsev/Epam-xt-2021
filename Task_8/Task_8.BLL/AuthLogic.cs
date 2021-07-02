@@ -17,6 +17,12 @@ namespace Task_8.BLL
         {
             _authDAO = authDAO;
         }
+
+        public void CreatPassword(Guid idUser, string password)
+        {
+            _authDAO.CreatPassword(idUser, password);
+        }
+
         public bool IsAuthentication(string userName, string password)
         {
             return _authDAO.IsAuthentication(userName, password);

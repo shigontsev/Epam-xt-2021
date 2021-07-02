@@ -11,6 +11,15 @@ namespace Task_8.JsonDAL
 {
     public class AuthDAO : IAuthDAO
     {
+        public void CreatPassword(Guid idUser, string password)
+        {
+            string hashPass = Hasher.HashPassword(password);
+            var passwordsHash = JsonDAO<AuthData>.Deserialize(FilePath.JsonAuthDataPath);
+
+            passwordsHash.Add(new AuthData(idUser, hashPass));
+            JsonDAO<AuthData>.Serialize(FilePath.JsonAuthDataPath, passwordsHash);
+        }
+
         public bool IsAuthentication(string userName, string password)
         {
             var user = JsonDAO<User>.Deserialize(FilePath.JsonUsersPath).FirstOrDefault(u => u.Name == userName);

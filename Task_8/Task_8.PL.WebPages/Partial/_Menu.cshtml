@@ -1,0 +1,20 @@
+﻿@{
+    //Layout = null;
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="list-group-horizontal" style="">
+        <a href="~/Pages/Users.cshtml" class="btn btn-primary">Users</a>
+        <a href="~/Pages/Awards.cshtml" class="btn btn-primary">Awards</a>
+        <a href="~/Pages/UsersAndAwards.cshtml" class="btn btn-primary">UsersAndAwards</a>
+        <a href="~/Pages/SignOut.cshtml" class="btn btn-primary">SignOut</a>
+    </div>
+}
+else
+{
+    <a href="~/Pages/SignIn.cshtml" class="btn btn-primary">SignIn</a>
+    <a href="~/Pages/SignUp.cshtml" class="btn btn-primary">SignUp</a>
+    //Response.Redirect("~/Pages/SignIn.cshtml");
+}
+

@@ -10,5 +10,7 @@ namespace Task_8.DAL.Interfaces
     public interface IAuthDAO
     {
         bool IsAuthentication(string userName, string password);
+
+        void CreatPassword(Guid idUser, string password);
     }
 }

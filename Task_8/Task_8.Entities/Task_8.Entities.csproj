@@ -47,6 +47,7 @@
     <Compile Include="Role.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserAndRole.cs" />
+    <Compile Include="UserAndRoleNames.cs" />
     <Compile Include="UsersAndAwards.cs" />
     <Compile Include="UsersAndAwardsFull.cs" />
   </ItemGroup>

@@ -35,9 +35,12 @@
                         <th scope="row">@index</th>
                         <td>@award.Title</td>
                         <td>
-                            <a href="~/Pages/Award/Edit?id=@(award.Id)&name=@(award.Title)">Edit</a> |
-                            <a href="~/Pages/Award/Details?id=@(award.Id)">Details</a> |
-                            <a href="~/Pages/Award/Delete?id=@(award.Id)&name=@(award.Title)">Delete</a>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a href="~/Pages/Award/Edit?id=@(award.Id)&name=@(award.Title)">Edit</a>
+                                <a href="~/Pages/Award/Details?id=@(award.Id)">Details</a>
+                                <a href="~/Pages/Award/Delete?id=@(award.Id)&name=@(award.Title)">Delete</a>
+                            }
                         </td>
                     </tr>
                 }

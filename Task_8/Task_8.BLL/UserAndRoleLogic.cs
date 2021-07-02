@@ -31,17 +31,22 @@ namespace Task_8.BLL
             _userAndRoleDAO.CreateRole(nameRole);
         }
 
-        public Role GetRoleByUser(Guid idUser)
+        public List<Role> GetRoleByUser(Guid idUser)
         {
             return _userAndRoleDAO.GetRoleByUser(idUser);
         }
 
-        public Role GetRoleByUser(User User)
+        public List<Role> GetRoleByUser(User User)
             => GetRoleByUser(User.Id);
 
         public List<Role> GetRoles()
         {
             return _userAndRoleDAO.GetRoles();
+        }
+
+        public List<UserAndRoleNames> GetUserAndRoleNames()
+        {
+            return _userAndRoleDAO.GetUserAndRoleNames();
         }
 
         public List<UserAndRole> GetUserAndRoles()

@@ -10,10 +10,6 @@
     {
         pageName = "Unknown Page";
     }
-    if (!User.Identity.IsAuthenticated)
-    {
-        Response.Redirect("~/Pages/SignIn.cshtml");
-    }
 }
 
 <!DOCTYPE html>
@@ -21,7 +17,6 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@pageName</title>
-    @*@RenderSection("head", required: false)*@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>

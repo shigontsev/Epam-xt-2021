@@ -19,8 +19,10 @@ namespace Task_8.BLL.Interfaces
 
         void AssignRole(UserAndRole userAndRole);
 
-        Role GetRoleByUser(Guid idUser);
+        List<Role> GetRoleByUser(Guid idUser);
 
-        Role GetRoleByUser(User User);
+        List<Role> GetRoleByUser(User User);
+
+        List<UserAndRoleNames> GetUserAndRoleNames();
     }
 }

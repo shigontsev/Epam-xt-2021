@@ -57,5 +57,10 @@ namespace Task_8.BLL
 
         public User GetUser(User user)
             => GetUser(user.Id);
+
+        public User GetUser(string name)
+        {
+            return _usersDAO.GetUser(name);
+        }
     }
 }

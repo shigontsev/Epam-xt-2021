@@ -26,5 +26,7 @@ namespace Task_8.BLL.Interfaces
         User GetUser(Guid id);
 
         User GetUser(User user);
+
+        User GetUser(string name);
     }
 }
