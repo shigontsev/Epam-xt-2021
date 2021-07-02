@@ -8,6 +8,13 @@
     var usersBll = DependencyResolver.Instance.UsersLogic;
 
     PageData["Title"] = "AddUser";
+
+    Response.Redirect("~/");
+
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }
 }
 
 <h3>
@@ -35,20 +42,20 @@
         if (!isDate)
         {
             <div class="alert alert-danger" role="alert">
-                Введен не верный формат даты
+                Введен не верный формат даты!!!
             </div>
             return;
         }
 
         usersBll.AddUser(new User(id: Guid.NewGuid(), name: userName, dateOfBirth: dateOfBirth));
         <div class="alert alert-success" role="alert">
-            A simple success alert—check it out!
+            Пользователь успешно созда!!!
         </div>
     }
     catch (Exception ex)
     {
         <div class="alert alert-danger" role="alert">
-            A simple danger alert—check it out!
+            Пользователь не создан!!! 
         </div>
     }
 }

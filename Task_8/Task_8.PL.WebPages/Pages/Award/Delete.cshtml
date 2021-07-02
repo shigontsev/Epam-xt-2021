@@ -6,6 +6,10 @@
     var awardsBll = DependencyResolver.Instance.AwardsLogic;
 
     PageData["Title"] = "Delete Award";
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }
 }
 <h3>Edit User : @Request["title"]</h3>
 

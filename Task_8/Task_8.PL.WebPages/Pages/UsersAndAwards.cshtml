@@ -15,7 +15,6 @@
     Hello UsersAndAwards
 </h3>
 
-<a class="btn btn-primary" href="~/Pages/AssignAwardToUser.cshtml">AssignAwardToUser</a>
 
 @{
     <table class="table table-striped">
@@ -38,21 +37,10 @@
                         <td>@row.NameUser</td>
                         <td>@row.TitleAward</td>
                         <td>
+                            @if (User.IsInRole("admin"))
+                            {
                             <button class="btn btn-primary delete" id="deleteBtn@(index)" name="deleteRow" value="@row.Id">Delete</button>
-                            @*<script>
-                                $('#deleteBtn@(index)').click(function (event) {
-                                    let value = @row.Id;
-                                    
-                                    let isDelete = confirm("Точно хотите удалить " + value);
-                                    if (isDelete) {
-                                        alert('Удалить')
-                                    }
-                                    else {
-                                        alert('Отказаться')
-                                    }
-                                });
-                            </script>*@
-
+                            }
                         </td>
                     </tr>
                 }
@@ -76,26 +64,3 @@
         }
     });
 </script>
-
-<!--<script>
-    $('#deleteBtn').click(function (event) {-->
-        @*<div>
-            @Request["deleteBtn"]
-        </div>*@
-        <!--//<div class="alert alert-success" role="alert">
-        //    A simple success alert—check it out!
-        //</div>
-        //$(this).slideUp();
-        //var Id = (this).nodeValue;
-        //location.href = '/pages/user/edit:{id}';
-        let value = event.button.valueOf();
-        let isDelete = confirm("Точно хотите удалить " + value);
-        if (isDelete) {
-            alert('Удалить')
-        }
-        else {
-            alert('Отказаться')
-        }
-    });
-    onclick
-</script>-->

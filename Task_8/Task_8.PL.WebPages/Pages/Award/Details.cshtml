@@ -28,11 +28,17 @@
         <p class="card-text">
             Title : @award.Title
         </p>
-        <a href="~/Pages/Award/Edit?id=@(award.Id)&Title=@(award.Title)">Edit</a>
+        @if (User.IsInRole("admin"))
+        {
+        <a class="btn btn-primary" href="~/Pages/Award/Edit?id=@(award.Id)&Title=@(award.Title)">Edit</a>
+        }
         <h5>
             List Users
         </h5>
+        @if (User.IsInRole("admin"))
+        {
         <a class="btn btn-primary" href="~/Pages/Award/AssignUser?id=@(award.Id)">Add</a>
+        }
         @if (users.Count > 0)
         {
 
@@ -54,7 +60,10 @@
                                 <th scope="row">@index</th>
                                 <td>@user.Name</td>
                                 <td>
-                                    <a class="btn btn-primary unAssign" href="~/Pages/Award/UnAssingAward?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <a class="btn btn-primary unAssign" href="~/Pages/Award/UnAssingAward?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
+                                    }
                                 </td>
                             </tr>
                         }

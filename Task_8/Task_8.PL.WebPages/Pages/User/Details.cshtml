@@ -34,11 +34,18 @@
         <p class="card-text">
             DateOfBirth : @user.DateOfBirth
         </p>
-        <a href="~/Pages/User/Edit?id=@(user.Id)&name=@(user.Name)&date=@(user.DateOfBirth.ToString("d"))">Edit</a>
+        @if (User.IsInRole("admin") || User.Identity.Name == user.Name)
+        {
+            <a class="btn btn-primary" href="~/Pages/User/Edit?id=@(user.Id)&name=@(user.Name)&date=@(user.DateOfBirth.ToString("d"))">Edit</a>
+        }
         <h5>
             List Awards
         </h5>
-        <a class="btn btn-primary" href="~/Pages/User/AssignAward?id=@(user.Id)">Add</a>
+        
+        @if (User.IsInRole("admin"))
+        {
+            <a class="btn btn-primary" href="~/Pages/User/AssignAward?id=@(user.Id)">Add</a>
+        }
         @if (awards.Count > 0)
         {
 
@@ -60,7 +67,11 @@
                                 <th scope="row">@index</th>
                                 <td>@award.Title</td>
                                 <td>
-                                    <a class="btn btn-primary unAssign" href="~/Pages/User/UnAssingAward?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <a class="btn btn-primary unAssign" href="~/Pages/User/UnAssingAward?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
+                                    }
+                                    
                                 </td>
                             </tr>
                         }

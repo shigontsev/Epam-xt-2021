@@ -13,8 +13,10 @@
 <p>
     Hello Awards
 </p>
-
+@if (User.IsInRole("admin"))
+{
 <a class="btn btn-primary" href="~/Pages/AddAward">Add</a>
+}
 
 @{
     <table class="table table-striped">
@@ -35,11 +37,11 @@
                         <th scope="row">@index</th>
                         <td>@award.Title</td>
                         <td>
+                            <a class="btn btn-primary" href="~/Pages/Award/Details?id=@(award.Id)">Details</a>
                             @if (User.IsInRole("admin"))
                             {
-                                <a href="~/Pages/Award/Edit?id=@(award.Id)&name=@(award.Title)">Edit</a>
-                                <a href="~/Pages/Award/Details?id=@(award.Id)">Details</a>
-                                <a href="~/Pages/Award/Delete?id=@(award.Id)&name=@(award.Title)">Delete</a>
+                                <a class="btn btn-primary" href="~/Pages/Award/Edit?id=@(award.Id)&name=@(award.Title)">Edit</a>
+                                <a class="btn btn-primary" href="~/Pages/Award/Delete?id=@(award.Id)&name=@(award.Title)">Delete</a>
                             }
                         </td>
                     </tr>

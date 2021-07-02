@@ -8,25 +8,12 @@
     //var row = usersAndAwardsBll.GetRowFull(int.Parse(Request["idRow"]));
 
     PageData["Title"] = "UnAssign Award";
+    @if(!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }
 }
 
-@*<h3> С пользователя: @row.NameUser снята награда: @row.TitleAward ?</h3>*@
 <a href="~/Pages/User/Details?id=@Request["idUser"]" class="btn btn-primary">Back</a>
 
-
-@*@if (usersAndAwardsBll.UnAssignAwardToUser(idUser: row.IdUser, idAward: row.IdAward))
-    {
-        <div class="alert alert-success" role="alert">
-            Снята награда!
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-danger" role="alert">
-            Не удачная попытка!
-        </div>
-    }*@
-
 @RenderPage("~/Partial/_UnAssing.cshtml", new { idRow = usersAndAwardsBll.GetRowFull(@Guid.Parse(Request["idUser"]), @Guid.Parse(Request["idAward"])).Id })
-@*@RenderPage("~/Partial/_UnAssing.cshtml")*@
-

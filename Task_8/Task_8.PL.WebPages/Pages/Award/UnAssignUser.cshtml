@@ -7,6 +7,11 @@
     var usersAndAwardsBll = DependencyResolver.Instance.UsersAndAwardsLogic;
 
     PageData["Title"] = "UnAssign User";
+
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }
 }
 
 

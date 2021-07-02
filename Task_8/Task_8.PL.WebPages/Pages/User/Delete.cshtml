@@ -6,6 +6,11 @@
     var usersBll = DependencyResolver.Instance.UsersLogic;
 
     PageData["Title"] = "Delete User";
+
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }    
 }
 <h3>Edit User : @Request["name"]</h3>
 
@@ -14,13 +19,13 @@
     {
         usersBll.RemoveUser(Guid.Parse(Request["id"]));
         <div class="alert alert-success" role="alert">
-            A simple success alert—check it out!
+            Пользователь удален!!
         </div>
     }
     catch (Exception ex)
     {
         <div class="alert alert-danger" role="alert">
-            A simple danger alert—check it out!
+            Пользователь не удален
         </div>
     }
 }

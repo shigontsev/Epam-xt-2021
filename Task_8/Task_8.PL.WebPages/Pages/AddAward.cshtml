@@ -8,6 +8,11 @@
     var awrdsBll = DependencyResolver.Instance.AwardsLogic;
 
     PageData["Title"] = "AddAward";
+
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }
 }
 <h3>
     Add Award
@@ -28,13 +33,13 @@
 
         awrdsBll.AddAward(new Award(id: Guid.NewGuid(), title: title));
         <div class="alert alert-success" role="alert">
-            A simple success alert—check it out!
+            Достижение успешно создано!!!
         </div>
     }
     catch (Exception ex)
     {
         <div class="alert alert-danger" role="alert">
-            A simple danger alert—check it out!
+            Достижение не создано!!!
         </div>
     }
 }

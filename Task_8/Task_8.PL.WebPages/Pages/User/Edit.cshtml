@@ -5,8 +5,11 @@
 
     var usersBll = DependencyResolver.Instance.UsersLogic;
 
-    PageData["Title"] = "Edit User";        
-
+    PageData["Title"] = "Edit User";
+    if(!(User.IsInRole("admin") || User.Identity.Name == @Request["name"]))
+    {
+        Response.Redirect("~/");
+    }
 }
 
 <h3>Edit User : @Request["name"]</h3>

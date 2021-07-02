@@ -12,6 +12,11 @@
     var users = usersAndAwards.GetUsersNotAvailableByAward(award);
 
     PageData["Title"] = "Users for Assign";
+
+    if(!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }
 }
 <h3>Присвоение пользователя достижению : @award.Title</h3>
 <a href="~/Pages/Award/Details?id=@Request["id"]" class="btn btn-primary">Back</a>
@@ -58,20 +63,20 @@ else
         if (result)
         {
             <div class="alert alert-success" role="alert">
-                A simple success alert—check it out!
+                Достижение успешно присвоенно пользователю!!!
             </div>
         }
         else
         {
             <div class="alert alert-danger" role="alert">
-                A simple danger alert—check it out!
+                Достижение не присвоенно пользователю!!!
             </div>
         }
     }
     catch (Exception ex)
     {
         <div class="alert alert-danger" role="alert">
-            A simple danger alert—check it out!
+            Достижение не присвоенно пользователю!!!
         </div>
     }
 }
