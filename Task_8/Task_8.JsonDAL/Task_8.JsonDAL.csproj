@@ -44,14 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthDAO.cs" />
     <Compile Include="AwardsDAO.cs" />
     <Compile Include="FilePath.cs" />
     <Compile Include="JsonDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserAndRoleDAO.cs" />
     <Compile Include="UsersAndAwardsDAO.cs" />
     <Compile Include="UsersDAO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Task_8.Common.Helpers\Task_8.Common.Helpers.csproj">
+      <Project>{c412171d-4ca0-4b49-9f92-d0f0b8aa3854}</Project>
+      <Name>Task_8.Common.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Task_8.DAL.Interfaces\Task_8.DAL.Interfaces.csproj">
       <Project>{918e7f3b-a2e9-4579-b26f-1552ce209a3b}</Project>
       <Name>Task_8.DAL.Interfaces</Name>

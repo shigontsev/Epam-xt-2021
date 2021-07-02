@@ -43,5 +43,13 @@ namespace Task_8.Dependencies
         private IUsersAndAwardsDAO UsersAndAwardsDAO => new UsersAndAwardsDAO();
 
         public IUsersAndAwardsLogic UsersAndAwardsLogic => new UsersAndAwardsLogic(UsersAndAwardsDAO);
+
+        private IUserAndRoleDAO UserAndRoleDAO => new UserAndRoleDAO();
+
+        public IUserAndRoleLogic UserAndRoleLogic => new UserAndRoleLogic(UserAndRoleDAO);
+
+        private IAuthDAO AuthDAO => new AuthDAO();
+
+        public IAuthLogic AuthLogic => new AuthLogic(AuthDAO);
     }
 }
