@@ -61,6 +61,10 @@
       <Project>{a1245e71-13ca-451a-b606-f0eb656ae4ea}</Project>
       <Name>Task_8.JsonDAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Task_8.SqlDAL\Task_8.SqlDAL.csproj">
+      <Project>{3e2ff948-7080-4dfb-bfc1-7202eadb9fe0}</Project>
+      <Name>Task_8.SqlDAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

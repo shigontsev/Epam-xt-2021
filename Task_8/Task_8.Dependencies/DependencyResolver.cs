@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Task_8.BLL;
 using Task_8.BLL.Interfaces;
 using Task_8.DAL.Interfaces;
-using Task_8.JsonDAL;
+//using Task_8.JsonDAL;
+using Task_8.SqlDAL;
 
 namespace Task_8.Dependencies
 {
@@ -30,8 +31,31 @@ namespace Task_8.Dependencies
 
         #endregion
 
-        
 
+        #region JsonBD
+        //private IUsersDAO UsersDAO => new UsersDAO();
+
+        //public IUsersLogic UsersLogic => new UsersLogic(UsersDAO);
+
+        //private IAwardsDAO AwardsDAO => new AwardsDAO();
+
+        //public IAwardsLogic AwardsLogic => new AwardsLogic(AwardsDAO);
+
+        //private IUsersAndAwardsDAO UsersAndAwardsDAO => new UsersAndAwardsDAO();
+
+        //public IUsersAndAwardsLogic UsersAndAwardsLogic => new UsersAndAwardsLogic(UsersAndAwardsDAO);
+
+        //private IUserAndRoleDAO UserAndRoleDAO => new UserAndRoleDAO();
+
+        //public IUserAndRoleLogic UserAndRoleLogic => new UserAndRoleLogic(UserAndRoleDAO);
+
+        //private IAuthDAO AuthDAO => new AuthDAO();
+
+        //public IAuthLogic AuthLogic => new AuthLogic(AuthDAO);
+
+        #endregion JsonBD
+
+        #region SqlBD
         private IUsersDAO UsersDAO => new UsersDAO();
 
         public IUsersLogic UsersLogic => new UsersLogic(UsersDAO);
@@ -51,5 +75,6 @@ namespace Task_8.Dependencies
         private IAuthDAO AuthDAO => new AuthDAO();
 
         public IAuthLogic AuthLogic => new AuthLogic(AuthDAO);
+        #endregion SqlBD
     }
 }
