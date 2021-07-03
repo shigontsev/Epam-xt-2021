@@ -8,35 +8,18 @@ namespace Task_8.JsonDAL
 {
     internal static class FilePath
     {
-        //private const string JsonFilesPath = @"Files\";
+        private static string JsonFilesPath = AppDomain.CurrentDomain.BaseDirectory + @"\App_Data\";
 
-        //public const string JsonUsersPath = JsonFilesPath + "Users.json";
+        public static string JsonUsersPath = JsonFilesPath + "Users.json";
 
-        //public const string JsonAwardsPath = JsonFilesPath + "Awards.json";
+        public static string JsonAwardsPath = JsonFilesPath + "Awards.json";
 
-        //public const string JsonUsersAndAwardsPath = JsonFilesPath + "UsersAndAwards.json";
+        public static string JsonUsersAndAwardsPath = JsonFilesPath + "UsersAndAwards.json";
 
-        //public const string JsonUsersPath = "Users.json";
+        public static string JsonRolesPath = JsonFilesPath + "Roles.json";
 
-        //public const string JsonAwardsPath = "Awards.json";
+        public static string JsonAuthDataPath = JsonFilesPath + "AuthData.json";
 
-        //public const string JsonUsersAndAwardsPath = "UsersAndAwards.json";
-
-        //private const string JsonFilesPath = @"App_Data\";
-
-        private const string JsonFilesPath = @"E:\Repos\Epam-xt-2021\Task_8\Task_8.PL.WebPages\App_Data\";
-        //private const string JsonFilesPath = @"D:\ShigontsevY\LearningKEK\Учим\Epam\Epam-xt-2021\Task_8\Task_8.PL.WebPages\App_Data\";
-
-        public const string JsonUsersPath = JsonFilesPath + "Users.json";
-
-        public const string JsonAwardsPath = JsonFilesPath + "Awards.json";
-
-        public const string JsonUsersAndAwardsPath = JsonFilesPath + "UsersAndAwards.json";
-
-        public const string JsonRolesPath = JsonFilesPath + "Roles.json";
-
-        public const string JsonAuthDataPath = JsonFilesPath + "AuthData.json";
-
-        public const string JsonUserAndRolePath = JsonFilesPath + "UserAndRole.json";
+        public static string JsonUserAndRolePath = JsonFilesPath + "UserAndRole.json";
     }
 }
