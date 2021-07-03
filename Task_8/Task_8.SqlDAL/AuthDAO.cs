@@ -21,8 +21,8 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                var query = "INSERT INTO User(IdUser, HashPass, DateOfBirth) " +
-                    "VALUES(@IdUser, @HashPass, @DateOfBirth)";
+                var query = "INSERT INTO AuthData(IdUser, HashPass) " +
+                    "VALUES(@IdUser, @HashPass)";
                 var command = new SqlCommand(query, _connection);
 
                 command.Parameters.AddWithValue("@IdUser", idUser);
@@ -43,7 +43,7 @@ namespace Task_8.SqlDAL
             User user = null;
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                SqlCommand command = new SqlCommand("SELECT Id, Name, DateOfBirth FROM User "
+                SqlCommand command = new SqlCommand("SELECT Id, Name, DateOfBirth FROM [User] "
                     + "WHERE Name = @Name", _connection);
                 command.Parameters.AddWithValue("@Name", userName);
                 _connection.Open();

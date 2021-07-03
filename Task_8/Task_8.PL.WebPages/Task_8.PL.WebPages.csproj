@@ -124,8 +124,8 @@
     <Content Include="Pages\Award\Details.cshtml" />
     <Content Include="Pages\User\AssignAward.cshtml" />
     <Content Include="Pages\UsersAndAwards\Delete.cshtml" />
-    <Content Include="Partial\_UnAssing.cshtml" />
-    <Content Include="Pages\User\UnAssingAward.cshtml" />
+    <Content Include="Partial\_UnAssign.cshtml" />
+    <Content Include="Pages\User\UnAssignAward.cshtml" />
     <Content Include="Pages\Award\UnAssignUser.cshtml" />
     <Content Include="Pages\Award\AssignUser.cshtml" />
     <Content Include="Pages\SignIn.cshtml" />

@@ -26,7 +26,7 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                var query = "INSERT INTO User(Id, Name, DateOfBirth) " +
+                var query = "INSERT INTO [User](Id, Name, DateOfBirth) " +
                     "VALUES(@Id, @Name, @DateOfBirth)";
                 var command = new SqlCommand(query, _connection);
 
@@ -56,7 +56,7 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                var query = "UPDATE User SET Name = @Name, DateOfBirth = @DateOfBirth " +
+                var query = "UPDATE [User] SET Name = @Name, DateOfBirth = @DateOfBirth " +
                     "WHERE Id = @Id";
                 var command = new SqlCommand(query, _connection);
 
@@ -85,7 +85,7 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                var query = "UPDATE User SET DateOfBirth = @DateOfBirth " +
+                var query = "UPDATE [User] SET DateOfBirth = @DateOfBirth " +
                     "WHERE Id = @Id";
                 var command = new SqlCommand(query, _connection);
 
@@ -113,7 +113,7 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                var query = "UPDATE User SET Name = @Name " +
+                var query = "UPDATE [User] SET Name = @Name " +
                     "WHERE Id = @Id";
                 var command = new SqlCommand(query, _connection);
 
@@ -135,7 +135,7 @@ namespace Task_8.SqlDAL
             var users = new List<User>();
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                SqlCommand command = new SqlCommand("SELECT Id, Name, DateOfBirth FROM User", _connection);
+                SqlCommand command = new SqlCommand("SELECT Id, Name, DateOfBirth FROM [User]", _connection);
                 _connection.Open();
                 var reader = command.ExecuteReader();
                 while (reader.Read())
@@ -171,7 +171,7 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                var query = "DELETE INTO User " +
+                var query = "DELETE FROM [User] " +
                     "WHERE Id = @id";
                 var command = new SqlCommand(query, _connection);
 

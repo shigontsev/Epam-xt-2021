@@ -94,8 +94,8 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                SqlCommand command = new SqlCommand("SELECT User.Name AS UserName, Role.Name AS RoleName FROM User "
-                    + "INNER JOIN UsersAndRoles ON User.Id = UsersAndRoles.IdUser "
+                SqlCommand command = new SqlCommand("SELECT [User].Name AS UserName, Role.Name AS RoleName FROM [User] "
+                    + "INNER JOIN UsersAndRoles ON [User].Id = UsersAndRoles.IdUser "
                     + "INNER JOIN Role ON UsersAndRoles.IdRole = Role.Id", _connection);
                 _connection.Open();
                 var reader = command.ExecuteReader();

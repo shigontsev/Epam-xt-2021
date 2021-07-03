@@ -18,4 +18,4 @@
 <a href="~/Pages/Award/Details?id=@Request["idAward"]" class="btn btn-primary">Back</a>
 
 
-@RenderPage("~/Partial/_UnAssing.cshtml", new { idRow = usersAndAwardsBll.GetRowFull(@Guid.Parse(Request["idUser"]), @Guid.Parse(Request["idAward"])).Id })
+@RenderPage("~/Partial/_UnAssign.cshtml", new { idRow = usersAndAwardsBll.GetRowFull(@Guid.Parse(Request["idUser"]), @Guid.Parse(Request["idAward"])).Id })

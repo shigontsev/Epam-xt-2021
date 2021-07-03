@@ -76,8 +76,8 @@ namespace Task_8.SqlDAL
             var usersAndAwardsFull = new List<UsersAndAwardsFull>();
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                SqlCommand command = new SqlCommand("SELECT UsersAndAwards.Id AS Id, User.Id AS IdUser, Award.Id AS IdAward, User.Name AS UserName, Award.Title AS TitleAward FROM User "
-                    + "INNER JOIN UsersAndAwards ON User.Id = UsersAndAwards.IdUser "
+                SqlCommand command = new SqlCommand("SELECT UsersAndAwards.Id AS Id, [User].Id AS IdUser, Award.Id AS IdAward, [User].Name AS NameUser, Award.Title AS TitleAward FROM [User] "
+                    + "INNER JOIN UsersAndAwards ON [User].Id = UsersAndAwards.IdUser "
                     + "INNER JOIN Award ON UsersAndAwards.IdAward = Award.Id", _connection);
                 _connection.Open();
                 var reader = command.ExecuteReader();
@@ -121,11 +121,30 @@ namespace Task_8.SqlDAL
         public List<Award> GetAwardsNotAvailableByUser(Guid idUser)
         {
             var awards = new List<Award>();
+            var idAwards = GetAll().FindAll(UaA => UaA.IdUser == idUser).Select(a => a.IdAward).ToList();
+            if (idAwards.Count == 0)
+            {
+                using (SqlConnection _connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand("SELECT Id, Title FROM Award", _connection);
+                    _connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        awards.Add(new Award(
+                            id: (Guid)reader["Id"],
+                            title: (string)reader["Title"]
+                            ));
+                    }
+                }
+
+                return awards;
+            }
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand("SELECT Award.Id AS Id, Award.Title AS TitleAward FROM Award "
-                    + "INNER JOIN UsersAndAwards ON Award.Id = UsersAndAwards.IdAward "
-                    + "WHERE UsersAndAwards.IdUser != @IdUser", _connection);
+                    + "LEFT JOIN UsersAndAwards ON Award.Id = UsersAndAwards.IdAward "
+                    + "WHERE UsersAndAwards.IdUser != @IdUser OR UsersAndAwards.IdUser is NULL", _connection);
                 command.Parameters.AddWithValue("@IdUser", idUser);
                 _connection.Open();
 
@@ -161,8 +180,8 @@ namespace Task_8.SqlDAL
             var users = new List<User>();
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                SqlCommand command = new SqlCommand("SELECT User.Id AS Id, User.Name AS Name, User.DateOfBirth AS DateOfBirth FROM User "
-                    + "INNER JOIN UsersAndAwards ON User.Id = UsersAndAwards.IdUser "
+                SqlCommand command = new SqlCommand("SELECT [User].Id AS Id, [User].Name AS Name, [User].DateOfBirth AS DateOfBirth FROM [User] "
+                    + "INNER JOIN UsersAndAwards ON [User].Id = UsersAndAwards.IdUser "
                     + "WHERE UsersAndAwards.IdAward = @IdAward", _connection);
                 command.Parameters.AddWithValue("@IdAward", idAward);
                 _connection.Open();
@@ -183,11 +202,30 @@ namespace Task_8.SqlDAL
         public List<User> GetUsersNotAvailableByAward(Guid idAward)
         {
             var users = new List<User>();
+            var idUsers = GetAll().FindAll(UaA => UaA.IdAward == idAward).Select(a => a.IdUser).ToList();
+            if (idUsers.Count == 0)
+            {
+                using (SqlConnection _connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand("SELECT Id, Name, DateOfBirth FROM [User]", _connection);
+                    _connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        users.Add(new User(
+                            id: (Guid)reader["Id"],
+                            name: (string)reader["Name"],
+                            dateOfBirth: (DateTime)reader["DateOfBirth"]));
+                    }
+                }
+
+                return users;
+            }
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                SqlCommand command = new SqlCommand("SELECT User.Id AS Id, User.Name AS Name, User.DateOfBirth AS DateOfBirth FROM User "
-                    + "INNER JOIN UsersAndAwards ON User.Id = UsersAndAwards.IdUser "
-                    + "WHERE UsersAndAwards.IdAward != @IdAward", _connection);
+                SqlCommand command = new SqlCommand("SELECT [User].Id AS Id, [User].Name AS Name, [User].DateOfBirth AS DateOfBirth FROM [User] "
+                    + "LEFT JOIN UsersAndAwards ON [User].Id = UsersAndAwards.IdUser "
+                    + "WHERE UsersAndAwards.IdAward != @IdAward OR UsersAndAwards.IdAward is NULL", _connection);
                 command.Parameters.AddWithValue("@IdAward", idAward);
                 _connection.Open();
 
@@ -220,8 +258,8 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                var query = "DELETE INTO UsersAndAwards " +
-                    "WHERE IdUser = @IdUser, IdAward = @IdAward";
+                var query = "DELETE FROM UsersAndAwards " +
+                    "WHERE IdUser = @IdUser AND IdAward = @IdAward";
                 var command = new SqlCommand(query, _connection);
 
                 command.Parameters.AddWithValue("@IdUser", idUser);

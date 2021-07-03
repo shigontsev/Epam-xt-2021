@@ -62,7 +62,7 @@
                                 <td>
                                     @if (User.IsInRole("admin"))
                                     {
-                                        <a class="btn btn-primary unAssign" href="~/Pages/Award/UnAssingAward?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
+                                        <a class="btn btn-primary unAssign" href="~/Pages/Award/UnAssignUser?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
                                     }
                                 </td>
                             </tr>

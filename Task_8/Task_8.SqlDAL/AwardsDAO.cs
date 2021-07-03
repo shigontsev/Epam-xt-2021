@@ -108,7 +108,7 @@ namespace Task_8.SqlDAL
 
             using (SqlConnection _connection = new SqlConnection(_connectionString))
             {
-                var query = "DELETE INTO Award " +
+                var query = "DELETE FROM Award " +
                     "WHERE Id = @id";
                 var command = new SqlCommand(query, _connection);
 
