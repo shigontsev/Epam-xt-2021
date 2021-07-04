@@ -1,0 +1,52 @@
+﻿@using Task_8.Dependencies
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var awardsBll = DependencyResolver.Instance.AwardsLogic;
+
+    var awards = awardsBll.GetAllAwards();
+
+    PageData["Title"] = "Awards";
+}
+
+<p>
+    Hello Awards
+</p>
+@if (User.IsInRole("admin"))
+{
+<a class="btn btn-primary" href="~/Pages/AddAward">Add</a>
+}
+
+@{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+                foreach (var award in awards)
+                {
+                    index++;
+                    <tr>
+                        <th scope="row">@index</th>
+                        <td>@award.Title</td>
+                        <td>
+                            <a class="btn btn-primary" href="~/Pages/Award/Details?id=@(award.Id)">Details</a>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a class="btn btn-primary" href="~/Pages/Award/Edit?id=@(award.Id)&name=@(award.Title)">Edit</a>
+                                <a class="btn btn-primary" href="~/Pages/Award/Delete?id=@(award.Id)&name=@(award.Title)">Delete</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

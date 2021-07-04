@@ -1,0 +1,72 @@
+﻿@using Task_8.Dependencies
+@using Task_8.Entities;
+
+@{
+    Layout = "~/Pages/Layout/_GuestLayout.cshtml";
+
+    var usersBll = DependencyResolver.Instance.UsersLogic;
+    var authDataBll = DependencyResolver.Instance.AuthLogic;
+    var userAndRole = DependencyResolver.Instance.UserAndRoleLogic;
+    PageData["Title"] = "SignUp";
+
+    var isUsersEmpty = usersBll.GetAllUser().Count == 0;
+}
+
+<form method="post" style="margin: 20px; width:300px">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Name</span>
+        <input type="text" name="UserName" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">DateOfBirth</span>
+        <input type="date" name="DateOfBirth" class="form-control" placeholder="DateOfBirth" aria-label="DateOfBirth" aria-describedby="basic-addon1" required>
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Password</span>
+        <input type="password" name="Password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+@if (IsPost)
+{
+    try
+    {
+        string userName = Request["UserName"];
+        bool isDate = DateTime.TryParse(Request["DateOfBirth"], out DateTime dateOfBirth);
+        string password = Request["Password"];
+        if (!isDate)
+        {
+            <div class="alert alert-danger" role="alert">
+                Введен не верный формат даты!!
+            </div>
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            <div class="alert alert-danger" role="alert">
+                Введен пустой пароль!!
+            </div>
+        }
+        Guid newUserId = Guid.NewGuid();
+
+        usersBll.AddUser(new User(id: newUserId, name: userName, dateOfBirth: dateOfBirth));
+        authDataBll.CreatPassword(newUserId, password);
+        if (isUsersEmpty)
+        {
+            userAndRole.AssignRole(newUserId, 0);
+        }
+        userAndRole.AssignRole(newUserId, 1);
+
+
+        <div class="alert alert-success" role="alert">
+        Пользователь успешно зарегистрирован!!!
+        </div>
+    }
+    catch (Exception ex)
+    {
+        <div class="alert alert-danger" role="alert">
+            Пользователь не зарегистрирован!!!
+        </div>
+    }
+}

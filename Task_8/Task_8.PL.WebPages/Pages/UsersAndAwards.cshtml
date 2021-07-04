@@ -1,0 +1,66 @@
+﻿@using Task_8.Entities;
+@using Task_8.Dependencies
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var usersAndAwardsBll = DependencyResolver.Instance.UsersAndAwardsLogic;
+    var usersAndAwards = usersAndAwardsBll.GetAllFull();
+
+    PageData["Title"] = "UsersAndAwards";
+}
+
+
+<h3>
+    Hello UsersAndAwards
+</h3>
+
+
+@{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">NameUser</th>
+                <th scope="col">TitleAward</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+                foreach (var row in usersAndAwards)
+                {
+                    index++;
+                    <tr>
+                        <th scope="row">@index</th>
+                        <td>@row.NameUser</td>
+                        <td>@row.TitleAward</td>
+                        <td>
+                            @if (User.IsInRole("admin"))
+                            {
+                            <button class="btn btn-primary delete" id="deleteBtn@(index)" name="deleteRow" value="@row.Id">Delete</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+
+<script>
+    $('.delete').click(function (event) {
+
+        let value = event.target.getAttribute('value');
+
+        let isDelete = confirm("Точно хотите удалить " + (parseInt(value) + 1));
+        if (isDelete) {
+            alert('Удалить');
+            location.href = '/pages/UsersAndAwards/delete?idRow=' + value;
+        }
+        else {
+            alert('Отказаться');
+        }
+    });
+</script>
