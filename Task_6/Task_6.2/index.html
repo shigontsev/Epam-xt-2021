@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+    <form class="fRegist" action="" method="post">
+        <header>Регистрация</header>
+        <hr>
+        <div class="e-mail">   
+            <label for="e-mail">E-mail</label>
+            <input type="email" name="email" id="e-mail" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required>
+        </div>
+        <div class="inputPassword">            
+            <div class="password">   
+                <label for="password">Пароль</label>
+                <input type="password" name="passwordFirst" id="password" required>
+            </div>
+            <div class="passwordConfirm">   
+                <label for="passwordConfirm">Еще раз</label>
+                <input type="password" name="passwordSecond" id="passwordConfirm" required>
+            </div>
+        </div>
+        <div class="buttonSend">
+            <input type="submit" value="Отправить" >
+        </div>
+    </form>
+</body>
+</html>
