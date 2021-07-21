@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+
+    string pageName = null;
+    if (PageData.ContainsKey("Title"))
+    {
+        pageName = PageData["Title"];
+    }
+    else
+    {
+        pageName = "Unknown Page";
+    }
+    if (!User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("~/Pages/SignIn.cshtml");
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@pageName</title>
+    @*@RenderSection("head", required: false)*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <div>
+        @RenderPage("~/Partial/_Menu.cshtml")
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

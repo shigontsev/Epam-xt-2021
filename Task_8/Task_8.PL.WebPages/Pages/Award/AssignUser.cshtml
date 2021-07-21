@@ -1,0 +1,82 @@
+﻿@using Task_8.Dependencies
+@using Task_8.Entities
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var awardBll = DependencyResolver.Instance.AwardsLogic;
+    var usersAndAwards = DependencyResolver.Instance.UsersAndAwardsLogic;
+
+    var idAward = Guid.Parse(Request["id"]);
+    var award = awardBll.GetAward(idAward);
+    var users = usersAndAwards.GetUsersNotAvailableByAward(award);
+
+    PageData["Title"] = "Users for Assign";
+
+    if(!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }
+}
+<h3>Присвоение пользователя достижению : @award.Title</h3>
+<a href="~/Pages/Award/Details?id=@Request["id"]" class="btn btn-primary">Back</a>
+
+@if (!IsPost)
+{
+    if (users.Count > 0)
+    {
+        <form method="post">
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-2 pt-0">Awards</legend>
+                <div class="col-sm-10">
+                    @{
+                        int index = 0;
+                        foreach (var item in users)
+                        {
+                            index++;
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios@index" value="@item.Id" checked>
+                                <label class="form-check-label" for="gridRadios@index">
+                                    @item.Name
+                                </label>
+                            </div>
+                        }
+                    }
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Turn</button>
+        </form>
+    }
+    else
+    {
+        <h5>
+            Все пользователи присвоенны
+        </h5>
+    }
+}
+else
+{
+    try
+    {
+        var idUser = Request["gridRadios"];
+        var result = usersAndAwards.AssignAwardToUser(idAward: idAward, idUser: Guid.Parse(idUser));
+        if (result)
+        {
+            <div class="alert alert-success" role="alert">
+                Достижение успешно присвоенно пользователю!!!
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Достижение не присвоенно пользователю!!!
+            </div>
+        }
+    }
+    catch (Exception ex)
+    {
+        <div class="alert alert-danger" role="alert">
+            Достижение не присвоенно пользователю!!!
+        </div>
+    }
+}

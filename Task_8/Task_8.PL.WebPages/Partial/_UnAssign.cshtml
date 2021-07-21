@@ -1,0 +1,33 @@
+﻿@using Task_8.Entities;
+@using Task_8.Dependencies
+
+@{
+    var usersAndAwardsBll = DependencyResolver.Instance.UsersAndAwardsLogic;
+
+    int idRow;
+    try
+    {
+        idRow = int.Parse(Request["idRow"]);
+    }
+    catch (ArgumentNullException)
+    {
+        idRow = PageData["idRow"];
+    }
+    var row = usersAndAwardsBll.GetRowFull(idRow);
+}
+
+<h3> С пользователя: @row.NameUser снята награда: @row.TitleAward ?</h3>
+
+
+@if (usersAndAwardsBll.UnAssignAwardToUser(idUser: row.IdUser, idAward: row.IdAward))
+{
+    <div class="alert alert-success" role="alert">
+        Снята награда!
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        Не удачная попытка!
+    </div>
+}

@@ -1,0 +1,31 @@
+﻿@using Task_8.Dependencies
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var usersBll = DependencyResolver.Instance.UsersLogic;
+
+    PageData["Title"] = "Delete User";
+
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }    
+}
+<h3>Edit User : @Request["name"]</h3>
+
+@{
+    try
+    {
+        usersBll.RemoveUser(Guid.Parse(Request["id"]));
+        <div class="alert alert-success" role="alert">
+            Пользователь удален!!
+        </div>
+    }
+    catch (Exception ex)
+    {
+        <div class="alert alert-danger" role="alert">
+            Пользователь не удален
+        </div>
+    }
+}

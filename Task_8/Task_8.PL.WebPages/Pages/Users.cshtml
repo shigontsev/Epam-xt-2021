@@ -1,0 +1,58 @@
+﻿@using Task_8.Dependencies
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var usersBll = DependencyResolver.Instance.UsersLogic;
+
+    var users = usersBll.GetAllUser();
+
+    PageData["Title"] = "Users";
+}
+
+
+<h3>
+    Hello Users
+</h3>
+@if (User.IsInRole("admin"))
+{
+    <a class="btn btn-primary" hidden="true" href="~/Pages/AddUser">Add</a>
+}
+@{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Age</th>
+                <th scope="col">DateOfBirth</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+                foreach (var user in users)
+                {
+                    index++;
+                    <tr>
+                        <th scope="row">@index</th>
+                        <td>@user.Name</td>
+                        <td>@user.Age</td>
+                        <td>@user.DateOfBirth.ToString("D")</td>
+                        <td>
+                            <a href="~/Pages/User/Details?id=@(user.Id)" class="btn btn-primary">Details</a>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a href="~/Pages/User/Edit?id=@(user.Id)&name=@(user.Name)&date=@(user.DateOfBirth.ToString("d"))" class="btn btn-primary">Edit</a>
+                                <a href="~/Pages/User/Delete?id=@(user.Id)&name=@(user.Name)" class="btn btn-primary">Delete</a>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+

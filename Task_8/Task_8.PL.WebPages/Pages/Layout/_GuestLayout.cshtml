@@ -1,0 +1,32 @@
+﻿@{
+    Layout = null;
+
+    string pageName = null;
+    if (PageData.ContainsKey("Title"))
+    {
+        pageName = PageData["Title"];
+    }
+    else
+    {
+        pageName = "Unknown Page";
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@pageName</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <div>
+        @RenderPage("~/Partial/_Menu.cshtml")
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

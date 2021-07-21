@@ -1,0 +1,93 @@
+﻿@using Task_8.Dependencies
+@using Task_8.Entities
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    var awardsBll = DependencyResolver.Instance.AwardsLogic;
+
+    var usersAndAwards = DependencyResolver.Instance.UsersAndAwardsLogic;
+
+    var award = awardsBll.GetAward(Guid.Parse(Request["id"]));
+
+    var users = usersAndAwards.GetUsersByAward(award);
+    PageData["Title"] = "User Deteils";
+
+
+}
+
+
+<h3>
+    Hello @award.Title
+</h3>
+
+
+
+<div class="card" style="width: 300px;">
+    <div class="card-body">
+        <p class="card-text">
+            Title : @award.Title
+        </p>
+        @if (User.IsInRole("admin"))
+        {
+        <a class="btn btn-primary" href="~/Pages/Award/Edit?id=@(award.Id)&Title=@(award.Title)">Edit</a>
+        }
+        <h5>
+            List Users
+        </h5>
+        @if (User.IsInRole("admin"))
+        {
+        <a class="btn btn-primary" href="~/Pages/Award/AssignUser?id=@(award.Id)">Add</a>
+        }
+        @if (users.Count > 0)
+        {
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int index = 0;
+                        foreach (var user in users)
+                        {
+                            index++;
+                            <tr>
+                                <th scope="row">@index</th>
+                                <td>@user.Name</td>
+                                <td>
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <a class="btn btn-primary unAssign" href="~/Pages/Award/UnAssignUser?idUser=@user.Id&idAward=@(award.Id)">Delete</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="card-text">
+                List is Clear!!!
+            </p>
+        }
+    </div>
+</div>
+
+<script>
+    $('.unAssign').click(function (event) {
+
+        let value = event.target.getAttribute('href');
+
+        let isDelete = confirm("Точно хотите удалить ?"));
+        if (isDelete) {
+            location.href = value;
+        }
+    });
+</script>

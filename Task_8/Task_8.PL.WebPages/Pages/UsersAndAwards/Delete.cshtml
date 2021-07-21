@@ -1,0 +1,18 @@
+﻿@using Task_8.Entities;
+@using Task_8.Dependencies
+
+@{
+    Layout = "~/Pages/Layout/_BasicLayout.cshtml";
+
+    PageData["Title"] = "UsersAndAwards Delete";
+
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/");
+    }
+}
+
+<a href="~/Pages/UsersAndAwards" class="btn btn-primary">Back</a>
+
+@RenderPage("~/Partial/_UnAssing.cshtml")
+
